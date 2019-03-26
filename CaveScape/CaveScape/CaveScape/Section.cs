@@ -15,6 +15,7 @@ namespace CaveScape
     class Section
     {
 
+        string[,] layout;
         int height;
         int width;
 
