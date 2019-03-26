@@ -21,7 +21,6 @@ namespace CaveScape
         SpriteBatch spriteBatch;
 
         Player player;
-        Texture2D playSprite;
 
         //Holds level and level sections
         Level level;
@@ -42,7 +41,7 @@ namespace CaveScape
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new Player(new Rectangle(50, 50, 50, 50));
+            player = new Player(new Rectangle(50, 50, 50, 50), Content.Load<Texture2D>("circle"));
             base.Initialize();
         }
 
@@ -56,7 +55,6 @@ namespace CaveScape
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            playSprite = this.Content.Load<Texture2D>("");
         }
 
         /// <summary>
@@ -75,12 +73,13 @@ namespace CaveScape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState ks = Keyboard.GetState();
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            player.playerControls(ks);
             base.Update(gameTime);
         }
 
@@ -93,7 +92,9 @@ namespace CaveScape
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            spriteBatch.Draw(player.playerSprite, player.playerLocat, Color.White);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
 

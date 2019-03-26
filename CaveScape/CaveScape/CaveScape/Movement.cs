@@ -11,28 +11,22 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Movement
-    {
-        KeyboardState ks = Keyboard.GetState();
-        GamePadState gb = GamePad.GetState(PlayerIndex.One);
-        public void controls()
-        {
-            if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
-            {
-
-            }
-            if ()
-            {
-
-            }
-            if ()
-            {
-
-            }
-            if ()
-            {
-
-            }
-        }
-    }
+    //class Movement : Player
+    //{
+    //    public void playerControls(KeyboardState ks)
+    //    {
+    //        if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
+    //        {
+    //            playerLocat.X -= speed;
+    //        }
+    //        if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A))
+    //        {
+    //            playerLocat.X += speed;
+    //        }
+    //        if (ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W))
+    //        {
+    //            playerLocat.Y -= speed;
+    //        }
+    //    }
+    //}
 }
