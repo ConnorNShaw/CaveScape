@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.IO;
 
 namespace CaveScape
 {
@@ -20,6 +21,10 @@ namespace CaveScape
         SpriteBatch spriteBatch;
 
         Player player;
+
+        //Holds level and level sections
+        Level level;
+        List<Section> levelSections;
 
         public Game1()
         {
@@ -91,6 +96,48 @@ namespace CaveScape
             spriteBatch.Draw(player.playerSprite, player.playerLocat, Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        //Reads a txt file to create game levels
+        private void ReadFileAsString(string path)
+        {
+            try
+            {
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    int levelWidth = Int32.Parse(reader.ReadLine());
+                    int levelHeight = Int32.Parse(reader.ReadLine());
+
+                    string[,] tempArray = new string[levelHeight, levelWidth];
+                    int r = 0;
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+                        if (!line.Equals("►")) //alt + 16 ►
+                        {
+                            string[] characters = line.Split(',');
+                            for (int c = 0; c < characters.Length; c++)
+                            {
+                                tempArray[r, c] = characters[c];
+                            }
+                            r++;
+                        }
+                        else
+                        {
+                            Section section = new Section(tempArray, levelWidth, levelHeight);
+                            levelSections.Add(section);
+                            
+                            tempArray = new string[levelHeight, levelWidth];
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(e.Message);
+            }
+            level = new Level(levelSections);
         }
     }
 }
