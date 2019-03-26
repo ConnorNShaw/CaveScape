@@ -8,7 +8,9 @@ namespace CaveScape
     class Section
     {
 
-        public Section()
+        string[,] layout;
+
+        public Section(string[,] layout)
         {
 
         }
