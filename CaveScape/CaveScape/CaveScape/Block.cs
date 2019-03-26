@@ -12,15 +12,11 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-
-    class Level
+    class Block
     {
-        List<Section> levelSections;
-
-        public Level(List<Section> levelSections)
+        public Block()
         {
-            this.levelSections = levelSections;
-        }
 
+        }
     }
 }
