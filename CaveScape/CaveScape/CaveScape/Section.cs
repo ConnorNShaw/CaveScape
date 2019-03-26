@@ -12,15 +12,30 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-
-    class Level
+    class Section
     {
-        List<Section> levelSections;
 
-        public Level(List<Section> levelSections)
+        int height;
+        int width;
+
+
+        public Section()
         {
-            this.levelSections = levelSections;
+            height = 30;
+            width = 100;
         }
+
+        public Section(int h, int w)
+        {
+            height = h;
+            width = w;
+        }
+
+
+
+
+
+
 
     }
 }
