@@ -5,7 +5,15 @@ using System.Text;
 
 namespace CaveScape
 {
+
     class Level
     {
+        List<Section> levelSections;
+
+        public Level(List<Section> levelSections)
+        {
+            this.levelSections = levelSections;
+        }
+
     }
 }
