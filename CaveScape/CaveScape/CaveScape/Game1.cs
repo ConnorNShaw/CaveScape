@@ -112,7 +112,7 @@ namespace CaveScape
                     while (!reader.EndOfStream)
                     {
                         string line = reader.ReadLine();
-                        if (!line.Equals("►")) //alt + 16 ►
+                        if (!line.Equals("►")) //alt + 16 to get "►"
                         {
                             string[] characters = line.Split(',');
                             for (int c = 0; c < characters.Length; c++)
