@@ -123,7 +123,7 @@ namespace CaveScape
                         }
                         else
                         {
-                            Section section = new Section(string[,] tempArray);
+                            Section section = new Section(tempArray, levelWidth, levelHeight);
                             levelSections.Add(section);
                             
                             tempArray = new string[levelHeight, levelWidth];

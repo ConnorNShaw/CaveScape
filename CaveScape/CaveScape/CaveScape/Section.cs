@@ -16,16 +16,14 @@ namespace CaveScape
     {
 
         string[,] layout;
-
-        public Section(string[,] layout)
         int height;
         int width;
 
-
-        public Section()
+        public Section(string[,] layout, int width, int height)
         {
-            height = 30;
-            width = 100;
+            this.width = width;
+            this.height = height;
+            this.layout = layout;
         }
 
         public Section(int h, int w)
