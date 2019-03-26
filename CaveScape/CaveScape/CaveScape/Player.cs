@@ -16,14 +16,16 @@ namespace CaveScape
         public int lives;
         public int speed;
         public Rectangle playerLocat;
+        public Texture2D playerSprite;
 
-        public Player(Rectangle r)
+        public Player(Rectangle r, Texture2D text)
         {
             playerLocat = r;
+            playerSprite = text;
             lives = 3;
             speed = 20;
         }
-
+        
         public void addLife()
         {
             lives++;
