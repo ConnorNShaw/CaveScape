@@ -20,6 +20,9 @@ namespace CaveScape
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Player player;
+        Texture2D playSprite;
+
         //Holds level and level sections
         Level level;
         List<Section> levelSections;
@@ -39,7 +42,7 @@ namespace CaveScape
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            player = new Player(new Rectangle(50, 50, 50, 50));
             base.Initialize();
         }
 
@@ -53,6 +56,7 @@ namespace CaveScape
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            playSprite = this.Content.Load<Texture2D>("");
         }
 
         /// <summary>
