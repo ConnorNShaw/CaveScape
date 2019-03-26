@@ -18,21 +18,34 @@ namespace CaveScape
         int height;
         int width;
 
+        string[,] text;
 
-        public Section()
+        Block[,] blocks;
+
+        public Section(string[,] a)
         {
-            height = 30;
-            width = 100;
+            height = a.GetLength(0);
+            width = a.GetLength(1);
+            
+            blocks = new Block[height, width];
+
+            create(a);
+
         }
 
-        public Section(int h, int w)
+
+
+        public void create(string[,] a)
         {
-            height = h;
-            width = w;
+            for (int i = 0; i < height; i++)
+            {
+                for (int o = 0; o < height; o++)
+                {
+
+                }
+            }
+
         }
-
-
-
 
 
 
