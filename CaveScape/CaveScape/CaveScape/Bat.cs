@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Bat : Enemy
     {
-        public Bat(Rectangle p) : base(p)
+        public Bat(Rectangle p, Color c) : base(p, c)
         {
 
         }

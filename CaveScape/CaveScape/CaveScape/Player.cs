@@ -60,24 +60,6 @@ namespace CaveScape
                 }
             }
 
-
-            if (kbs.IsKeyDown(Keys.Up) || boy.Y < height - 50)
-            {
-                started = true;
-                if (fourthOfSecond > oldFourthOfSecond && distance >= -10)
-                {
-                    boy.Y -= distance;
-                    distance--;
-                }
-                jumping = true;
-            }
-            else
-            {
-                jumping = false;
-                distance = 10;
-            }
-
-
         }
 
         public void addLife()

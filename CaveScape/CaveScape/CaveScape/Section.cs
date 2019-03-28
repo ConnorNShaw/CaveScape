@@ -58,53 +58,49 @@ namespace CaveScape
                     {
                         case "s":
 
-                            blocks[i, o] = new Spike(hold);
+                            blocks[i, o] = new Spike(hold, Color.Red);
                             break;
                         case "b":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "w":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "l":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "P":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "B":
-                            blocks[i, o] = new Bat(hold);
+                            blocks[i, o] = new Bat(hold, Color.Black);
                             break;
                         case "S":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "h":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "t":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "i":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "|":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "/":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         case "-":
-
+                            createBlock(i, o, false, Color.White);
                             break;
                         default:
 
-                            createBlock(i, o, false);
+                            createBlock(i, o, false, Color.Transparent);
                             //blocks[i, o] = new Block();
                             break;
-
-
-
-
                     }
 
                     hold.X += 50;
@@ -115,25 +111,22 @@ namespace CaveScape
             }
         }
 
-        private void createBlock(int r, int c, bool movement)
+        private void createBlock(int r, int c, bool movement, Color color)
         {
             Rectangle rectangle = new Rectangle((c * hGrid), (r * vGrid), hGrid, vGrid);
-            Block block = new Block(rectangle);
+            Block block = new Block(rectangle, color);
+            blocks[r, c] = block;
         }
 
         public void Draw(SpriteBatch batch)
         {
-            
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
                 {
-
-                    batch.Draw(texture, blocks[i,o].getPos(), Color.White);
-
+                    batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getColor());
                 }
             }
         }
-
     }
 }

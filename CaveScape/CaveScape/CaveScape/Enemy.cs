@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Enemy : Block
     {
-        public Enemy(Rectangle p) : base(p)
+        public Enemy(Rectangle p, Color c) : base(p, c)
         {
 
         }

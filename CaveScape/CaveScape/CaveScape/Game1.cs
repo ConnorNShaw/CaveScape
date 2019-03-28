@@ -44,6 +44,7 @@ namespace CaveScape
         {
             // TODO: Add your initialization logic here
             player = new Player(new Rectangle(100, 400, 50, 50), Content.Load<Texture2D>("circle"));
+            levelSections = new List<Section>();
             base.Initialize();
         }
 
@@ -56,6 +57,7 @@ namespace CaveScape
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             texture = this.Content.Load<Texture2D>("White Square");
+            ReadFileAsString(@"Content/tutorial levels.txt");
 
             // TODO: use this.Content to load your game content here
         }
@@ -130,7 +132,7 @@ namespace CaveScape
                         {
                             Section section = new Section(tempArray, levelWidth, levelHeight, texture);
                             levelSections.Add(section);
-                            
+                            Console.WriteLine("Created \n A \n Section");
                             tempArray = new string[levelHeight, levelWidth];
                         }
                     }

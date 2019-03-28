@@ -37,7 +37,6 @@ namespace CaveScape
             return false;
         }
 
-
         public void Draw(SpriteBatch batch)
         {
             levelSections[tracker].Draw(batch);
