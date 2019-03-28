@@ -33,8 +33,8 @@ namespace CaveScape
             blocks = new Block[height, width];
             x = 0;
             y = 0;
-            vGrid = 50;
-            hGrid = 50;
+            //vGrid = 50;
+            //hGrid = 50;
 
             this.texture = texture;
 
@@ -60,45 +60,45 @@ namespace CaveScape
 
                             blocks[i, o] = new Spike(hold, Color.Red);
                             break;
-                        case "b":
-                            createBlock(i, o, false, Color.White);
+                        case "R":
+                            blocks[i, o] = new Boulder(hold);
                             break;
                         case "w":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new Water(hold);
                             break;
                         case "l":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new Lava(hold);
                             break;
                         case "P":
-                            createBlock(i, o, false, Color.White);
+                            //new Player()
                             break;
                         case "B":
                             blocks[i, o] = new Bat(hold, Color.Black);
                             break;
                         case "S":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new Spider(hold);
                             break;
                         case "h":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new HealShroom(hold);
                             break;
                         case "t":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new TimeOrb(hold);
                             break;
                         case "i":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new Immune(hold);
                             break;
                         case "|":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new Wall(hold);
                             break;
                         case "/":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new Ladder(hold);
                             break;
                         case "-":
-                            createBlock(i, o, false, Color.White);
+                            blocks[i, o] = new Floor(hold);
                             break;
                         default:
 
-                            createBlock(i, o, false, Color.Transparent);
+                            //createBlock(i, o, false);
                             //blocks[i, o] = new Block();
                             break;
                     }
@@ -111,12 +111,11 @@ namespace CaveScape
             }
         }
 
-        private void createBlock(int r, int c, bool movement, Color color)
-        {
-            Rectangle rectangle = new Rectangle((c * hGrid), (r * vGrid), hGrid, vGrid);
-            Block block = new Block(rectangle, color);
-            blocks[r, c] = block;
-        }
+        //private void createBlock(int r, int c, bool movement)
+        //{
+        //    Rectangle rectangle = new Rectangle((c * hGrid), (r * vGrid), hGrid, vGrid);
+        //    Block block = new Block(rectangle);
+        //}
 
         public void Draw(SpriteBatch batch)
         {
@@ -124,7 +123,9 @@ namespace CaveScape
             {
                 for (int o = 0; o < height; o++)
                 {
-                    batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getColor());
+
+                    batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
+
                 }
             }
         }
