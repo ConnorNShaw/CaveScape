@@ -59,16 +59,27 @@
   <ItemGroup>
     <Compile Include="Bat.cs" />
     <Compile Include="Block.cs" />
+    <Compile Include="Boulder.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="Floor.cs" />
+    <Compile Include="HealShroom.cs" />
+    <Compile Include="Immune.cs" />
+    <Compile Include="Ladder.cs" />
+    <Compile Include="Lava.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Obstacle.cs" />
+    <Compile Include="Pickup.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Section.cs" />
+    <Compile Include="Spider.cs" />
     <Compile Include="Spike.cs" />
+    <Compile Include="TimeOrb.cs" />
+    <Compile Include="Wall.cs" />
+    <Compile Include="Water.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

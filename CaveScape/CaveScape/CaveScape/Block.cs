@@ -18,9 +18,10 @@ namespace CaveScape
         Color col;
         Texture2D tex;
 
-        public Block(Rectangle p)
+        public Block(Rectangle p, Color col)
         {
             pos = p;
+            this.col = col;
         }
 
         public Rectangle getPos()
@@ -28,9 +29,19 @@ namespace CaveScape
             return pos;
         }
 
+        public Color getCol()
+        {
+            return col;
+        }
+
         public void Draw()
         {
 
+        }
+
+        public Color getColor()
+        {
+            return col;
         }
     }
 }
