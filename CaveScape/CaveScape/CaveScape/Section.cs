@@ -37,18 +37,41 @@ namespace CaveScape
 
         public void create(string[,] a)
         {
+
+
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
                 {
+                    switch (a[i, o])
+                    {
+                        case " ":
+
+                            blocks[i, o] = new Block();
+                            break;
+                        
+
+                    }
+
+
 
                 }
             }
 
         }
 
+        public void Draw()
+        {
+            for (int i = 0; i < height; i++)
+            {
+                for (int o = 0; o < height; o++)
+                {
 
 
+
+                }
+            }
+        }
 
     }
 }
