@@ -14,8 +14,11 @@ namespace CaveScape
 {
     class Spike : Obstacle
     {
-        public Spike(Rectangle p) : base (p)
+
+
+        public Spike(Rectangle p) : base(p)
         {
+
             
         }
 

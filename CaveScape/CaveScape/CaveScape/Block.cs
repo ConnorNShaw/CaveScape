@@ -16,7 +16,7 @@ namespace CaveScape
     {
         Rectangle pos;
         Color col;
-        
+        Texture2D tex;
 
         public Block(Rectangle p)
         {
