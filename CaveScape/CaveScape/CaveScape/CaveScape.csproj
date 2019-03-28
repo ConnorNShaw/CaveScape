@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Bat.cs" />
     <Compile Include="Block.cs" />
+    <Compile Include="Boulder.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Movement.cs" />

@@ -32,7 +32,7 @@ namespace CaveScape
             blocks = new Block[height, width];
 
             create(a);
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+           
         }
 
 
@@ -51,7 +51,7 @@ namespace CaveScape
 
                             blocks[i, o] = new Spike(hold);
                             break;
-                        case "b":
+                        case "R":
 
                             break;
                         case "w":
