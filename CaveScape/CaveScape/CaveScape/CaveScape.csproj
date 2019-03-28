@@ -57,7 +57,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bat.cs" />
     <Compile Include="Block.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Obstacle.cs" />

@@ -17,6 +17,8 @@ namespace CaveScape
 
         int height;
         int width;
+        SpriteBatch spriteBatch;
+        
 
         string[,] text;
 
@@ -30,7 +32,7 @@ namespace CaveScape
             blocks = new Block[height, width];
 
             create(a);
-
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
 
@@ -38,36 +40,81 @@ namespace CaveScape
         public void create(string[,] a)
         {
 
-
+            Rectangle hold = new Rectangle(0, 0, 50, 50);
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
                 {
                     switch (a[i, o])
                     {
-                        case " ":
+                        case "s":
 
-                            blocks[i, o] = new Block();
+                            blocks[i, o] = new Spike(hold);
                             break;
-                        
+                        case "b":
+
+                            break;
+                        case "w":
+
+                            break;
+                        case "l":
+
+                            break;
+                        case "P":
+
+                            break;
+                        case "B":
+                            blocks[i, o] = new Bat(hold);
+                            break;
+                        case "S":
+
+                            break;
+                        case "h":
+
+                            break;
+                        case "t":
+
+                            break;
+                        case "i":
+
+                            break;
+                        case "|":
+
+                            break;
+                        case "/":
+
+                            break;
+                        case "-":
+
+                            break;
+                        default:
+
+                            break;
+
+
+
 
                     }
 
-
+                    hold.X += 50;
 
                 }
+                hold.Y += 50;
+                hold.X = 0;
             }
 
         }
 
         public void Draw()
         {
+            
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
                 {
-
-
+                    spriteBatch.Begin();
+                    
+                    spriteBatch.End();
 
                 }
             }
