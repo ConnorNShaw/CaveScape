@@ -23,6 +23,11 @@ namespace CaveScape
             pos = p;
         }
 
+        public Rectangle getPos()
+        {
+            return pos;
+        }
+
         public void Draw()
         {
 

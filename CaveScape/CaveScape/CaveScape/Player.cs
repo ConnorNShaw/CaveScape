@@ -17,6 +17,8 @@ namespace CaveScape
         public int speed;
         public Rectangle playerLocat;
         public Texture2D playerSprite;
+        public Boolean onGround;
+        public Rectangle previous;
 
         public Player(Rectangle r, Texture2D text)
         {
@@ -24,8 +26,41 @@ namespace CaveScape
             playerSprite = text;
             lives = 3;
             speed = 20;
+
+            onGround = true;
+            previous = r;
         }
-        
+
+        public void playerControls(KeyboardState ks)
+        {
+            if (onGround == true)
+            {
+                previous = playerLocat;
+            }
+            if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
+            {
+                playerLocat.X -= speed;
+            }
+            if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A))
+            {
+                playerLocat.X += speed;
+            }
+            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && playerLocat.Y > previous.Y - 100)
+            {
+                playerLocat.Y -= speed;
+                onGround = false;
+            }
+            else if (onGround == false)
+            {
+                playerLocat.Y += speed;
+                if (playerLocat.Y >= previous.Y)
+                {
+                    playerLocat.Y += 0;
+                    onGround = true;
+                }
+            }
+        }
+
         public void addLife()
         {
             lives++;

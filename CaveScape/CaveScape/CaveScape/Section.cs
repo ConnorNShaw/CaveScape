@@ -15,24 +15,33 @@ namespace CaveScape
     class Section
     {
 
-        int height;
-        int width;
-        SpriteBatch spriteBatch;
-        
+        string[,] layout;
+        int width, height, x, y, vGrid, hGrid;
+        bool created;
 
         string[,] text;
 
         Block[,] blocks;
 
-        public Section(string[,] a)
+        Texture2D texture;
+
+        public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture)
         {
             height = a.GetLength(0);
             width = a.GetLength(1);
             
             blocks = new Block[height, width];
+            x = 0;
+            y = 0;
+            vGrid = 50;
+            hGrid = 50;
+
+            this.texture = texture;
 
             create(a);
-           
+
+
+
         }
 
 
@@ -89,6 +98,8 @@ namespace CaveScape
                             break;
                         default:
 
+                            createBlock(i, o, false);
+                            //blocks[i, o] = new Block();
                             break;
 
 
@@ -102,19 +113,23 @@ namespace CaveScape
                 hold.Y += 50;
                 hold.X = 0;
             }
-
         }
 
-        public void Draw()
+        private void createBlock(int r, int c, bool movement)
+        {
+            Rectangle rectangle = new Rectangle((c * hGrid), (r * vGrid), hGrid, vGrid);
+            Block block = new Block(rectangle);
+        }
+
+        public void Draw(SpriteBatch batch)
         {
             
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
                 {
-                    spriteBatch.Begin();
-                    
-                    spriteBatch.End();
+
+                    batch.Draw(texture, blocks[i,o].getPos(), Color.White);
 
                 }
             }
