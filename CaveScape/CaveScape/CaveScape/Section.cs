@@ -44,32 +44,45 @@ namespace CaveScape
 
         public void create(string[,] a)
         {
-            for (int r = 0; r < height; r++)
+
+
+            for (int i = 0; i < height; i++)
             {
-                for (int c = 0; c < height; c++)
+                for (int o = 0; o < height; o++)
                 {
-                    if (layout[r, c].Equals(" "))
+                    switch (a[i, o])
                     {
-                        x += hGrid;
-                    }
-                    else
-                    {
-                        if(layout[r,c].Equals("-"))
-                        {
-                            createBlock(r, c, false);
-                        }
+                        case " ":
+
+                            blocks[i, o] = new Block();
+                            break;
                         
+
                     }
+
+
+
                 }
-                y += vGrid;
             }
-            created = true;
-        }
 
         private void createBlock(int r, int c, bool movement)
         {
             Rectangle rectangle = new Rectangle((c * hGrid), (r * vGrid), hGrid, vGrid);
             Block block = new Block(rectangle);
         }
+
+        public void Draw()
+        {
+            for (int i = 0; i < height; i++)
+            {
+                for (int o = 0; o < height; o++)
+                {
+
+
+
+                }
+            }
+        }
+
     }
 }
