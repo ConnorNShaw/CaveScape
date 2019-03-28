@@ -41,7 +41,7 @@ namespace CaveScape
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new Player(new Rectangle(50, 50, 50, 50), Content.Load<Texture2D>("circle"));
+            player = new Player(new Rectangle(100, 400, 50, 50), Content.Load<Texture2D>("circle"));
             base.Initialize();
         }
 
