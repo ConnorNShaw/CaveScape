@@ -23,7 +23,9 @@ namespace CaveScape
 
         Block[,] blocks;
 
-        public Section(string[,] a)
+        Texture2D texture;
+
+        public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture)
         {
             height = a.GetLength(0);
             width = a.GetLength(1);
@@ -33,6 +35,8 @@ namespace CaveScape
             y = 0;
             vGrid = 50;
             hGrid = 50;
+
+            this.texture = texture;
 
             create(a);
 
@@ -54,16 +58,15 @@ namespace CaveScape
                     {
                         case " ":
 
-                            blocks[i, o] = new Block();
+                            createBlock(i, o, false);
+                            //blocks[i, o] = new Block();
                             break;
-                        
+
 
                     }
-
-
-
                 }
             }
+        }
 
         private void createBlock(int r, int c, bool movement)
         {
@@ -71,14 +74,14 @@ namespace CaveScape
             Block block = new Block(rectangle);
         }
 
-        public void Draw()
+        public void Draw(SpriteBatch batch)
         {
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
                 {
 
-
+                    batch.Draw(texture, blocks[i,o].getPos(), Color.White);
 
                 }
             }

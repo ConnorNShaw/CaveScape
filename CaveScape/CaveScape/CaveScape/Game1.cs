@@ -22,6 +22,8 @@ namespace CaveScape
 
         Player player;
 
+        Texture2D texture;
+
         //Holds level and level sections
         Level level;
         List<Section> levelSections;
@@ -53,6 +55,7 @@ namespace CaveScape
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            texture = this.Content.Load<Texture2D>("White Square");
 
             // TODO: use this.Content to load your game content here
         }
@@ -79,7 +82,7 @@ namespace CaveScape
                 this.Exit();
 
             // TODO: Add your update logic here
-            player.playerControls(ks);
+            //player.playerControls(ks);
             base.Update(gameTime);
         }
 
@@ -94,6 +97,7 @@ namespace CaveScape
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(player.playerSprite, player.playerLocat, Color.White);
+            level.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -124,7 +128,7 @@ namespace CaveScape
                         }
                         else
                         {
-                            Section section = new Section(tempArray, levelWidth, levelHeight);
+                            Section section = new Section(tempArray, levelWidth, levelHeight, texture);
                             levelSections.Add(section);
                             
                             tempArray = new string[levelHeight, levelWidth];

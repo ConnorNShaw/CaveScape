@@ -16,10 +16,31 @@ namespace CaveScape
     class Level
     {
         List<Section> levelSections;
+        int tracker;
 
         public Level(List<Section> levelSections)
         {
             this.levelSections = levelSections;
+        }
+
+        public void moveToNextSection()
+        {
+            tracker++;
+        }
+
+        public bool levelFinished()
+        {
+            if(tracker > levelSections.Count)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        public void Draw(SpriteBatch batch)
+        {
+            levelSections[tracker].Draw(batch);
         }
 
     }
