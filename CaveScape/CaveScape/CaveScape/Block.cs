@@ -28,6 +28,11 @@ namespace CaveScape
             return pos;
         }
 
+        public Color getCol()
+        {
+            return col;
+        }
+
         public void Draw()
         {
 

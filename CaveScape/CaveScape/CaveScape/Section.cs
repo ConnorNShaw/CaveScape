@@ -129,7 +129,7 @@ namespace CaveScape
                 for (int o = 0; o < height; o++)
                 {
 
-                    batch.Draw(texture, blocks[i,o].getPos(), Color.White);
+                    batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
 
                 }
             }
