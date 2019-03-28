@@ -12,20 +12,15 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Block
+    class Spike : Obstacle
     {
-        Rectangle pos;
-        Color col;
-        Texture2D tex;
 
-        public Block(Rectangle p)
-        {
-            pos = p;
-        }
 
-        public void Draw()
+        public Spike(Rectangle p) : base(p)
         {
 
+            
         }
+
     }
 }

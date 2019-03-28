@@ -12,20 +12,12 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Block
+    class Bat : Enemy
     {
-        Rectangle pos;
-        Color col;
-        Texture2D tex;
-
-        public Block(Rectangle p)
-        {
-            pos = p;
-        }
-
-        public void Draw()
+        public Bat(Rectangle p) : base(p)
         {
 
         }
+
     }
 }
