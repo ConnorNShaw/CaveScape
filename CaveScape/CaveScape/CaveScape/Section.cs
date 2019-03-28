@@ -16,8 +16,8 @@ namespace CaveScape
     {
 
         string[,] layout;
-        int height;
-        int width;
+        int width, height, x, y, vGrid, hGrid;
+        bool created;
 
         string[,] text;
 
@@ -29,8 +29,14 @@ namespace CaveScape
             width = a.GetLength(1);
             
             blocks = new Block[height, width];
+            x = 0;
+            y = 0;
+            vGrid = 50;
+            hGrid = 50;
 
             create(a);
+
+
 
         }
 
@@ -38,18 +44,32 @@ namespace CaveScape
 
         public void create(string[,] a)
         {
-            for (int i = 0; i < height; i++)
+            for (int r = 0; r < height; r++)
             {
-                for (int o = 0; o < height; o++)
+                for (int c = 0; c < height; c++)
                 {
-
+                    if (layout[r, c].Equals(" "))
+                    {
+                        x += hGrid;
+                    }
+                    else
+                    {
+                        if(layout[r,c].Equals("-"))
+                        {
+                            createBlock(r, c, false);
+                        }
+                        
+                    }
                 }
+                y += vGrid;
             }
-
+            created = true;
         }
 
-
-
-
+        private void createBlock(int r, int c, bool movement)
+        {
+            Rectangle rectangle = new Rectangle((c * hGrid), (r * vGrid), hGrid, vGrid);
+            Block block = new Block(rectangle);
+        }
     }
 }
