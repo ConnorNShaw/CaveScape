@@ -68,7 +68,7 @@ namespace CaveScape
                             blocks[i, o] = new Lava(hold);
                             break;
                         case "P":
-                            //new Player()
+                            //new player()
                             break;
                         case "B":
                             blocks[i, o] = new Bat(hold);
@@ -96,8 +96,8 @@ namespace CaveScape
                             break;
                         default:
 
-                            //createBlock(i, o, false);
-                            //blocks[i, o] = new Block();
+                            
+                            blocks[i, o] = new Block(hold, Color.Transparent, "blank");
                             break;
                     }
 
