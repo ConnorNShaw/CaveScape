@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class HealShroom : Pickup
     {
-        public HealShroom(Rectangle p) : base(p)
+        public HealShroom(Rectangle p) : base(p, Color.Red)
         {
 
         }

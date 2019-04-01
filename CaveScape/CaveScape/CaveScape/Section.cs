@@ -58,7 +58,7 @@ namespace CaveScape
                     {
                         case "s":
 
-                            blocks[i, o] = new Spike(hold, Color.Red);
+                            blocks[i, o] = new Spike(hold);
                             break;
                         case "R":
                             blocks[i, o] = new Boulder(hold);
@@ -73,7 +73,7 @@ namespace CaveScape
                             //new Player()
                             break;
                         case "B":
-                            blocks[i, o] = new Bat(hold, Color.Black);
+                            blocks[i, o] = new Bat(hold);
                             break;
                         case "S":
                             blocks[i, o] = new Spider(hold);
