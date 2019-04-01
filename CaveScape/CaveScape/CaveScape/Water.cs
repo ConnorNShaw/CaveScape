@@ -18,7 +18,7 @@ namespace CaveScape
         public Water(Rectangle p) : base(p, Color.DeepSkyBlue)
         {
 
-            
+        }
 
         }
     }
