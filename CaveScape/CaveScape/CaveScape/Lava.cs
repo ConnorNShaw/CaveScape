@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Lava : Obstacle
     {
-        public Lava(Rectangle p) : base(p, Color.Orange)
+        public Lava(Rectangle p) : base(p, Color.OrangeRed)
         {
 
         }

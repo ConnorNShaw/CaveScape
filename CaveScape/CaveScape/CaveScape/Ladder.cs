@@ -15,7 +15,7 @@ namespace CaveScape
     class Ladder : Obstacle
     {
 
-        public Ladder(Rectangle p) : base(p, Color.Yellow)
+        public Ladder(Rectangle p) : base(p, Color.SaddleBrown)
         {
 
         }

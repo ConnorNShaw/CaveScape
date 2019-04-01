@@ -15,7 +15,7 @@ namespace CaveScape
     class Water : Obstacle
     {
 
-        public Water(Rectangle p) : base(p, Color.Blue)
+        public Water(Rectangle p) : base(p, Color.DeepSkyBlue)
         {
 
         }

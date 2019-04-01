@@ -14,8 +14,8 @@ namespace CaveScape
 {
     class Boulder : Enemy
     {
-        public Boulder(Rectangle p) : base(p, Color.Gray)
-        { 
+        public Boulder(Rectangle p) : base(p, Color.DarkGray)
+        {
 
         }
     }
