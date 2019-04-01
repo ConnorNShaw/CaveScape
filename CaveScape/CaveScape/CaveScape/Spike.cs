@@ -16,7 +16,7 @@ namespace CaveScape
     {
 
 
-        public Spike(Rectangle p) : base(p, Color.LightGray)
+        public Spike(Rectangle p) : base(p, Color.LightGray, "spike")
         {
 
             

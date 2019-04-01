@@ -16,9 +16,10 @@ namespace CaveScape
     {
         Rectangle pos;
         Color col;
+        String type;
         Texture2D tex;
 
-        public Block(Rectangle p, Color col)
+        public Block(Rectangle p, Color col, String type)
         {
             pos = p;
             this.col = col;
@@ -38,6 +39,14 @@ namespace CaveScape
         {
 
         }
+
+        public String getType()
+        {
+            return type;
+        }
+
+
+
 
         public Color getColor()
         {

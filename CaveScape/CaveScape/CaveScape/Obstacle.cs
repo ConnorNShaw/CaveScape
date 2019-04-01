@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Obstacle : Block
     {
-        public Obstacle(Rectangle p, Color c) : base(p, c)
+        public Obstacle(Rectangle p, Color c, String t) : base(p, c, t)
         {
             
         }
