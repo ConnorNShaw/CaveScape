@@ -53,15 +53,15 @@ namespace CaveScape
             }
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && playerLocat.Y > previous.Y - 150 && jumping == false)
             {
-                playerLocat.Y -= speed;
                 onGround = false;
             }
             if (onGround == false)
             {
+                playerLocat.Y -= speed;
                 jumping = true;
-                if (doubleJump == false && playerLocat.Y > previous.Y - 250 && ks.IsKeyDown(Keys.Space))
+                if (doubleJump == false && playerLocat.Y > previous.Y - 250 && (ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)))
                 {
-                    playerLocat.Y -= speed;
+                    doubleJump = true;
                 }
                 else
                 {
