@@ -94,12 +94,12 @@ namespace CaveScape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Beige);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(player.playerSprite, player.playerLocat, Color.White);
-            //level.Draw(spriteBatch);
+            level.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
