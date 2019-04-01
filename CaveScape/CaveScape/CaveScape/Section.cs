@@ -115,7 +115,7 @@ namespace CaveScape
         //    Block block = new Block(rectangle);
         //}
 
-        public void Draw(SpriteBatch batch, Player player)
+        public void drawSection(SpriteBatch batch, Player player)
         {
             KeyboardState ks = Keyboard.GetState();
 
@@ -132,5 +132,11 @@ namespace CaveScape
             player.playerControls(ks, blocks);
 
         }
+
+        public void Draw(SpriteBatch batch)
+        {
+
+        }
+
     }
 }

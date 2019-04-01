@@ -101,7 +101,7 @@ namespace CaveScape
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(player.playerSprite, player.playerLocat, Color.White);
-            level.Draw(spriteBatch, player);
+            level.drawLevel(spriteBatch, player);
             spriteBatch.End();
             base.Draw(gameTime);
         }

@@ -14,7 +14,7 @@ namespace CaveScape
     class Player
     {
         public int lives;
-        public int speed;
+        public int speed, gravity;
         public Rectangle playerLocat;
         public Texture2D playerSprite;
         public Boolean onGround;
@@ -30,6 +30,8 @@ namespace CaveScape
             lives = 3;
             speed = 15;
 
+            gravity = speed;
+
             onGround = true;
             startJump = false;
             jumping = false;
@@ -43,7 +45,13 @@ namespace CaveScape
             {
                 for(int c = 0; c < layout.GetLength(1); c++)
                 {
-                    //if(layout[r,c])
+                    if (layout[r, c].getType().Equals("floor"))
+                    {
+                        if (!playerLocat.Intersects(layout[r, c].getPos()))
+                        {
+                            playerLocat.Y += gravity;
+                        }
+                    }
                 }
             }
             
@@ -58,8 +66,7 @@ namespace CaveScape
             }
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
             {
-                onGround = false;
-                jumping = true;
+                playerLocat.Y += 100;
             }
             
         }
