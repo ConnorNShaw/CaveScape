@@ -37,12 +37,17 @@ namespace CaveScape
             previous = r;
         }
 
-        public void playerControls(KeyboardState ks)
+        public void playerControls(KeyboardState ks, Block[,] layout)
         {
-            if (onGround == true)
+            for(int r = 0; r < layout.GetLength(0); r++)
             {
-                previous = playerLocat;
+                for(int c = 0; c < layout.GetLength(1); c++)
+                {
+                    //if(layout[r,c])
+                }
             }
+            
+
             if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
             {
                 playerLocat.X -= speed;
@@ -54,39 +59,9 @@ namespace CaveScape
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
             {
                 onGround = false;
+                jumping = true;
             }
-            if (onGround == false)
-            {
-                playerLocat.Y -= speed;
-                if (playerLocat.Y > previous.Y - 150)
-                {
-                    jumping = true;
-                }
-                else
-                {
-                    playerLocat.Y -= speed;
-                }
-                if (doubleJump == false && playerLocat.Y > previous.Y - 250 && (ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)))
-                {
-                    doubleJump = true;
-                }
-                if (doubleJump == true)
-                {
-                    playerLocat.Y -= speed;
-                }
-                else
-                {
-                    doubleJump = true;
-                    playerLocat.Y += speed;
-                    if (playerLocat.Y >= previous.Y)
-                    {
-                        playerLocat.Y += 0;
-                        onGround = true;
-                        jumping = false;
-                        doubleJump = false;
-                    }
-                }
-            }
+            
         }
 
         public void addLife()
