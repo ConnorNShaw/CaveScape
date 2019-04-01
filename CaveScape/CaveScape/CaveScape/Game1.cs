@@ -31,6 +31,8 @@ namespace CaveScape
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 900;
+            graphics.PreferredBackBufferWidth = 1000;
             Content.RootDirectory = "Content";
         }
 
