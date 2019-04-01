@@ -47,7 +47,7 @@ namespace CaveScape
         public void create(string[,] a)
         {
 
-            Rectangle hold = new Rectangle(0, 0, 50, 50);
+            Rectangle hold = new Rectangle(0, -50 * height + 900, 50, 50);
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)

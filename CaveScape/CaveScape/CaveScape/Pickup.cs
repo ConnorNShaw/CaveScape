@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Pickup : Block
     {
-        public Pickup(Rectangle p, Color c) : base(p, c)
+        public Pickup(Rectangle p, Color c, String t) : base(p, c, t)
         {
 
         }
