@@ -121,8 +121,8 @@ namespace CaveScape
             {
                 for (int o = 0; o < height; o++)
                 {
-
-                    batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
+                    if(blocks[i, o] != null)
+                         batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
 
                 }
             }
