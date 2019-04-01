@@ -18,6 +18,9 @@ namespace CaveScape
         public Rectangle playerLocat;
         public Texture2D playerSprite;
         public Boolean onGround;
+        public Boolean startJump;
+        public Boolean jumping;
+        public Boolean doubleJump;
         public Rectangle previous;
 
         public Player(Rectangle r, Texture2D text)
@@ -25,9 +28,12 @@ namespace CaveScape
             playerLocat = r;
             playerSprite = text;
             lives = 3;
-            speed = 20;
+            speed = 15;
 
             onGround = true;
+            startJump = false;
+            jumping = false;
+            doubleJump = false;
             previous = r;
         }
 
@@ -45,21 +51,31 @@ namespace CaveScape
             {
                 playerLocat.X += speed;
             }
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && playerLocat.Y > previous.Y - 100)
+            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && playerLocat.Y > previous.Y - 150 && jumping == false)
             {
                 playerLocat.Y -= speed;
                 onGround = false;
             }
-            else if (onGround == false)
+            if (onGround == false)
             {
-                playerLocat.Y += speed;
-                if (playerLocat.Y >= previous.Y)
+                jumping = true;
+                if (doubleJump == false && playerLocat.Y > previous.Y - 250 && ks.IsKeyDown(Keys.Space))
                 {
-                    playerLocat.Y += 0;
-                    onGround = true;
+                    playerLocat.Y -= speed;
+                }
+                else
+                {
+                    doubleJump = true;
+                    playerLocat.Y += speed;
+                    if (playerLocat.Y >= previous.Y)
+                    {
+                        playerLocat.Y += 0;
+                        onGround = true;
+                        jumping = false;
+                        doubleJump = false;
+                    }
                 }
             }
-
         }
 
         public void addLife()
