@@ -28,9 +28,9 @@ namespace CaveScape
             playerLocat = r;
             playerSprite = text;
             lives = 3;
-            speed = 15;
+            speed = 5;
 
-            gravity = speed;
+            gravity = 1;
 
             onGround = true;
             startJump = false;
@@ -41,18 +41,32 @@ namespace CaveScape
 
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
-            for(int r = 0; r < layout.GetLength(0); r++)
+
+            if(jumping)
             {
-                for(int c = 0; c < layout.GetLength(1); c++)
+                for (int r = 0; r < layout.GetLength(0); r++)
                 {
-                    if (layout[r, c].getType().Equals("floor"))
+                    for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (!playerLocat.Intersects(layout[r, c].getPos()))
+                        if (layout[r, c].getType().Equals("floor"))
                         {
-                            playerLocat.Y += gravity;
+                            if (playerLocat.Intersects(layout[r, c].getPos()))
+                            {
+                                onGround = true;
+                                jumping = false;
+                            }
+                            onGround = false;
+                            jumping = true;
                         }
                     }
                 }
+            }
+
+            
+
+            if(!onGround)
+            {
+                playerLocat.Y += gravity;
             }
             
 
@@ -66,7 +80,9 @@ namespace CaveScape
             }
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
             {
-                playerLocat.Y += 100;
+                playerLocat.Y -= 100;
+                onGround = false;
+                jumping = true;
             }
             
         }

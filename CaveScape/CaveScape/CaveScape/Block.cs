@@ -23,6 +23,7 @@ namespace CaveScape
         {
             pos = p;
             this.col = col;
+            this.type = type;
         }
 
         public Rectangle getPos()

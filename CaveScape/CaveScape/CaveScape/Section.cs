@@ -50,7 +50,7 @@ namespace CaveScape
             Rectangle hold = new Rectangle(0, -50 * height + 900, 50, 50);
             for (int i = 0; i < height; i++)
             {
-                for (int o = 0; o < height; o++)
+                for (int o = 0; o < width; o++)
                 {
                     switch (a[i, o])
                     {
@@ -94,10 +94,8 @@ namespace CaveScape
                         case "-":
                             blocks[i, o] = new Floor(hold);
                             break;
-                        default:
-
-                            
-                            blocks[i, o] = new Block(hold, Color.Transparent, "blank");
+                        case " ":
+                            blocks[i, o] = new Space(hold);
                             break;
                     }
 
@@ -121,7 +119,7 @@ namespace CaveScape
 
             for (int i = 0; i < height; i++)
             {
-                for (int o = 0; o < height; o++)
+                for (int o = 0; o < width; o++)
                 {
                     if(blocks[i, o] != null)
                          batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
