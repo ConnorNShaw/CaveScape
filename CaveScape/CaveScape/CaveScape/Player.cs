@@ -24,14 +24,7 @@ namespace CaveScape
             playerSprite = text;
             lives = 3;
             speed = 15;
-
             gravity = speed;
-
-            onGround = true;
-            startJump = false;
-            jumping = false;
-            doubleJump = false;
-            previous = r;
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
@@ -59,11 +52,6 @@ namespace CaveScape
             {
                 playerLocat.X += speed;
             }
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
-            {
-                playerLocat.Y += 100;
-            }
-            
         }
 
         public void addLife()
