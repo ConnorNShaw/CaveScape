@@ -55,7 +55,6 @@ namespace CaveScape
                     switch (a[i, o])
                     {
                         case "s":
-
                             blocks[i, o] = new Spike(hold);
                             break;
                         case "R":
@@ -94,9 +93,7 @@ namespace CaveScape
                         case "-":
                             blocks[i, o] = new Floor(hold);
                             break;
-                        default:
-
-                            
+                        default: //dance
                             blocks[i, o] = new Block(hold, Color.Transparent, "blank");
                             break;
                     }
