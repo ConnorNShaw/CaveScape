@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Spider : Enemy
     {
-        public Spider(Rectangle p) : base(p, Color.DarkBlue)
+        public Spider(Rectangle p) : base(p, Color.DarkBlue, "spider")
         {
 
         }

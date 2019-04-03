@@ -15,10 +15,11 @@ namespace CaveScape
     class Water : Obstacle
     {
 
-        public Water(Rectangle p) : base(p, Color.DeepSkyBlue)
+        public Water(Rectangle p) : base(p, Color.DeepSkyBlue, "water")
         {
 
         }
 
+        
     }
 }

@@ -40,8 +40,6 @@ namespace CaveScape
 
             create(a);
 
-
-
         }
 
 
@@ -49,7 +47,7 @@ namespace CaveScape
         public void create(string[,] a)
         {
 
-            Rectangle hold = new Rectangle(0, 0, 50, 50);
+            Rectangle hold = new Rectangle(0, -50 * height + 900, 50, 50);
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
@@ -70,7 +68,7 @@ namespace CaveScape
                             blocks[i, o] = new Lava(hold);
                             break;
                         case "P":
-                            //new Player()
+                            //new player()
                             break;
                         case "B":
                             blocks[i, o] = new Bat(hold);
@@ -98,8 +96,8 @@ namespace CaveScape
                             break;
                         default:
 
-                            //createBlock(i, o, false);
-                            //blocks[i, o] = new Block();
+                            
+                            blocks[i, o] = new Block(hold, Color.Transparent, "blank");
                             break;
                     }
 
@@ -117,17 +115,28 @@ namespace CaveScape
         //    Block block = new Block(rectangle);
         //}
 
-        public void Draw(SpriteBatch batch)
+        public void drawSection(SpriteBatch batch, Player player)
         {
+            KeyboardState ks = Keyboard.GetState();
+
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
                 {
-
-                    batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
+                    if(blocks[i, o] != null)
+                         batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
 
                 }
             }
+
+            player.playerControls(ks, blocks);
+
         }
+
+        public void Draw(SpriteBatch batch)
+        {
+
+        }
+
     }
 }

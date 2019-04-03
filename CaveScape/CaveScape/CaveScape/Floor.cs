@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Floor : Obstacle
     {
-        public Floor(Rectangle p) : base(p, Color.Brown)
+        public Floor(Rectangle p) : base(p, Color.Brown, "floor")
         {
 
 
