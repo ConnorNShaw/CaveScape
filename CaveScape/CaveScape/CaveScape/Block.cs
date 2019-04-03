@@ -14,10 +14,10 @@ namespace CaveScape
 {
     class Block
     {
-        Rectangle pos;
-        Color col;
-        String type;
-        Texture2D tex;
+        public Rectangle pos;
+        public Color col;
+        public String type;
+        public Texture2D tex;
 
         public Block(Rectangle p, Color col, String type)
         {

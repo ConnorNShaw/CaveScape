@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.IO;
+
 
 namespace CaveScape
 {
@@ -16,17 +18,10 @@ namespace CaveScape
         public int lives;
         public int speed, gravity;
         public Rectangle playerLocat;
-        public Texture2D playerSprite;
-        public Boolean onGround;
-        public Boolean startJump;
-        public Boolean jumping;
-        public Boolean doubleJump;
-        public Rectangle previous;
 
-        public Player(Rectangle r, Texture2D text)
+        public Player(Rectangle r)
         {
             playerLocat = r;
-            playerSprite = text;
             lives = 3;
             speed = 5;
 
@@ -84,7 +79,6 @@ namespace CaveScape
                 onGround = false;
                 jumping = true;
             }
-            
         }
 
         public void addLife()

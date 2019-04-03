@@ -22,7 +22,7 @@ namespace CaveScape
         string[,] text;
 
         Block[,] blocks;
-
+        Player player;
         Texture2D texture;
 
         public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture)
@@ -35,7 +35,7 @@ namespace CaveScape
             y = 0;
             //vGrid = 50;
             //hGrid = 50;
-
+            player = new Player(new Rectangle(500, 100, 50, 50));
             this.texture = texture;
 
             create(a);
@@ -55,7 +55,6 @@ namespace CaveScape
                     switch (a[i, o])
                     {
                         case "s":
-
                             blocks[i, o] = new Spike(hold);
                             break;
                         case "R":
@@ -68,7 +67,7 @@ namespace CaveScape
                             blocks[i, o] = new Lava(hold);
                             break;
                         case "P":
-                            //new player()
+                            player = new Player(hold);
                             break;
                         case "B":
                             blocks[i, o] = new Bat(hold);
@@ -113,7 +112,7 @@ namespace CaveScape
         //    Block block = new Block(rectangle);
         //}
 
-        public void drawSection(SpriteBatch batch, Player player)
+        public void drawSection(SpriteBatch batch)//, Player player)
         {
             KeyboardState ks = Keyboard.GetState();
 
@@ -122,13 +121,13 @@ namespace CaveScape
                 for (int o = 0; o < width; o++)
                 {
                     if(blocks[i, o] != null)
-                         batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
+                         batch.Draw(texture, blocks[i,o].pos, blocks[i,o].getCol());
 
                 }
             }
-
+            
             player.playerControls(ks, blocks);
-
+            batch.Draw(texture, player.playerLocat, Color.White);
         }
 
         public void Draw(SpriteBatch batch)
