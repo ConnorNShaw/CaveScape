@@ -17,7 +17,8 @@ namespace CaveScape
     {
         public int lives;
         public int speed, gravity;
-        public Rectangle playerLocat;
+        public Rectangle playerLocat, previous;
+        bool onGround, startJump, jumping, doubleJump;
 
         public Player(Rectangle r)
         {
@@ -43,7 +44,7 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c].getType().Equals("floor"))
+                        if (layout[r, c].type.Equals("floor"))
                         {
                             if (playerLocat.Intersects(layout[r, c].getPos()))
                             {
