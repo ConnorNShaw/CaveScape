@@ -40,8 +40,6 @@ namespace CaveScape
 
             create(a);
 
-
-
         }
 
 
@@ -114,8 +112,10 @@ namespace CaveScape
         //    Block block = new Block(rectangle);
         //}
 
-        public void Draw(SpriteBatch batch)
+        public void drawSection(SpriteBatch batch, Player player)
         {
+            KeyboardState ks = Keyboard.GetState();
+
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < height; o++)
@@ -125,6 +125,15 @@ namespace CaveScape
 
                 }
             }
+
+            player.playerControls(ks, blocks);
+
         }
+
+        public void Draw(SpriteBatch batch)
+        {
+
+        }
+
     }
 }

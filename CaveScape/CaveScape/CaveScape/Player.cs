@@ -14,7 +14,7 @@ namespace CaveScape
     class Player
     {
         public int lives;
-        public int speed;
+        public int speed, gravity;
         public Rectangle playerLocat;
         public Texture2D playerSprite;
         public Boolean onGround;
@@ -30,6 +30,8 @@ namespace CaveScape
             lives = 3;
             speed = 15;
 
+            gravity = speed;
+
             onGround = true;
             startJump = false;
             jumping = false;
@@ -37,12 +39,23 @@ namespace CaveScape
             previous = r;
         }
 
-        public void playerControls(KeyboardState ks)
+        public void playerControls(KeyboardState ks, Block[,] layout)
         {
-            if (onGround == true)
+            for(int r = 0; r < layout.GetLength(0); r++)
             {
-                previous = playerLocat;
+                for(int c = 0; c < layout.GetLength(1); c++)
+                {
+                    if (layout[r, c].getType().Equals("floor"))
+                    {
+                        if (!playerLocat.Intersects(layout[r, c].getPos()))
+                        {
+                            playerLocat.Y += gravity;
+                        }
+                    }
+                }
             }
+            
+
             if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
             {
                 playerLocat.X -= speed;
@@ -53,40 +66,9 @@ namespace CaveScape
             }
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
             {
-                onGround = false;
+                playerLocat.Y += 100;
             }
-            if (onGround == false)
-            {
-                playerLocat.Y -= speed;
-                if (playerLocat.Y > previous.Y - 150)
-                {
-                    jumping = true;
-                }
-                else
-                {
-                    playerLocat.Y -= speed;
-                }
-                if (doubleJump == false && playerLocat.Y > previous.Y - 250 && (ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)))
-                {
-                    doubleJump = true;
-                }
-                if (doubleJump == true)
-                {
-                    playerLocat.Y -= speed;
-                }
-                else
-                {
-                    doubleJump = true;
-                    playerLocat.Y += speed;
-                    if (playerLocat.Y >= previous.Y)
-                    {
-                        playerLocat.Y += 0;
-                        onGround = true;
-                        jumping = false;
-                        doubleJump = false;
-                    }
-                }
-            }
+            
         }
 
         public void addLife()

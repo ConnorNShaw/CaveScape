@@ -80,13 +80,13 @@ namespace CaveScape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState ks = Keyboard.GetState();
+            
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
-            player.playerControls(ks);
+            
             base.Update(gameTime);
         }
 
@@ -96,12 +96,12 @@ namespace CaveScape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Beige);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(player.playerSprite, player.playerLocat, Color.White);
-            level.Draw(spriteBatch);
+            level.drawLevel(spriteBatch, player);
             spriteBatch.End();
             base.Draw(gameTime);
         }

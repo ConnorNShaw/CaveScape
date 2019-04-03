@@ -42,5 +42,10 @@ namespace CaveScape
             levelSections[tracker].Draw(batch);
         }
 
+        public void drawLevel(SpriteBatch batch, Player player)
+        {
+            levelSections[tracker].drawSection(batch, player);
+        }
+
     }
 }
