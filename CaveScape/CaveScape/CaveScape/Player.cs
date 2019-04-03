@@ -18,12 +18,14 @@ namespace CaveScape
         public int lives;
         public int speed, gravity;
         public Rectangle playerLocat;
+        public Boolean onGround, startJump, jumping, doubleJump;
+        public Rectangle previous;
 
         public Player(Rectangle r)
         {
             playerLocat = r;
             lives = 3;
-            speed = 5;
+            speed = 20;
 
             gravity = 1;
 
@@ -36,8 +38,7 @@ namespace CaveScape
 
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
-
-            if(jumping)
+            if (jumping)
             {
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
@@ -56,25 +57,10 @@ namespace CaveScape
                     }
                 }
             }
-
-            
-
-            if(!onGround)
+            if (!onGround)
             {
                 playerLocat.Y += gravity;
-            //for (int r = 0; r < layout.GetLength(0); r++)
-            //{
-            //    for (int c = 0; c < layout.GetLength(1); c++)
-            //    {
-            //        if (layout[r, c].getType().Equals("floor"))
-            //        {
-            //            if (!playerLocat.Intersects(layout[r, c].getPos()))
-            //            {
-            //                playerLocat.Y += gravity;
-            //            }
-            //        }
-            //    }
-            //}
+            }
             if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
             {
                 for (int r = 0; r < layout.GetLength(0); r++)
