@@ -22,7 +22,7 @@ namespace CaveScape
         string[,] text;
 
         Block[,] blocks;
-
+        Player player;
         Texture2D texture;
 
         public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture)
@@ -67,7 +67,7 @@ namespace CaveScape
                             blocks[i, o] = new Lava(hold);
                             break;
                         case "P":
-                            //new player()
+                            player = new Player(hold);
                             break;
                         case "B":
                             blocks[i, o] = new Bat(hold);

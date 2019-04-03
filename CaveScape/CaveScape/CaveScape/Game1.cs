@@ -23,6 +23,7 @@ namespace CaveScape
         Player player;
 
         Texture2D texture;
+        KeyboardState old;
         Texture2D playerImage;
 
         //Holds level and level sections
@@ -48,6 +49,7 @@ namespace CaveScape
             // TODO: Add your initialization logic here
             player = new Player(new Rectangle(100, 400, 50, 50));
             levelSections = new List<Section>();
+            old = Keyboard.GetState();
             base.Initialize();
         }
 
@@ -82,11 +84,16 @@ namespace CaveScape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
+
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            KeyboardState kb = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
                 this.Exit();
 
+            if (kb != old && kb.IsKeyDown(Keys.N))
+            {
+                level.moveToNextSection();
+            }
             // TODO: Add your update logic here
             
             base.Update(gameTime);
