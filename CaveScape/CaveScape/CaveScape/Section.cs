@@ -35,7 +35,7 @@ namespace CaveScape
             y = 0;
             //vGrid = 50;
             //hGrid = 50;
-
+            player = new Player(new Rectangle(500, 100, 50, 50));
             this.texture = texture;
 
             create(a);
@@ -112,7 +112,7 @@ namespace CaveScape
         //    Block block = new Block(rectangle);
         //}
 
-        public void drawSection(SpriteBatch batch, Player player)
+        public void drawSection(SpriteBatch batch)//, Player player)
         {
             KeyboardState ks = Keyboard.GetState();
 
@@ -125,9 +125,9 @@ namespace CaveScape
 
                 }
             }
-
+            
             player.playerControls(ks, blocks);
-
+            batch.Draw(texture, player.playerLocat, Color.White);
         }
 
         public void Draw(SpriteBatch batch)

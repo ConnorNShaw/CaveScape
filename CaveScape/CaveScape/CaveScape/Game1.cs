@@ -47,7 +47,7 @@ namespace CaveScape
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new Player(new Rectangle(100, 400, 50, 50));
+            //player = new Player(new Rectangle(100, 400, 50, 50));
             levelSections = new List<Section>();
             old = Keyboard.GetState();
             base.Initialize();
@@ -109,7 +109,7 @@ namespace CaveScape
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(playerImage, player.playerLocat, Color.White);
+            //spriteBatch.Draw(playerImage, player.playerLocat, Color.White);
             level.drawLevel(spriteBatch, player);
             spriteBatch.End();
             base.Draw(gameTime);
