@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.IO;
+
 
 namespace CaveScape
 {
@@ -16,12 +18,10 @@ namespace CaveScape
         public int lives;
         public int speed, gravity;
         public Rectangle playerLocat;
-        public Texture2D playerSprite;
 
-        public Player(Rectangle r, Texture2D text)
+        public Player(Rectangle r)
         {
             playerLocat = r;
-            playerSprite = text;
             lives = 3;
             speed = 15;
             gravity = speed;
@@ -29,9 +29,9 @@ namespace CaveScape
 
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
-            for(int r = 0; r < layout.GetLength(0); r++)
+            for (int r = 0; r < layout.GetLength(0); r++)
             {
-                for(int c = 0; c < layout.GetLength(1); c++)
+                for (int c = 0; c < layout.GetLength(1); c++)
                 {
                     if (layout[r, c].getType().Equals("floor"))
                     {
@@ -42,8 +42,6 @@ namespace CaveScape
                     }
                 }
             }
-            
-
             if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
             {
                 playerLocat.X -= speed;

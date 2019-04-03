@@ -23,6 +23,7 @@ namespace CaveScape
         Player player;
 
         Texture2D texture;
+        Texture2D playerImage;
 
         //Holds level and level sections
         Level level;
@@ -45,7 +46,7 @@ namespace CaveScape
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            player = new Player(new Rectangle(100, 400, 50, 50), Content.Load<Texture2D>("circle"));
+            player = new Player(new Rectangle(100, 400, 50, 50));
             levelSections = new List<Section>();
             base.Initialize();
         }
@@ -59,6 +60,7 @@ namespace CaveScape
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             texture = this.Content.Load<Texture2D>("White Square");
+            playerImage = this.Content.Load<Texture2D>("circle");
             ReadFileAsString(@"Content/tutorial levels.txt");
 
             // TODO: use this.Content to load your game content here
@@ -100,7 +102,7 @@ namespace CaveScape
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            spriteBatch.Draw(player.playerSprite, player.playerLocat, Color.White);
+            spriteBatch.Draw(playerImage, player.playerLocat, Color.White);
             level.drawLevel(spriteBatch, player);
             spriteBatch.End();
             base.Draw(gameTime);
