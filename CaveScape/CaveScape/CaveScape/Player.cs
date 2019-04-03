@@ -17,32 +17,17 @@ namespace CaveScape
         public int speed;
         public Rectangle playerLocat;
         public Texture2D playerSprite;
-        public Boolean onGround;
-        public Boolean startJump;
-        public Boolean jumping;
-        public Boolean doubleJump;
-        public Rectangle previous;
 
         public Player(Rectangle r, Texture2D text)
         {
             playerLocat = r;
             playerSprite = text;
             lives = 3;
-            speed = 15;
-
-            onGround = true;
-            startJump = false;
-            jumping = false;
-            doubleJump = false;
-            previous = r;
+            speed = 20;
         }
 
         public void playerControls(KeyboardState ks)
         {
-            if (onGround == true)
-            {
-                previous = playerLocat;
-            }
             if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
             {
                 playerLocat.X -= speed;
@@ -50,42 +35,6 @@ namespace CaveScape
             if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A))
             {
                 playerLocat.X += speed;
-            }
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
-            {
-                onGround = false;
-            }
-            if (onGround == false)
-            {
-                playerLocat.Y -= speed;
-                if (playerLocat.Y > previous.Y - 150)
-                {
-                    jumping = true;
-                }
-                else
-                {
-                    playerLocat.Y -= speed;
-                }
-                if (doubleJump == false && playerLocat.Y > previous.Y - 250 && (ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)))
-                {
-                    doubleJump = true;
-                }
-                if (doubleJump == true)
-                {
-                    playerLocat.Y -= speed;
-                }
-                else
-                {
-                    doubleJump = true;
-                    playerLocat.Y += speed;
-                    if (playerLocat.Y >= previous.Y)
-                    {
-                        playerLocat.Y += 0;
-                        onGround = true;
-                        jumping = false;
-                        doubleJump = false;
-                    }
-                }
             }
         }
 
