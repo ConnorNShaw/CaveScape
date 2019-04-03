@@ -118,10 +118,10 @@ namespace CaveScape
 
             for (int i = 0; i < height; i++)
             {
-                for (int o = 0; o < height; o++)
+                for (int o = 0; o < width; o++)
                 {
                     if(blocks[i, o] != null)
-                         batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
+                         batch.Draw(texture, blocks[i,o].pos, blocks[i,o].getCol());
 
                 }
             }
