@@ -75,6 +75,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Section.cs" />
+    <Compile Include="Space.cs" />
     <Compile Include="Spider.cs" />
     <Compile Include="Spike.cs" />
     <Compile Include="TimeOrb.cs" />

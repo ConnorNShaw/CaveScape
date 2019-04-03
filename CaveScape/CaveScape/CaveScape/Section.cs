@@ -35,7 +35,7 @@ namespace CaveScape
             y = 0;
             //vGrid = 50;
             //hGrid = 50;
-
+            player = new Player(new Rectangle(500, 100, 50, 50));
             this.texture = texture;
 
             create(a);
@@ -50,7 +50,7 @@ namespace CaveScape
             Rectangle hold = new Rectangle(0, -50 * height + 900, 50, 50);
             for (int i = 0; i < height; i++)
             {
-                for (int o = 0; o < height; o++)
+                for (int o = 0; o < width; o++)
                 {
                     switch (a[i, o])
                     {
@@ -93,8 +93,8 @@ namespace CaveScape
                         case "-":
                             blocks[i, o] = new Floor(hold);
                             break;
-                        default: //dance
-                            blocks[i, o] = new Block(hold, Color.Transparent, "blank");
+                        case " ":
+                            blocks[i, o] = new Space(hold);
                             break;
                     }
 
@@ -112,22 +112,22 @@ namespace CaveScape
         //    Block block = new Block(rectangle);
         //}
 
-        public void drawSection(SpriteBatch batch, Player player)
+        public void drawSection(SpriteBatch batch)//, Player player)
         {
             KeyboardState ks = Keyboard.GetState();
 
             for (int i = 0; i < height; i++)
             {
-                for (int o = 0; o < height; o++)
+                for (int o = 0; o < width; o++)
                 {
                     if(blocks[i, o] != null)
-                         batch.Draw(texture, blocks[i,o].getPos(), blocks[i,o].getCol());
+                         batch.Draw(texture, blocks[i,o].pos, blocks[i,o].getCol());
 
                 }
             }
-
+            
             player.playerControls(ks, blocks);
-
+            batch.Draw(texture, player.playerLocat, Color.White);
         }
 
         public void Draw(SpriteBatch batch)

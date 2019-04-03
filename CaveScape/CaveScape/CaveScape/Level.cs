@@ -44,7 +44,7 @@ namespace CaveScape
 
         public void drawLevel(SpriteBatch batch, Player player)
         {
-            levelSections[tracker].drawSection(batch, player);
+            levelSections[tracker].drawSection(batch);//, player);
         }
 
     }
