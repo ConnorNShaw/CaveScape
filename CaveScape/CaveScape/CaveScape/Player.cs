@@ -63,16 +63,44 @@ namespace CaveScape
             if(!onGround)
             {
                 playerLocat.Y += gravity;
-            }
-            
-
+            //for (int r = 0; r < layout.GetLength(0); r++)
+            //{
+            //    for (int c = 0; c < layout.GetLength(1); c++)
+            //    {
+            //        if (layout[r, c].getType().Equals("floor"))
+            //        {
+            //            if (!playerLocat.Intersects(layout[r, c].getPos()))
+            //            {
+            //                playerLocat.Y += gravity;
+            //            }
+            //        }
+            //    }
+            //}
             if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
             {
-                playerLocat.X -= speed;
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            layout[r, c].pos.X += speed;
+                        }
+                    }
+                }
             }
             if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A))
             {
-                playerLocat.X += speed;
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            layout[r, c].pos.X -= speed;
+                        }
+                    }
+                }
             }
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
             {
