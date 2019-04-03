@@ -17,7 +17,8 @@ namespace CaveScape
     {
         public int lives;
         public int speed, gravity;
-        public Rectangle playerLocat;
+        public Rectangle playerLocat, previous;
+        public bool onGround, startJump, jumping, doubleJump;
 
         public Player(Rectangle r)
         {
@@ -37,12 +38,13 @@ namespace CaveScape
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
 
-            if(jumping)
+            if (jumping)
             {
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
+
                         if (layout[r, c].getType().Equals("floor"))
                         {
                             if (playerLocat.Intersects(layout[r, c].getPos()))
@@ -55,59 +57,55 @@ namespace CaveScape
                         }
                     }
                 }
+                
             }
 
-            
 
-            if(!onGround)
-            {
-                playerLocat.Y += gravity;
-            //for (int r = 0; r < layout.GetLength(0); r++)
-            //{
-            //    for (int c = 0; c < layout.GetLength(1); c++)
-            //    {
-            //        if (layout[r, c].getType().Equals("floor"))
-            //        {
-            //            if (!playerLocat.Intersects(layout[r, c].getPos()))
-            //            {
-            //                playerLocat.Y += gravity;
-            //            }
-            //        }
-            //    }
-            //}
-            if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
+
+            if (!onGround)
             {
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c] != null)
-                        {
-                            layout[r, c].pos.X += speed;
-                        }
+                        layout[r, c].pos.Y += speed;
                     }
                 }
             }
-            if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A))
-            {
-                for (int r = 0; r < layout.GetLength(0); r++)
+                if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
                 {
-                    for (int c = 0; c < layout.GetLength(1); c++)
+                    for (int r = 0; r < layout.GetLength(0); r++)
                     {
-                        if (layout[r, c] != null)
+                        for (int c = 0; c < layout.GetLength(1); c++)
                         {
-                            layout[r, c].pos.X -= speed;
+                            if (layout[r, c] != null)
+                            {
+                                layout[r, c].pos.X += speed;
+                            }
                         }
                     }
                 }
+                if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A))
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                layout[r, c].pos.X -= speed;
+                            }
+                        }
+                    }
+                }
+                if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
+                {
+                    playerLocat.Y -= 100;
+                    onGround = false;
+                    jumping = true;
+                }
             }
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
-            {
-                playerLocat.Y -= 100;
-                onGround = false;
-                jumping = true;
-            }
-        }
+        
 
         public void addLife()
         {
