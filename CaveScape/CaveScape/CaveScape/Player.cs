@@ -20,6 +20,8 @@ namespace CaveScape
         public Rectangle playerLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
         public Rectangle previous;
+        bool b;
+        int jTimer;
 
         public Player(Rectangle r)
         {
@@ -27,71 +29,176 @@ namespace CaveScape
             lives = 3;
             speed = 20;
 
-            gravity = 1;
+            gravity = 10;
 
             onGround = true;
             startJump = false;
             jumping = false;
             doubleJump = false;
             previous = r;
+            b = false;
+            jTimer = 0;
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
-            if (jumping)
+            if (jumping && !onGround)
             {
+                b = false;
+                jTimer++;
+
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c].getType().Equals("floor"))
-                        {
-                            if (playerLocat.Intersects(layout[r, c].getPos()))
+                            if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("floor"))
                             {
                                 onGround = true;
                                 jumping = false;
+                                
+                                b = true;
+                            for (int i = 0; i < layout.GetLength(0); i++)
+                            {
+                                for (int o = 0; o < layout.GetLength(1); o++)
+                                {
+                                    layout[i, o].pos.Y += gravity;
+                                }
                             }
-                            onGround = false;
-                            jumping = true;
+                                    break;
+                            }
+                    }
+                    if (b)
+                        break;
+                }
+            }
+            if (jumping)
+            {
+                //creates a smoother jump by slowing at the top
+                //should make sure floor is still visible when jumping
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            if (jTimer <= 15)
+                                layout[r, c].pos.Y += gravity;
+                            else if (jTimer > 15 && jTimer < 20)
+                                layout[r, c].pos.Y += gravity / 2;
+                            else if (jTimer > 20 && jTimer < 25)
+                                layout[r, c].pos.Y += gravity / 2;
+                            else if (jTimer >= 25)
+                                layout[r, c].pos.Y -= gravity;
                         }
                     }
                 }
             }
-            if (!onGround)
+            else if (!onGround)
             {
-                playerLocat.Y += gravity;
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                         //falls if not on ground
+                                layout[r, c].pos.Y -= gravity;
+                        }
+                    }
+                }
             }
+
+
+
+           
             if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
             {
+                bool a = false;
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
                         if (layout[r, c] != null)
                         {
-                            layout[r, c].pos.X += speed;
+                            //checks if would hit wall
+                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("wall"))
+                            {
+                                a = true;
+                            }
+                            if (a)
+                                break;
                         }
+                    }
+                    if (a)
+                        break;
+                }
+
+                if (!a)
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+
+                                layout[r, c].pos.X += speed;
+
+                            }
+                        }
+
                     }
                 }
             }
+
             if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A))
             {
+                bool a = false;
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
                         if (layout[r, c] != null)
                         {
-                            layout[r, c].pos.X -= speed;
+                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("wall"))
+                            {
+                                a = true;
+                            }
+                            if (a)
+                                break;
                         }
+                    }
+                    if (a)
+                        break;
+                }
+
+                if (!a)
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+
+                                layout[r, c].pos.X -= speed;
+
+                            }
+
+                        }
+
                     }
                 }
             }
+               
+            
+
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
             {
-                playerLocat.Y -= 100;
+                
                 onGround = false;
                 jumping = true;
+                jTimer = 0;
             }
         }
 
