@@ -46,7 +46,7 @@ namespace CaveScape
             {
                 b = false;
                 jTimer++;
-
+                //increment timer for jump control
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
@@ -55,12 +55,13 @@ namespace CaveScape
                             {
                                 onGround = true;
                                 jumping = false;
-                                
+                                //if hitting floor, is no longer jumping and then breaks
                                 b = true;
                             for (int i = 0; i < layout.GetLength(0); i++)
                             {
                                 for (int o = 0; o < layout.GetLength(1); o++)
                                 {
+                                    //moves blocks so the player is not stuck inside
                                     layout[i, o].pos.Y += gravity;
                                 }
                             }
@@ -133,7 +134,7 @@ namespace CaveScape
                         break;
                 }
 
-                if (!a)
+                if (!a) //If it is not going to hit wall, it moves the blocks accordingly 
                 {
                     for (int r = 0; r < layout.GetLength(0); r++)
                     {
@@ -195,7 +196,7 @@ namespace CaveScape
 
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
             {
-                
+                //preps the jump
                 onGround = false;
                 jumping = true;
                 jTimer = 0;
