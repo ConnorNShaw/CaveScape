@@ -69,7 +69,16 @@ namespace CaveScape
                     {
                         if (layout[r, c] != null)
                         {
-                            layout[r, c].pos.X += speed;
+                            {
+                                if (layout[r, c].getType().Equals("wall") && playerLocat.Intersects(layout[r, c].pos))
+                                {
+                                    layout[r, c].pos.X -= 0;
+                                }
+                                else
+                                {
+                                    layout[r, c].pos.X += speed;
+                                }
+                            }
                         }
                     }
                 }
@@ -82,7 +91,14 @@ namespace CaveScape
                     {
                         if (layout[r, c] != null)
                         {
-                            layout[r, c].pos.X -= speed;
+                            if (layout[r, c].getType().Equals("wall") && playerLocat.Intersects(layout[r, c].pos))
+                            {
+                                layout[r, c].pos.X -= 0;
+                            }
+                            else
+                            {
+                                layout[r, c].pos.X -= speed;
+                            }
                         }
                     }
                 }
