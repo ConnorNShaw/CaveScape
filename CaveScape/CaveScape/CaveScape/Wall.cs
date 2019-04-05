@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Wall : Obstacle
     {
-        public Wall(Rectangle p) : base(p, Color.Brown, "wall")
+        public Wall(Rectangle p) : base(p, Color.SaddleBrown, "wall")
         {
 
         }
