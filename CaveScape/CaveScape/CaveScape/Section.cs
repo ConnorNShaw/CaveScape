@@ -68,6 +68,7 @@ namespace CaveScape
                             break;
                         case "P":
                             player = new Player(hold);
+                            blocks[i, o] = new Space(hold);
                             break;
                         case "B":
                             blocks[i, o] = new Bat(hold);
