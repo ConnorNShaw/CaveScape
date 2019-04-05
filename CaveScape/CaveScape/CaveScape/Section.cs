@@ -46,13 +46,13 @@ namespace CaveScape
 
         public void create(string[,] a)
         {
-
+            //starts beyond the screen to make the bottom the focus
             Rectangle hold = new Rectangle(0, -50 * height + 900, 50, 50);
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < width; o++)
                 {
-                    switch (a[i, o])
+                    switch (a[i, o]) //polymorphically adds object to block array to retain individual properties, based on character given
                     {
                         case "s":
                             blocks[i, o] = new Spike(hold);
@@ -100,7 +100,7 @@ namespace CaveScape
                     }
 
                     hold.X += 50;
-
+                    //adjust the setting rectangle
                 }
                 hold.Y += 50;
                 hold.X = 0;
@@ -123,7 +123,7 @@ namespace CaveScape
                 {
                     if(blocks[i, o] != null)
                          batch.Draw(texture, blocks[i,o].pos, blocks[i,o].getCol());
-
+                    //draws each block with its properties
                 }
             }
             
