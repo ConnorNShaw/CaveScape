@@ -19,7 +19,7 @@ namespace CaveScape
         public int speed, gravity, previous;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public bool b, latch, b2, damaged;
+        public bool b, latch, b2, damaged, w2;
         int jTimer;
 
         public Player(Rectangle r)
