@@ -47,7 +47,7 @@ namespace CaveScape
         public void create(string[,] a)
         {
             //starts beyond the screen to make the bottom the focus
-            Rectangle hold = new Rectangle(0, -50 * height + 900, 50, 50);
+            Rectangle hold = new Rectangle(0, -50 * height + 700, 50, 50);
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < width; o++)
@@ -129,6 +129,7 @@ namespace CaveScape
             
             player.playerControls(ks, blocks);
             batch.Draw(texture, player.playerLocat, Color.White);
+            player.drawLives(batch, texture);
         }
 
         public void Draw(SpriteBatch batch)

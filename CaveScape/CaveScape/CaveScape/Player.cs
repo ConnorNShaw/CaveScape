@@ -51,22 +51,22 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                            if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("floor"))
+                        if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("floor"))
+                        {
+                            onGround = true;
+                            jumping = false;
+                            //if hitting floor, is no longer jumping and then breaks
+                            b = true;
+                        for (int i = 0; i < layout.GetLength(0); i++)
+                        {
+                            for (int o = 0; o < layout.GetLength(1); o++)
                             {
-                                onGround = true;
-                                jumping = false;
-                                //if hitting floor, is no longer jumping and then breaks
-                                b = true;
-                            for (int i = 0; i < layout.GetLength(0); i++)
-                            {
-                                for (int o = 0; o < layout.GetLength(1); o++)
-                                {
-                                    //moves blocks so the player is not stuck inside
-                                    layout[i, o].pos.Y += gravity;
-                                }
+                                //moves blocks so the player is not stuck inside
+                                layout[i, o].pos.Y += gravity;
                             }
-                                    break;
-                            }
+                        }
+                                break;
+                        }
                     }
                     if (b)
                         break;
@@ -223,5 +223,19 @@ namespace CaveScape
             }
             return false;
         }
+
+        public void drawLives(SpriteBatch batch, Texture2D texture)
+        {
+            int x = 50;
+            int y = 50;
+
+            for (int i = 0; i < lives; i++)
+            {
+                Rectangle rect = new Rectangle(x, y, 10, 10);
+                x += 50;
+                batch.Draw(texture, rect, Color.Pink);
+            }
+        }
+
     }
 }
