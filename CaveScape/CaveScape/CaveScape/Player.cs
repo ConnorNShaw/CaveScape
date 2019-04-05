@@ -16,11 +16,10 @@ namespace CaveScape
     class Player
     {
         public int lives;
-        public int speed, gravity;
+        public int speed, gravity, previous;
         public Rectangle playerLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public Rectangle previous;
-        bool b;
+        bool b, latch, b2;
         int jTimer;
 
         public Player(Rectangle r)
@@ -28,6 +27,7 @@ namespace CaveScape
             playerLocat = r;
             lives = 3;
             speed = 20;
+            previous = speed;
 
             gravity = 10;
 
@@ -35,13 +35,30 @@ namespace CaveScape
             startJump = false;
             jumping = false;
             doubleJump = false;
-            previous = r;
             b = false;
+            b2 = false;
+            latch = false;
             jTimer = 0;
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
+            for (int r = 0; r < layout.GetLength(0); r++)
+            {
+                for (int c = 0; c < layout.GetLength(1); c++)
+                {
+                    if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
+                    {
+                        speed = 5;
+                    }
+                    if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
+                    {
+                        latch = !latch;
+                        b2 = !b2;
+                    }
+                }
+            }
+            
             if (jumping && !onGround)
             {
                 b = false;
@@ -82,6 +99,12 @@ namespace CaveScape
                     {
                         if (layout[r, c] != null)
                         {
+                            if (b2)
+                            {
+                                jumping = false;
+                                onGround = false;
+                                break;
+                            }
                             if (jTimer <= 15)
                                 layout[r, c].pos.Y += gravity;
                             else if (jTimer > 15 && jTimer < 20)
@@ -92,9 +115,11 @@ namespace CaveScape
                                 layout[r, c].pos.Y -= gravity;
                         }
                     }
+                    if (b2)
+                        break;
                 }
             }
-            else if (!onGround)
+            else if (!onGround && !latch)
             {
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
@@ -109,10 +134,7 @@ namespace CaveScape
                 }
             }
 
-
-
-           
-            if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D))
+            if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D) && !latch)
             {
                 bool a = false;
                 for (int r = 0; r < layout.GetLength(0); r++)
@@ -133,7 +155,6 @@ namespace CaveScape
                     if (a)
                         break;
                 }
-
                 if (!a) //If it is not going to hit wall, it moves the blocks accordingly 
                 {
                     for (int r = 0; r < layout.GetLength(0); r++)
@@ -142,17 +163,14 @@ namespace CaveScape
                         {
                             if (layout[r, c] != null)
                             {
-
                                 layout[r, c].pos.X += speed;
-
                             }
                         }
-
                     }
                 }
             }
 
-            if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A))
+            if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A) && !latch)
             {
                 bool a = false;
                 for (int r = 0; r < layout.GetLength(0); r++)
@@ -172,7 +190,6 @@ namespace CaveScape
                     if (a)
                         break;
                 }
-
                 if (!a)
                 {
                     for (int r = 0; r < layout.GetLength(0); r++)
@@ -181,25 +198,33 @@ namespace CaveScape
                         {
                             if (layout[r, c] != null)
                             {
-
                                 layout[r, c].pos.X -= speed;
-
                             }
-
                         }
-
                     }
                 }
             }
-               
-            
 
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false)
+            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false && !latch)
             {
                 //preps the jump
                 onGround = false;
                 jumping = true;
                 jTimer = 0;
+            }
+            else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
+            {
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            //moving up
+                            layout[r, c].pos.Y -= speed;
+                        }
+                    }
+                }
             }
         }
 
@@ -207,12 +232,14 @@ namespace CaveScape
         {
             lives++;
             speed += 5;
+            previous = speed;
         }
 
         public void reduceLife()
         {
             lives--;
             speed -= 5;
+            previous = speed;
         }
 
         public Boolean isDead()
