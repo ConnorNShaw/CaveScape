@@ -17,15 +17,16 @@ namespace CaveScape
     {
         public int lives;
         public int speed, gravity, previous;
-        public Rectangle playerLocat;
+        public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        bool b, latch, b2, w2;
+        public bool b, latch, b2, damaged, w2;
         int jTimer;
         KeyboardState oldKS = Keyboard.GetState();
 
         public Player(Rectangle r)
         {
             playerLocat = r;
+            startLocat = playerLocat;
             lives = 3;
             speed = 20;
             previous = speed;
@@ -41,6 +42,7 @@ namespace CaveScape
             w2 = false;
 
             latch = false;
+            damaged = false;
             jTimer = 0;
         }
 
@@ -51,6 +53,10 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
+                    if (layout[r, c].type.Equals("spike") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        reduceLife();
+                    }
                     if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space) && oldKS != ks)
                     {
                         latch = !latch;
@@ -281,6 +287,7 @@ namespace CaveScape
             lives--;
             speed -= 5;
             previous = speed;
+            damaged = true;
         }
 
         public Boolean isDead()
@@ -291,5 +298,19 @@ namespace CaveScape
             }
             return false;
         }
+
+        public void drawLives(SpriteBatch batch, Texture2D texture)
+        {
+            int x = 50;
+            int y = 50;
+
+            for (int i = 0; i < lives; i++)
+            {
+                Rectangle rect = new Rectangle(x, y, 10, 10);
+                x += 50;
+                batch.Draw(texture, rect, Color.Pink);
+            }
+        }
+
     }
 }
