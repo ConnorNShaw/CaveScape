@@ -17,14 +17,15 @@ namespace CaveScape
     {
         public int lives;
         public int speed, gravity, previous;
-        public Rectangle playerLocat;
+        public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        bool b, latch, b2;
+        public bool b, latch, b2, damaged;
         int jTimer;
 
         public Player(Rectangle r)
         {
             playerLocat = r;
+            startLocat = playerLocat;
             lives = 3;
             speed = 20;
             previous = speed;
@@ -38,6 +39,7 @@ namespace CaveScape
             b = false;
             b2 = false;
             latch = false;
+            damaged = false;
             jTimer = 0;
         }
 
@@ -47,6 +49,11 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
+                    if (layout[r, c].type.Equals("spike") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        reduceLife();
+                    }
+
                     if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
                     {
                         speed = 5;
@@ -240,6 +247,7 @@ namespace CaveScape
             lives--;
             speed -= 5;
             previous = speed;
+            damaged = true;
         }
 
         public Boolean isDead()

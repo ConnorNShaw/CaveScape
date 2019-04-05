@@ -15,13 +15,13 @@ namespace CaveScape
     class Section
     {
 
-        string[,] layout;
+        string[,] layout, a;
         int width, height, x, y, vGrid, hGrid;
-        bool created;
+        bool created, hasBeenReset;
 
         string[,] text;
 
-        Block[,] blocks;
+        Block[,] blocks, startBlocks;
         Player player;
         Texture2D texture;
 
@@ -29,6 +29,8 @@ namespace CaveScape
         {
             height = a.GetLength(0);
             width = a.GetLength(1);
+
+            hasBeenReset = false;
             
             blocks = new Block[height, width];
             x = 0;
@@ -38,13 +40,13 @@ namespace CaveScape
             player = new Player(new Rectangle(500, 100, 50, 50));
             this.texture = texture;
 
-            create(a);
+            this.a = a;
+
+            create(a, hasBeenReset);
 
         }
 
-
-
-        public void create(string[,] a)
+        public void create(string[,] a, bool hasBeenReset)
         {
             //starts beyond the screen to make the bottom the focus
             Rectangle hold = new Rectangle(0, -50 * height + 700, 50, 50);
@@ -67,7 +69,11 @@ namespace CaveScape
                             blocks[i, o] = new Lava(hold);
                             break;
                         case "P":
-                            player = new Player(hold);
+                            if(!hasBeenReset)
+                            {
+                                player = new Player(hold);
+                            }
+                            player.playerLocat = hold;
                             blocks[i, o] = new Space(hold);
                             break;
                         case "B":
@@ -105,6 +111,7 @@ namespace CaveScape
                 hold.Y += 50;
                 hold.X = 0;
             }
+            startBlocks = (Block[,])blocks.Clone();
         }
 
         //private void createBlock(int r, int c, bool movement)
@@ -116,6 +123,13 @@ namespace CaveScape
         public void drawSection(SpriteBatch batch)//, Player player)
         {
             KeyboardState ks = Keyboard.GetState();
+
+            if(player.damaged && !player.isDead())
+            {
+                hasBeenReset = true;
+                create(a, hasBeenReset);
+                player.damaged = false;
+            }
 
             for (int i = 0; i < height; i++)
             {
@@ -130,6 +144,7 @@ namespace CaveScape
             player.playerControls(ks, blocks);
             batch.Draw(texture, player.playerLocat, Color.White);
             player.drawLives(batch, texture);
+
         }
 
         public void Draw(SpriteBatch batch)
