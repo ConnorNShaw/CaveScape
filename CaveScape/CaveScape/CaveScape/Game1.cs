@@ -145,7 +145,6 @@ namespace CaveScape
                         {
                             Section section = new Section(tempArray, levelWidth, levelHeight, texture);
                             levelSections.Add(section);
-                            Console.WriteLine("Created \n A \n Section");
                             tempArray = new string[levelHeight, levelWidth];
                         }
                     }
