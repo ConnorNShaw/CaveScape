@@ -19,7 +19,7 @@ namespace CaveScape
         public int speed, gravity, previous;
         public Rectangle playerLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        bool b, latch, b2;
+        bool b, latch, b2, w2;
         int jTimer;
 
         public Player(Rectangle r)
@@ -37,125 +37,206 @@ namespace CaveScape
             doubleJump = false;
             b = false;
             b2 = false;
+            w2 = false;
+
             latch = false;
             jTimer = 0;
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
+            w2 = false;
             for (int r = 0; r < layout.GetLength(0); r++)
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
+
                     if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
                     {
-                        speed = 5;
+
+                        w2 = true;
+                        break;
+
                     }
-                    if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
-                    {
-                        latch = !latch;
-                        b2 = !b2;
-                    }
+                    if (w2)
+                        break;
                 }
             }
-            
-            if (jumping && !onGround)
-            {
-                b = false;
-                jTimer++;
-                //increment timer for jump control
+                if (w2)
+                    speed = 5;
+                else
+                    speed = previous;
+
+
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
+
+                        if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
+                        {
+                            latch = !latch;
+                            b2 = !b2;
+                        }
+                    }
+
+                }
+
+
+                if (jumping && !onGround)
+                {
+                    b = false;
+                    jTimer++;
+                    //increment timer for jump control
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
                             if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("floor"))
                             {
                                 onGround = true;
                                 jumping = false;
                                 //if hitting floor, is no longer jumping and then breaks
                                 b = true;
-                            for (int i = 0; i < layout.GetLength(0); i++)
-                            {
-                                for (int o = 0; o < layout.GetLength(1); o++)
+                                for (int i = 0; i < layout.GetLength(0); i++)
                                 {
-                                    //moves blocks so the player is not stuck inside
-                                    layout[i, o].pos.Y += gravity;
+                                    for (int o = 0; o < layout.GetLength(1); o++)
+                                    {
+                                        //moves blocks so the player is not stuck inside
+                                        layout[i, o].pos.Y += gravity;
+                                    }
                                 }
+                                break;
                             }
+                        }
+                        if (b)
+                            break;
+                    }
+                }
+                if (jumping)
+                {
+                    //creates a smoother jump by slowing at the top
+                    //should make sure floor is still visible when jumping
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                if (b2)
+                                {
+                                    jumping = false;
+                                    onGround = false;
+                                    break;
+                                }
+                                if (jTimer <= 15)
+                                    layout[r, c].pos.Y += gravity;
+                                else if (jTimer > 15 && jTimer < 20)
+                                    layout[r, c].pos.Y += gravity / 2;
+                                else if (jTimer > 20 && jTimer < 25)
+                                    layout[r, c].pos.Y += gravity / 2;
+                                else if (jTimer >= 25)
+                                    layout[r, c].pos.Y -= gravity;
+                            }
+                        }
+                        if (b2)
+                            break;
+                    }
+                }
+                else if (!onGround && !latch)
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                //falls if not on ground
+                                layout[r, c].pos.Y -= gravity;
+                            }
+                        }
+                    }
+                }
+
+                if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D) && !latch)
+                {
+                    bool a = false;
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                //checks if would hit wall
+                                if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("wall"))
+                                {
+                                    a = true;
+                                }
+                                if (a)
                                     break;
                             }
+                        }
+                        if (a)
+                            break;
                     }
-                    if (b)
-                        break;
-                }
-            }
-            if (jumping)
-            {
-                //creates a smoother jump by slowing at the top
-                //should make sure floor is still visible when jumping
-                for (int r = 0; r < layout.GetLength(0); r++)
-                {
-                    for (int c = 0; c < layout.GetLength(1); c++)
+                    if (!a) //If it is not going to hit wall, it moves the blocks accordingly 
                     {
-                        if (layout[r, c] != null)
+                        for (int r = 0; r < layout.GetLength(0); r++)
                         {
-                            if (b2)
+                            for (int c = 0; c < layout.GetLength(1); c++)
                             {
-                                jumping = false;
-                                onGround = false;
-                                break;
+                                if (layout[r, c] != null)
+                                {
+                                    layout[r, c].pos.X += speed;
+                                }
                             }
-                            if (jTimer <= 15)
-                                layout[r, c].pos.Y += gravity;
-                            else if (jTimer > 15 && jTimer < 20)
-                                layout[r, c].pos.Y += gravity / 2;
-                            else if (jTimer > 20 && jTimer < 25)
-                                layout[r, c].pos.Y += gravity / 2;
-                            else if (jTimer >= 25)
-                                layout[r, c].pos.Y -= gravity;
-                        }
-                    }
-                    if (b2)
-                        break;
-                }
-            }
-            else if (!onGround && !latch)
-            {
-                for (int r = 0; r < layout.GetLength(0); r++)
-                {
-                    for (int c = 0; c < layout.GetLength(1); c++)
-                    {
-                        if (layout[r, c] != null)
-                        {
-                         //falls if not on ground
-                                layout[r, c].pos.Y -= gravity;
                         }
                     }
                 }
-            }
 
-            if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D) && !latch)
-            {
-                bool a = false;
-                for (int r = 0; r < layout.GetLength(0); r++)
+                if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A) && !latch)
                 {
-                    for (int c = 0; c < layout.GetLength(1); c++)
+                    bool a = false;
+                    for (int r = 0; r < layout.GetLength(0); r++)
                     {
-                        if (layout[r, c] != null)
+                        for (int c = 0; c < layout.GetLength(1); c++)
                         {
-                            //checks if would hit wall
-                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("wall"))
+                            if (layout[r, c] != null)
                             {
-                                a = true;
+                                if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("wall"))
+                                {
+                                    a = true;
+                                }
+                                if (a)
+                                    break;
                             }
-                            if (a)
-                                break;
+                        }
+                        if (a)
+                            break;
+                    }
+                    if (!a)
+                    {
+                        for (int r = 0; r < layout.GetLength(0); r++)
+                        {
+                            for (int c = 0; c < layout.GetLength(1); c++)
+                            {
+                                if (layout[r, c] != null)
+                                {
+                                    layout[r, c].pos.X -= speed;
+                                }
+                            }
                         }
                     }
-                    if (a)
-                        break;
                 }
-                if (!a) //If it is not going to hit wall, it moves the blocks accordingly 
+
+                if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false && !latch)
+                {
+                    //preps the jump
+                    onGround = false;
+                    jumping = true;
+                    jTimer = 0;
+                }
+                else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
                 {
                     for (int r = 0; r < layout.GetLength(0); r++)
                     {
@@ -163,70 +244,14 @@ namespace CaveScape
                         {
                             if (layout[r, c] != null)
                             {
-                                layout[r, c].pos.X += speed;
+                                //moving up
+                                layout[r, c].pos.Y -= speed;
                             }
                         }
                     }
                 }
             }
-
-            if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A) && !latch)
-            {
-                bool a = false;
-                for (int r = 0; r < layout.GetLength(0); r++)
-                {
-                    for (int c = 0; c < layout.GetLength(1); c++)
-                    {
-                        if (layout[r, c] != null)
-                        {
-                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("wall"))
-                            {
-                                a = true;
-                            }
-                            if (a)
-                                break;
-                        }
-                    }
-                    if (a)
-                        break;
-                }
-                if (!a)
-                {
-                    for (int r = 0; r < layout.GetLength(0); r++)
-                    {
-                        for (int c = 0; c < layout.GetLength(1); c++)
-                        {
-                            if (layout[r, c] != null)
-                            {
-                                layout[r, c].pos.X -= speed;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false && !latch)
-            {
-                //preps the jump
-                onGround = false;
-                jumping = true;
-                jTimer = 0;
-            }
-            else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
-            {
-                for (int r = 0; r < layout.GetLength(0); r++)
-                {
-                    for (int c = 0; c < layout.GetLength(1); c++)
-                    {
-                        if (layout[r, c] != null)
-                        {
-                            //moving up
-                            layout[r, c].pos.Y -= speed;
-                        }
-                    }
-                }
-            }
-        }
+        
 
         public void addLife()
         {
