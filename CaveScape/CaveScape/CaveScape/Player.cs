@@ -60,20 +60,18 @@ namespace CaveScape
 
                     if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
                     {
-
                         w2 = true;
                         break;
-
                     }
                     if (w2)
                         break;
                 }
             }
+
                 if (w2)
                     speed = 5;
                 else
                     speed = previous;
-
 
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
@@ -86,9 +84,7 @@ namespace CaveScape
                             b2 = !b2;
                         }
                     }
-
                 }
-
 
                 if (jumping && !onGround)
                 {
@@ -265,7 +261,7 @@ namespace CaveScape
                     {
                         if (layout[r, c] != null)
                         {
-                            //moving up
+                            //moving down
                             layout[r, c].pos.Y -= speed;
                         }
                     }
