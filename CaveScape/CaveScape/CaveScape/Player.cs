@@ -19,8 +19,9 @@ namespace CaveScape
         public int speed, gravity, previous;
         public Rectangle playerLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        bool b, latch, b2;
+        bool b, latch, b2, wet;
         int jTimer;
+        KeyboardState oldKS = Keyboard.GetState();
 
         public Player(Rectangle r)
         {
@@ -37,6 +38,7 @@ namespace CaveScape
             doubleJump = false;
             b = false;
             b2 = false;
+            wet = false;
             latch = false;
             jTimer = 0;
         }
@@ -47,18 +49,33 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
-                    if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
-                    {
-                        speed = 5;
-                    }
-                    if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
+                    if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space) && oldKS != ks)
                     {
                         latch = !latch;
                         b2 = !b2;
+                        oldKS = ks;
+                    }
+
+                    if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
+                    {
+                        wet = true;
+                    }
+                    else
+                    {
+                        wet = false;
                     }
                 }
             }
-            
+
+            if (wet)
+            {
+                speed = 3;
+            }
+            else
+            {
+                speed = previous;
+            }
+
             if (jumping && !onGround)
             {
                 b = false;
@@ -74,15 +91,15 @@ namespace CaveScape
                                 jumping = false;
                                 //if hitting floor, is no longer jumping and then breaks
                                 b = true;
-                            for (int i = 0; i < layout.GetLength(0); i++)
-                            {
-                                for (int o = 0; o < layout.GetLength(1); o++)
+                                for (int i = 0; i < layout.GetLength(0); i++)
                                 {
-                                    //moves blocks so the player is not stuck inside
-                                    layout[i, o].pos.Y += gravity;
+                                    for (int o = 0; o < layout.GetLength(1); o++)
+                                    {
+                                        //moves blocks so the player is not stuck inside
+                                        layout[i, o].pos.Y += gravity;
+                                    }
                                 }
-                            }
-                                    break;
+                                break;
                             }
                     }
                     if (b)
@@ -134,7 +151,7 @@ namespace CaveScape
                 }
             }
 
-            if (ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.D) && !latch)
+            if ((ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.A)) && !latch)
             {
                 bool a = false;
                 for (int r = 0; r < layout.GetLength(0); r++)
@@ -170,7 +187,7 @@ namespace CaveScape
                 }
             }
 
-            if (ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.A) && !latch)
+            if ((ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.D)) && !latch)
             {
                 bool a = false;
                 for (int r = 0; r < layout.GetLength(0); r++)
@@ -213,6 +230,20 @@ namespace CaveScape
                 jTimer = 0;
             }
             else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
+            {
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            //moving up
+                            layout[r, c].pos.Y += speed;
+                        }
+                    }
+                }
+            }
+            else if ((ks.IsKeyDown(Keys.Down) || ks.IsKeyDown(Keys.S)) && latch)
             {
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
