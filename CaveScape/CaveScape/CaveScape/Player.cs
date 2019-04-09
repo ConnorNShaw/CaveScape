@@ -64,7 +64,6 @@ namespace CaveScape
                         onGround = false;
                         
                     }
-
                     if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
                     {
                         w2 = true;
