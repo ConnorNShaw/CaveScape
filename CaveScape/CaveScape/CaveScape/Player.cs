@@ -63,7 +63,6 @@ namespace CaveScape
                         b2 = !b2;
                         oldKS = ks;
                     }
-
                     if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
                     {
                         w2 = true;
@@ -78,19 +77,6 @@ namespace CaveScape
                     speed = 5;
                 else
                     speed = previous;
-
-                for (int r = 0; r < layout.GetLength(0); r++)
-                {
-                    for (int c = 0; c < layout.GetLength(1); c++)
-                    {
-
-                        if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
-                        {
-                            latch = !latch;
-                            b2 = !b2;
-                        }
-                    }
-                }
 
                 if (jumping && !onGround)
                 {
