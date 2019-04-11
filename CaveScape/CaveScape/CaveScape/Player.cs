@@ -19,9 +19,10 @@ namespace CaveScape
         public int speed, gravity, previous;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public bool b, latch, b2, damaged, w2;
+        public bool b, latch, b2, damaged, w2, finishedLevel;
         int jTimer;
         KeyboardState oldKS = Keyboard.GetState();
+        Level level;
 
         public Player(Rectangle r)
         {
@@ -40,6 +41,7 @@ namespace CaveScape
             b = false;
             b2 = false;
             w2 = false;
+            finishedLevel = false;
 
             latch = false;
             damaged = false;
@@ -70,7 +72,10 @@ namespace CaveScape
                         break;
                     }
 
-                    
+                    if(layout[r, c].type.Equals("end") && playerLocat.Intersects(layout[r, c].pos))
+                    {
+                        finishedLevel = true;
+                    }
 
                     if (w2)
                         break;

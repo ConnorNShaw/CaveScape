@@ -25,6 +25,8 @@ namespace CaveScape
         Player player;
         Texture2D texture;
 
+        Level level;
+
         public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture)
         {
             height = a.GetLength(0);
@@ -58,6 +60,9 @@ namespace CaveScape
                     {
                         case "s":
                             blocks[i, o] = new Spike(hold);
+                            break;
+                        case "e":
+                            blocks[i, o] = new End(hold);
                             break;
                         case "R":
                             blocks[i, o] = new Boulder(hold);
@@ -144,12 +149,22 @@ namespace CaveScape
             player.playerControls(ks, blocks);
             batch.Draw(texture, player.playerLocat, Color.White);
             player.drawLives(batch, texture);
+            if(player.finishedLevel)
+            {
+                player.finishedLevel = false;
+                level.moveToNextSection();
+            }
 
         }
 
         public void Draw(SpriteBatch batch)
         {
 
+        }
+
+        public void setParentLevel(Level level)
+        {
+            this.level = level;
         }
 
     }
