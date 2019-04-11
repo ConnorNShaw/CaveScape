@@ -96,7 +96,7 @@ namespace CaveScape
                 level.moveToNextSection();
             }
             // TODO: Add your update logic here
-            
+            old = kb;
             base.Update(gameTime);
         }
 
