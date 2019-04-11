@@ -95,6 +95,7 @@ namespace CaveScape
             {
                 level.moveToNextSection();
             }
+            old = kb;
             // TODO: Add your update logic here
             
             base.Update(gameTime);

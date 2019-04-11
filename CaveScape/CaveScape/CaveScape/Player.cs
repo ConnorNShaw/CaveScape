@@ -19,7 +19,7 @@ namespace CaveScape
         public int speed, gravity, previous;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public bool b, latch, b2, damaged, w2;
+        public bool b, latch, b2, damaged, w2, jB, falling;
         int jTimer;
         KeyboardState oldKS = Keyboard.GetState();
 
@@ -32,13 +32,14 @@ namespace CaveScape
             previous = speed;
 
             gravity = 10;
-
+            falling = false;
             onGround = true;
             startJump = false;
             jumping = false;
             doubleJump = false;
             b = false;
             b2 = false;
+            jB = false;
             w2 = false;
 
             latch = false;
@@ -60,6 +61,7 @@ namespace CaveScape
                     if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space) && oldKS != ks)
                     {
                         latch = !latch;
+                        falling = false;
                         b2 = !b2;
                         onGround = false;
                         
@@ -70,7 +72,10 @@ namespace CaveScape
                         break;
                     }
 
-                    
+                    if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
+                    {
+                        jB = true;
+                    }
 
                     if (w2)
                         break;
@@ -83,84 +88,68 @@ namespace CaveScape
                     speed = previous;
 
 
+            if (!onGround)
+                falling = true;
+            else
+                falling = false;
+            
 
-                //for (int r = 0; r < layout.GetLength(0); r++)
-                //{
-                //    for (int c = 0; c < layout.GetLength(1); c++)
-                //    {
 
-                //        if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
-                //        {
-                //            latch = !latch;
-                //            b2 = !b2;
-                //        }
-                //    }
-                //}
+           
 
-                if (jumping && !onGround)
-                {
-                    b = false;
-                    jTimer++;
-                    //increment timer for jump control
-                    for (int r = 0; r < layout.GetLength(0); r++)
-                    {
-                        for (int c = 0; c < layout.GetLength(1); c++)
-                        {
-                            if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("floor"))
-                            {
-                                onGround = true;
-                                jumping = false;
-                                //if hitting floor, is no longer jumping and then breaks
-                                b = true;
-                                for (int i = 0; i < layout.GetLength(0); i++)
-                                {
-                                    for (int o = 0; o < layout.GetLength(1); o++)
-                                    {
-                                        //moves blocks so the player is not stuck inside
-                                        layout[i, o].pos.Y += gravity;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        if (b)
-                            break;
-                    }
-                }
+
+
+
+            
+
+
+
+
                 if (jumping)
                 {
-                    //creates a smoother jump by slowing at the top
-                    //should make sure floor is still visible when jumping
-                    for (int r = 0; r < layout.GetLength(0); r++)
+                falling = false;
+                //creates a smoother jump by slowing at the top
+                //should make sure floor is still visible when jumping
+                jTimer++;
+                for (int r = 0; r < layout.GetLength(0); r++)
                     {
                         for (int c = 0; c < layout.GetLength(1); c++)
                         {
                             if (layout[r, c] != null)
                             {
-                                if (b2)
-                                {
-                                    jumping = false;
-                                    onGround = false;
-                                    break;
-                                }
 
-                               
 
-                                if (jTimer <= 15)
+
+
+
+                            if (jTimer <= 22)
+                            {
+                                if(!jB)
                                     layout[r, c].pos.Y += gravity;
-                                else if (jTimer > 15 && jTimer < 20)
-                                    layout[r, c].pos.Y += gravity / 2;
-                                else if (jTimer > 20 && jTimer < 25)
-                                    layout[r, c].pos.Y += gravity / 2;
-                                else if (jTimer >= 25)
-                                    layout[r, c].pos.Y -= gravity;
                             }
+                            else
+                                falling = true;
+                            //else if (jTimer > 18 && jTimer <= 22)
+                            //{
+                            //    if(!jB)
+                            //        layout[r, c].pos.Y += gravity / 2;
+                            //}
+
+                            //else if (jTimer > 20 && jTimer < 25)
+                            //    layout[r, c].pos.Y += gravity / 2;
+                            //else if (jTimer >= 25)
+                            //    layout[r, c].pos.Y -= gravity;
                         }
-                        if (b2)
-                            break;
+                        }
+                        //if (b2 )//|| jB)
+                        //    break;
                     }
                 }
-                else if (!onGround && !latch)
+
+
+
+
+                if (falling)
                 {
                     for (int r = 0; r < layout.GetLength(0); r++)
                     {
@@ -171,9 +160,50 @@ namespace CaveScape
                                 //falls if not on ground
                                 layout[r, c].pos.Y -= gravity;
                             }
+                            
                         }
                     }
                 }
+
+
+
+
+
+
+
+            bool b5 = false;
+            for (int r = 0; r < layout.GetLength(0); r++)
+            {
+                for (int c = 0; c < layout.GetLength(1); c++)
+                {
+                    if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y + gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
+                    {
+                        onGround = true;
+                        b5 = true;
+                        jumping = false;
+                        falling = false;
+                        break;
+                    }
+                    else
+                    {
+                        onGround = false;
+                        falling = true;
+                    }
+
+                }
+                if (b5)
+                    break;
+            }
+
+           
+
+
+
+
+
+
+
+
 
             if ((ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.A)) && !latch)
             {
@@ -186,8 +216,8 @@ namespace CaveScape
                             if (layout[r, c] != null)
                             {
                             //checks if would hit wall
-                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
-                            {
+                                if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
+                                {
                                     a = true;
                                 }
                                 if (a)
@@ -212,6 +242,8 @@ namespace CaveScape
                     }
                 }
             }
+
+
 
             if ((ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.D)) && !latch)
             {
@@ -248,10 +280,14 @@ namespace CaveScape
                 }
             }
 
+
+
+
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false && !latch)
             {
                 //preps the jump
                 onGround = false;
+                jB = false;
                 jumping = true;
                 jTimer = 0;
             }
@@ -286,6 +322,12 @@ namespace CaveScape
             //oldKS = ks;
         }
 
+
+
+
+
+
+
         public void addLife()
         {
             lives++;
@@ -309,6 +351,8 @@ namespace CaveScape
             }
             return false;
         }
+
+
 
         public void drawLives(SpriteBatch batch, Texture2D texture)
         {
