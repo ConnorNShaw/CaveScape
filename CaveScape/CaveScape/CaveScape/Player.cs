@@ -19,8 +19,7 @@ namespace CaveScape
         public int speed, gravity, previous;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public bool b, latch, b2, damaged, w2, jB, falling;
-        public bool b, latch, b2, damaged, w2, finishedLevel;
+        public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel;
         int jTimer;
         KeyboardState oldKS = Keyboard.GetState();
 
