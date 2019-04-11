@@ -61,14 +61,17 @@ namespace CaveScape
                     {
                         latch = !latch;
                         b2 = !b2;
-                        oldKS = ks;
+                        onGround = false;
+                        
                     }
-
                     if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
                     {
                         w2 = true;
                         break;
                     }
+
+                    
+
                     if (w2)
                         break;
                 }
@@ -79,18 +82,20 @@ namespace CaveScape
                 else
                     speed = previous;
 
-                for (int r = 0; r < layout.GetLength(0); r++)
-                {
-                    for (int c = 0; c < layout.GetLength(1); c++)
-                    {
 
-                        if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
-                        {
-                            latch = !latch;
-                            b2 = !b2;
-                        }
-                    }
-                }
+
+                //for (int r = 0; r < layout.GetLength(0); r++)
+                //{
+                //    for (int c = 0; c < layout.GetLength(1); c++)
+                //    {
+
+                //        if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
+                //        {
+                //            latch = !latch;
+                //            b2 = !b2;
+                //        }
+                //    }
+                //}
 
                 if (jumping && !onGround)
                 {
@@ -138,6 +143,9 @@ namespace CaveScape
                                     onGround = false;
                                     break;
                                 }
+
+                               
+
                                 if (jTimer <= 15)
                                     layout[r, c].pos.Y += gravity;
                                 else if (jTimer > 15 && jTimer < 20)
@@ -174,16 +182,18 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c] != null)
-                        {
-                            //checks if would hit wall
-                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("wall"))
+                        
+                            if (layout[r, c] != null)
                             {
-                                a = true;
+                            //checks if would hit wall
+                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
+                            {
+                                    a = true;
+                                }
+                                if (a)
+                                    break;
                             }
-                            if (a)
-                                break;
-                        }
+                        
                     }
                     if (a)
                         break;
@@ -212,7 +222,7 @@ namespace CaveScape
                     {
                         if (layout[r, c] != null)
                         {
-                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("wall"))
+                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
                             {
                                 a = true;
                             }
@@ -273,6 +283,7 @@ namespace CaveScape
                     }
                 }
             }
+            //oldKS = ks;
         }
 
         public void addLife()
