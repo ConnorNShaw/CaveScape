@@ -16,12 +16,12 @@ namespace CaveScape
     class Player
     {
         public int lives;
-        public int speed, gravity, previous;
+        public int speed, gravity, previous, holdX, holdY;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel;
+        public bool b, latch, b2, damaged, w2, jB, falling, dropRock, finishedLevel;
         int jTimer;
-        KeyboardState oldKS = Keyboard.GetState();
+        KeyboardState oldKS;
 
         public Player(Rectangle r)
         {
@@ -42,10 +42,13 @@ namespace CaveScape
             jB = false;
             w2 = false;
             finishedLevel = false;
+            dropRock = false;
 
             latch = false;
             damaged = false;
             jTimer = 0;
+
+            oldKS = Keyboard.GetState();
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
@@ -55,17 +58,26 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
+                    if (layout[r, c].type.Equals("boulder") && playerLocat.Intersects(new Rectangle(layout[r, c].pos.X, layout[r, c].pos.Y, layout[r, c].pos.Width, 10000000)))
+                    {
+                        dropRock = true;
+                        holdX = r;
+                        holdY = c;
+                    }
                     if (layout[r, c].type.Equals("spike") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
                     {
                         reduceLife();
                     }
-                    if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space) && oldKS != ks)
+                    if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
                     {
-                        latch = !latch;
+                        latch = true;
                         falling = false;
                         b2 = !b2;
                         onGround = false;
-                        
+                    }
+                    else if (ks.IsKeyUp(Keys.Space))
+                    {
+                        latch = false;
                     }
                     if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
                     {
@@ -87,12 +99,42 @@ namespace CaveScape
                         break;
                 }
             }
+            if (dropRock)
+            {
+                bool a = false;
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            //checks if boulder reaches the floor
+                            if (layout[holdX, holdY].pos.Intersects(layout[r,c].pos) && layout[r, c].col.Equals(Color.SaddleBrown))
+                            {
+                                a = true;
+                                dropRock = false;
+                            }
+                            if (a)
+                                break;
+                        }
+                    }
+                    if (a)
+                        break;
+                }
+                if (!a) //rock falls 
+                {
+                    layout[holdX, holdY].pos.Y += gravity;
+                    if (layout[holdX, holdY].type.Equals("boulder") && playerLocat.Intersects(layout[holdX, holdY].pos) && !damaged && dropRock)
+                    {
+                        reduceLife();
+                    }
+                }
+            }
 
-                if (w2)
+            if (w2)
                     speed = 5;
-                else
-                    speed = previous;
-
+            else
+                speed = previous;
 
             if (!onGround)
                 falling = true;
@@ -245,8 +287,6 @@ namespace CaveScape
                 }
             }
 
-
-
             if ((ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.D)) && !latch)
             {
                 bool a = false;
@@ -292,14 +332,37 @@ namespace CaveScape
             }
             else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
             {
+                bool a = false;
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
                         if (layout[r, c] != null)
                         {
-                            //moving up
-                            layout[r, c].pos.Y += speed;
+                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - speed, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
+                            {
+                                a = true;
+                            }
+                            if (a)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    if (a)
+                        break;
+                }
+                if (!a)
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                //moving up
+                                layout[r, c].pos.Y += speed;
+                            }
                         }
                     }
                 }
