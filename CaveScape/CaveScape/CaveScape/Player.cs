@@ -212,9 +212,8 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        
-                            if (layout[r, c] != null)
-                            {
+                        if (layout[r, c] != null)
+                        {
                             //checks if would hit wall
                                 if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
                                 {
@@ -319,7 +318,6 @@ namespace CaveScape
                     }
                 }
             }
-            //oldKS = ks;
         }
 
 
