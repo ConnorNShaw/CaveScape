@@ -327,6 +327,7 @@ namespace CaveScape
                     if (a)
                         break;
                 }
+                //note, fix the wall spacing thing
                 if (!a)
                 {
                     for (int r = 0; r < layout.GetLength(0); r++)
