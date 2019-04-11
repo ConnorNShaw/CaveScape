@@ -127,53 +127,50 @@ namespace CaveScape
                             break;
                     }
                 }
-                if (jumping)
+            if (jumping)
+            {
+                //creates a smoother jump by slowing at the top
+                //should make sure floor is still visible when jumping
+                for (int r = 0; r < layout.GetLength(0); r++)
                 {
-                    //creates a smoother jump by slowing at the top
-                    //should make sure floor is still visible when jumping
-                    for (int r = 0; r < layout.GetLength(0); r++)
+                    for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        for (int c = 0; c < layout.GetLength(1); c++)
+                        if (layout[r, c] != null)
                         {
-                            if (layout[r, c] != null)
+                            if (b2)
                             {
-                                if (b2)
-                                {
-                                    jumping = false;
-                                    onGround = false;
-                                    break;
-                                }
-
-                               
-
-                                if (jTimer <= 15)
-                                    layout[r, c].pos.Y += gravity;
-                                else if (jTimer > 15 && jTimer < 20)
-                                    layout[r, c].pos.Y += gravity / 2;
-                                else if (jTimer > 20 && jTimer < 25)
-                                    layout[r, c].pos.Y += gravity / 2;
-                                else if (jTimer >= 25)
-                                    layout[r, c].pos.Y -= gravity;
+                                jumping = false;
+                                onGround = false;
+                                break;
                             }
-                        }
-                        if (b2)
-                            break;
-                    }
-                }
-                else if (!onGround && !latch)
-                {
-                    for (int r = 0; r < layout.GetLength(0); r++)
-                    {
-                        for (int c = 0; c < layout.GetLength(1); c++)
-                        {
-                            if (layout[r, c] != null)
-                            {
-                                //falls if not on ground
+                            if (jTimer <= 15)
+                                layout[r, c].pos.Y += gravity;
+                            else if (jTimer > 15 && jTimer < 20)
+                                layout[r, c].pos.Y += gravity / 2;
+                            else if (jTimer > 20 && jTimer < 25)
+                                layout[r, c].pos.Y += gravity / 2;
+                            else if (jTimer >= 25)
                                 layout[r, c].pos.Y -= gravity;
-                            }
+                        }
+                    }
+                    if (b2)
+                        break;
+                }
+            }
+            else if (!onGround && !latch)
+            {
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            //falls if not on ground
+                            layout[r, c].pos.Y -= gravity;
                         }
                     }
                 }
+            }
 
             if ((ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.A)) && !latch)
             {
@@ -182,18 +179,16 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        
-                            if (layout[r, c] != null)
-                            {
+                        if (layout[r, c] != null)
+                        {
                             //checks if would hit wall
                             if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
                             {
-                                    a = true;
-                                }
-                                if (a)
-                                    break;
+                                a = true;
                             }
-                        
+                            if (a)
+                                break;
+                        }
                     }
                     if (a)
                         break;
@@ -283,7 +278,6 @@ namespace CaveScape
                     }
                 }
             }
-            //oldKS = ks;
         }
 
         public void addLife()
