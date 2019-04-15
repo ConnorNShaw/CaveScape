@@ -383,6 +383,5 @@ namespace CaveScape
                 batch.Draw(texture, rect, Color.Pink);
             }
         }
-
     }
 }
