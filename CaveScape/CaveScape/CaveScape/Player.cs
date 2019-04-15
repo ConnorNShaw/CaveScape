@@ -22,7 +22,8 @@ namespace CaveScape
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
         public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel;
-        int jTimer;
+        int jTimer, jCounter;
+        KeyboardState okb;
 
         public Player(Rectangle r)
         {
@@ -52,8 +53,9 @@ namespace CaveScape
             latch = false;
             damaged = false;
             jTimer = 0;
+            jCounter = 0;
 
-            //oldKS = Keyboard.GetState();
+            okb = Keyboard.GetState();
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
@@ -85,6 +87,7 @@ namespace CaveScape
                         latch = true;
                         falling = false;
                         jumping = false;
+                        jCounter = 0;
                         b2 = !b2;
                         onGround = false;
                     }
@@ -162,7 +165,7 @@ namespace CaveScape
             else
                 falling = false;
 
-            if (jumping)
+            if (jumping && jCounter <= 2)
             {
                 falling = false;
                 //creates a smoother jump by slowing at the top
@@ -201,12 +204,6 @@ namespace CaveScape
                 }
             }
 
-
-
-
-
-
-
             bool b5 = false;
             for (int r = 0; r < layout.GetLength(0); r++)
             {
@@ -217,6 +214,7 @@ namespace CaveScape
                         onGround = true;
                         b5 = true;
                         jumping = false;
+                        jCounter = 0;
                         falling = false;
                         break;
                     }
@@ -302,13 +300,14 @@ namespace CaveScape
                 }
             }
 
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false && !latch)
+            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) /*&& jumping == false*/ /*&& jCounter <= 2*/ && !latch && okb.IsKeyUp(Keys.Up))
             {
                 //preps the jump
                 onGround = false;
                 jB = false;
                 jumping = true;
                 jTimer = 0;
+                jCounter++;
             }
             else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
             {
@@ -367,6 +366,7 @@ namespace CaveScape
                     }
                 }
             }
+            okb = ks;
         }
 
         public void addLife()
