@@ -49,7 +49,7 @@ namespace CaveScape
         public void create(string[,] a, bool hasBeenReset)
         {
             //starts beyond the screen to make the bottom the focus
-            Rectangle hold = new Rectangle(0, -50 * height + 700, 50, 50);
+            Rectangle hold = new Rectangle(0, -50 * height + 700, 50,50);
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < width; o++)
