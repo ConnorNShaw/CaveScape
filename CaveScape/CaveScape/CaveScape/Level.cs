@@ -21,6 +21,7 @@ namespace CaveScape
         public Level(List<Section> levelSections)
         {
             this.levelSections = levelSections;
+            tracker = 0;
         }
 
         public void moveToNextSection()
@@ -46,6 +47,5 @@ namespace CaveScape
         {
             levelSections[tracker].drawSection(batch);//, player);
         }
-
     }
 }

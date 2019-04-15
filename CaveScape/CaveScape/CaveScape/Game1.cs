@@ -90,13 +90,11 @@ namespace CaveScape
             KeyboardState kb = Keyboard.GetState();
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
                 this.Exit();
-
+            // TODO: Add your update logic here
             if (kb != old && kb.IsKeyDown(Keys.N))
             {
                 level.moveToNextSection();
             }
-            old = kb;
-            // TODO: Add your update logic here
             old = kb;
             base.Update(gameTime);
         }
@@ -124,30 +122,32 @@ namespace CaveScape
             {
                 using (StreamReader reader = new StreamReader(path))
                 {
-                    int levelWidth = Int32.Parse(reader.ReadLine());
-                    int levelHeight = Int32.Parse(reader.ReadLine());
-
-                    string[,] tempArray = new string[levelHeight, levelWidth];
-                    int r = 0;
-                    int c;
-                    while (!reader.EndOfStream)
+                    lab: while (!reader.EndOfStream)
                     {
-                        string line = reader.ReadLine();
-                        if (!line.Equals("►")) //alt + 16 to get "►"
+                        int levelWidth = Int32.Parse(reader.ReadLine());
+                        int levelHeight = Int32.Parse(reader.ReadLine());
+
+                        string[,] tempArray = new string[levelHeight, levelWidth];
+                        int r = 0;
+                        while (!reader.EndOfStream)
                         {
-                            string[] characters = line.Split(',');
-                            for (c = 0; c < characters.Length; c++)
+                            string line = reader.ReadLine();
+                            if (!line.Equals("►")) //alt + 16 to get "►"
                             {
-                                tempArray[r, c] = characters[c];
+                                string[] characters = line.Split(',');
+                                for (int c = 0; c < characters.Length; c++)
+                                {
+                                    tempArray[r, c] = characters[c];
+                                }
+                                r++;
                             }
-                            r++;
-                        }
-                        else
-                        {
-                            Section section = new Section(tempArray, levelWidth, levelHeight, texture);
-                            levelSections.Add(section);
-                            Console.WriteLine("Created \n A \n Section");
-                            tempArray = new string[levelHeight, levelWidth];
+                            else
+                            {
+                                Section section = new Section(tempArray, levelWidth, levelHeight, texture);
+                                levelSections.Add(section);
+                                tempArray = new string[levelHeight, levelWidth];
+                                goto lab;
+                            }
                         }
                     }
                 }
@@ -158,6 +158,11 @@ namespace CaveScape
                 Console.WriteLine(e.Message);
             }
             level = new Level(levelSections);
+            for(int i = 0; i < levelSections.Count; i++)
+            {
+                levelSections[i].setParentLevel(level);
+            }
+            Console.WriteLine(levelSections.Count);
         }
     }
 }
