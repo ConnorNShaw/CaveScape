@@ -53,7 +53,7 @@ namespace CaveScape
             damaged = false;
             jTimer = 0;
 
-            oldKS = Keyboard.GetState();
+            //oldKS = Keyboard.GetState();
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
