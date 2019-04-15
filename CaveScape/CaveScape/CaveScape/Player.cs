@@ -23,7 +23,6 @@ namespace CaveScape
         public Boolean onGround, startJump, jumping, doubleJump;
         public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel;
         int jTimer;
-        KeyboardState oldKS;
 
         public Player(Rectangle r)
         {
@@ -64,6 +63,10 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
+                    if (layout[r, c].type.Equals("lava") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        reduceLife();
+                    }
 
                     if (layout[r, c].type.Equals("boulder") && playerLocat.Intersects(new Rectangle(layout[r, c].pos.X, layout[r, c].pos.Y, layout[r, c].pos.Width, 10000000)))
                     {
