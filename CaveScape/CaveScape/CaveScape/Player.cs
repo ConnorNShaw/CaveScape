@@ -15,11 +15,13 @@ namespace CaveScape
 {
     class Player
     {
+        public List<int> holdX, holdY;
+        public List<bool> dropRock;
         public int lives;
-        public int speed, gravity, previous, holdX, holdY;
+        public int speed, gravity, previous;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public bool b, latch, b2, damaged, w2, jB, falling, dropRock, finishedLevel;
+        public bool b, latch, b2, damaged, w2, jB, falling;
         int jTimer;
         KeyboardState oldKS;
 
@@ -31,6 +33,10 @@ namespace CaveScape
             speed = 20;
             previous = speed;
 
+            holdX = new List<int>();
+            holdY = new List<int>();
+            dropRock = new List<bool>();
+
             gravity = 10;
             falling = false;
             onGround = true;
@@ -41,7 +47,6 @@ namespace CaveScape
             b2 = false;
             jB = false;
             w2 = false;
-            finishedLevel = false;
             dropRock = false;
 
             latch = false;
@@ -58,27 +63,35 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
+
                     if (layout[r, c].type.Equals("boulder") && playerLocat.Intersects(new Rectangle(layout[r, c].pos.X, layout[r, c].pos.Y, layout[r, c].pos.Width, 10000000)))
                     {
-                        dropRock = true;
-                        holdX = r;
-                        holdY = c;
+                        dropRock.Add(true);
+                        holdX.Add(r);
+                        holdY.Add(c);
                     }
+
                     if (layout[r, c].type.Equals("spike") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
                     {
                         reduceLife();
                     }
+
                     if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
                     {
                         latch = true;
                         falling = false;
+                        jumping = false;
                         b2 = !b2;
                         onGround = false;
                     }
                     else if (ks.IsKeyUp(Keys.Space))
                     {
+                        //(playerLocat.Y + playerLocat.Height > layout[r, c].pos.Y && playerLocat.Y < layout[r, c].pos.Y)
+                        //(playerLocat.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.Transparent))
                         latch = false;
+                        falling = true;
                     }
+
                     if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
                     {
                         w2 = true;
@@ -99,126 +112,90 @@ namespace CaveScape
                         break;
                 }
             }
-            if (dropRock)
+
+            for (int k = 0; k < dropRock.Count; k++)
             {
-                bool a = false;
-                for (int r = 0; r < layout.GetLength(0); r++)
+                if (dropRock[k])
                 {
-                    for (int c = 0; c < layout.GetLength(1); c++)
-                    {
-                        if (layout[r, c] != null)
-                        {
-                            //checks if boulder reaches the floor
-                            if (layout[holdX, holdY].pos.Intersects(layout[r,c].pos) && layout[r, c].col.Equals(Color.SaddleBrown))
-                            {
-                                a = true;
-                                dropRock = false;
-                            }
-                            if (a)
-                                break;
-                        }
-                    }
-                    if (a)
-                        break;
-                }
-                if (!a) //rock falls 
-                {
-                    layout[holdX, holdY].pos.Y += gravity;
-                    if (layout[holdX, holdY].type.Equals("boulder") && playerLocat.Intersects(layout[holdX, holdY].pos) && !damaged && dropRock)
-                    {
-                        reduceLife();
-                    }
-                }
-            }
-
-            if (w2)
-                    speed = 5;
-            else
-                speed = previous;
-
-            if (!onGround)
-                falling = true;
-            else
-                falling = false;
-            
-
-                //        if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
-                //        {
-                //            latch = !latch;
-                //            b2 = !b2;
-                //        }
-                //    }
-                //}
-
-           
-
-
-
-
-            
-
-
-
-
-                if (jumping)
-                {
-                falling = false;
-                //creates a smoother jump by slowing at the top
-                //should make sure floor is still visible when jumping
-                jTimer++;
-                for (int r = 0; r < layout.GetLength(0); r++)
-                    {
-                        for (int c = 0; c < layout.GetLength(1); c++)
-                        {
-                            if (layout[r, c] != null)
-                            {
-
-
-
-
-
-                            if (jTimer <= 22)
-                            {
-                                if(!jB)
-                                    layout[r, c].pos.Y += gravity;
-                            }
-                            else
-                                falling = true;
-                            //else if (jTimer > 18 && jTimer <= 22)
-                            //{
-                            //    if(!jB)
-                            //        layout[r, c].pos.Y += gravity / 2;
-                            //}
-
-                            //else if (jTimer > 20 && jTimer < 25)
-                            //    layout[r, c].pos.Y += gravity / 2;
-                            //else if (jTimer >= 25)
-                            //    layout[r, c].pos.Y -= gravity;
-                        }
-                        }
-                        //if (b2 )//|| jB)
-                        //    break;
-                    }
-                }
-
-
-
-
-                if (falling)
-                {
+                    bool a = false;
                     for (int r = 0; r < layout.GetLength(0); r++)
                     {
                         for (int c = 0; c < layout.GetLength(1); c++)
                         {
                             if (layout[r, c] != null)
                             {
-                                //falls if not on ground
-                                layout[r, c].pos.Y -= gravity;
+                                //checks if boulder reaches the floor and stops the rock from falling through the floor
+                                if (layout[holdX[k], holdY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.SaddleBrown))
+                                {
+                                    a = true;
+                                    dropRock[k] = false;
+                                }
                             }
-                            
+                            if (a)
+                                break;
+                        }
+                        if (a)
+                            break;
+                    }
+                    if (!a) //rock falls 
+                    {
+                        layout[holdX[k], holdY[k]].pos.Y += gravity/2;
+                        if (playerLocat.Intersects(layout[holdX[k], holdY[k]].pos) && !damaged && dropRock[k])
+                        {
+                            reduceLife();
                         }
                     }
                 }
+            }
+
+            if (w2)
+                speed = 5;
+            else
+                speed = previous;
+
+            if (!onGround && !latch)
+                falling = true;
+            else
+                falling = false;
+
+            if (jumping)
+            {
+                falling = false;
+                //creates a smoother jump by slowing at the top
+                //should make sure floor is still visible when jumping
+                jTimer++;
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            if (jTimer <= 22)
+                            {
+                                if (!jB)
+                                    layout[r, c].pos.Y += gravity;
+                            }
+                            else
+                                falling = true;
+                        }
+                    }
+                }
+            }
+
+            if (falling)
+            {
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        if (layout[r, c] != null)
+                        {
+                            //falls if not on ground
+                            layout[r, c].pos.Y -= gravity;
+                        }
+                    }
+                }
+            }
 
 
 
@@ -260,14 +237,13 @@ namespace CaveScape
                         if (layout[r, c] != null)
                         {
                             //checks if would hit wall
-                                if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
-                                {
-                                    a = true;
-                                }
-                                if (a)
-                                    break;
+                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
+                            {
+                                a = true;
                             }
-                        
+                            if (a)
+                                break;
+                        }
                     }
                     if (a)
                         break;
@@ -352,6 +328,7 @@ namespace CaveScape
                     if (a)
                         break;
                 }
+                //note, fix the wall spacing thing
                 if (!a)
                 {
                     for (int r = 0; r < layout.GetLength(0); r++)
@@ -378,6 +355,11 @@ namespace CaveScape
                             //moving down
                             layout[r, c].pos.Y -= speed;
                         }
+                        if ((playerLocat.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.Transparent)))
+                        {
+                            latch = false;
+                            falling = true;
+                        }
                     }
                 }
             }
@@ -395,6 +377,9 @@ namespace CaveScape
             lives--;
             speed -= 5;
             previous = speed;
+            holdX.Clear();
+            holdY.Clear();
+            dropRock.Clear();
             damaged = true;
         }
 

@@ -16,7 +16,6 @@ namespace CaveScape
     {
         public Boulder(Rectangle p) : base(p, Color.DarkGray, "boulder")
         {
-
         }
     }
 }
