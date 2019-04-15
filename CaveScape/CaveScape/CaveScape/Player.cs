@@ -225,9 +225,18 @@ namespace CaveScape
                     break;
             }
 
+
+
+
+
+
+
+
+
             if ((ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.A)) && !latch)
             {
                 bool a = false;
+                int mHold = 0;
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
@@ -235,12 +244,20 @@ namespace CaveScape
                         if (layout[r, c] != null)
                         {
                             //checks if would hit wall
-                                if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
-                                {
+                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
+                            {
                                     a = true;
-                                }
-                                if (a)
-                                    break;
+                                    for(int i = speed - 1; i > 0; i--)
+                                    {
+                                        if(!(layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - i, playerLocat.Y, playerLocat.Width, playerLocat.Height))))
+                                        {
+                                        mHold = i;
+                                        break;
+                                        }
+                                    }
+                            }
+                            if (a)
+                                break;
                             }
                         
                     }
@@ -260,11 +277,28 @@ namespace CaveScape
                         }
                     }
                 }
+                else
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                layout[r, c].pos.X += mHold;
+                            }
+                        }
+                    }
+
+                }
             }
+
+
 
             if ((ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.D)) && !latch)
             {
                 bool a = false;
+                int mHold = 0;
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
@@ -274,6 +308,14 @@ namespace CaveScape
                             if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
                             {
                                 a = true;
+                                for (int i = speed - 1; i > 0; i--)
+                                {
+                                    if (!(layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + i, playerLocat.Y, playerLocat.Width, playerLocat.Height))))
+                                    {
+                                        mHold = i;
+                                        break;
+                                    }
+                                }
                             }
                             if (a)
                                 break;
@@ -295,7 +337,23 @@ namespace CaveScape
                         }
                     }
                 }
+                else
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                layout[r, c].pos.X -= mHold;
+                            }
+                        }
+                    }
+
+                }
             }
+
+
 
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false && !latch)
             {
@@ -358,6 +416,13 @@ namespace CaveScape
                 }
             }
         }
+
+
+
+
+
+
+
 
         public void addLife()
         {
