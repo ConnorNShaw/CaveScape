@@ -223,7 +223,6 @@ namespace CaveScape
                         onGround = false;
                         falling = true;
                     }
-
                 }
                 if (b5)
                     break;
@@ -311,38 +310,14 @@ namespace CaveScape
             }
             else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
             {
-                bool a = false;
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
                         if (layout[r, c] != null)
                         {
-                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - speed, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
-                            {
-                                a = true;
-                            }
-                            if (a)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    if (a)
-                        break;
-                }
-                //note, fix the wall spacing thing
-                if (!a)
-                {
-                    for (int r = 0; r < layout.GetLength(0); r++)
-                    {
-                        for (int c = 0; c < layout.GetLength(1); c++)
-                        {
-                            if (layout[r, c] != null)
-                            {
-                                //moving up
-                                layout[r, c].pos.Y += speed;
-                            }
+                            //moving up
+                            layout[r, c].pos.Y += speed;
                         }
                     }
                 }
