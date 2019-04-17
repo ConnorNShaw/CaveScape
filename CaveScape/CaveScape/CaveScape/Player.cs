@@ -15,10 +15,11 @@ namespace CaveScape
 {
     class Player
     {
-        public List<int> holdX, holdY;
-        public List<bool> dropRock;
+        public List<int> holdX, holdY, holdBatX, holdBatY;
+        public List<bool> dropRock, bats;
+        public int velocity;
         public int lives;
-        public int speed, gravity, previous;
+        public int speed, gravity, previous, distance;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
         public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel;
@@ -34,8 +35,13 @@ namespace CaveScape
 
             holdX = new List<int>();
             holdY = new List<int>();
+            holdBatX = new List<int>();
+            holdBatY = new List<int>();
+            bats = new List<bool>();
             dropRock = new List<bool>();
+            distance = 500;
 
+            velocity = 10;
             gravity = 10;
             falling = false;
             onGround = true;
@@ -48,12 +54,9 @@ namespace CaveScape
             w2 = false;
             finishedLevel = false;
             
-
             latch = false;
             damaged = false;
             jTimer = 0;
-
-            //oldKS = Keyboard.GetState();
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
@@ -63,6 +66,18 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
+                    if (layout[r, c].type.Equals("bat"))
+                    {
+                        bats.Add(true);
+                        holdBatX.Add(r);
+                        holdBatY.Add(c);
+                    }
+
+                    if (layout[r, c].type.Equals("bat") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        reduceLife();
+                    }
+
                     if (layout[r, c].type.Equals("lava") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
                     {
                         reduceLife();
@@ -114,6 +129,20 @@ namespace CaveScape
 
                     if (w2)
                         break;
+                }
+            }
+
+            for (int k = 0; k < bats.Count; k++)
+            {
+                if (bats[k])
+                {
+                    //bat moving through the air
+                    if (layout[holdBatX[k], holdBatY[k]].pos.X < holdBatX[k] || layout[holdBatX[k], holdBatY[k]].pos.X > holdBatX[k] + distance)
+                    {
+                        velocity *= -1;
+                    }
+                    layout[holdBatX[k], holdBatY[k]].pos.X += velocity;
+                    break;
                 }
             }
 
@@ -353,6 +382,9 @@ namespace CaveScape
             holdX.Clear();
             holdY.Clear();
             dropRock.Clear();
+            bats.Clear();
+            holdBatX.Clear();
+            holdBatY.Clear();
             damaged = true;
         }
 

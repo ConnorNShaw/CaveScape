@@ -16,8 +16,6 @@ namespace CaveScape
     {
         public Bat(Rectangle p) : base(p, Color.Black, "bat")
         {
-
         }
-
     }
 }
