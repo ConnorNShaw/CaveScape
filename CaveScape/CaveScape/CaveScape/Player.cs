@@ -23,7 +23,8 @@ namespace CaveScape
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
         public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel;
-        int jTimer;
+        int jTimer, jCounter;
+        KeyboardState okb;
 
         public Player(Rectangle r)
         {
@@ -57,6 +58,8 @@ namespace CaveScape
             latch = false;
             damaged = false;
             jTimer = 0;
+            jCounter = 0;
+            okb = Keyboard.GetState();
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
@@ -100,6 +103,7 @@ namespace CaveScape
                         latch = true;
                         falling = false;
                         jumping = false;
+                        jCounter = 0;
                         b2 = !b2;
                         onGround = false;
                     }
@@ -190,8 +194,8 @@ namespace CaveScape
                 falling = true;
             else
                 falling = false;
-
-            if (jumping)
+            
+            if (jumping && jCounter <= 2)
             {
                 falling = false;
                 //creates a smoother jump by slowing at the top
@@ -240,6 +244,7 @@ namespace CaveScape
                         onGround = true;
                         b5 = true;
                         jumping = false;
+                        jCounter = 0;
                         falling = false;
                         break;
                     }
@@ -256,6 +261,7 @@ namespace CaveScape
             if ((ks.IsKeyDown(Keys.Left) || ks.IsKeyDown(Keys.A)) && !latch)
             {
                 bool a = false;
+                int mHold = 0;
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
@@ -265,11 +271,19 @@ namespace CaveScape
                             //checks if would hit wall
                             if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
                             {
-                                a = true;
+                                    a = true;
+                                    for(int i = speed - 1; i > 0; i--)
+                                    {
+                                        if(!(layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - i, playerLocat.Y, playerLocat.Width, playerLocat.Height))))
+                                        {
+                                        mHold = i;
+                                        break;
+                                        }
+                                    }
                             }
                             if (a)
                                 break;
-                        }
+                            }
                     }
                     if (a)
                         break;
@@ -287,11 +301,26 @@ namespace CaveScape
                         }
                     }
                 }
+                else
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                layout[r, c].pos.X += mHold;
+                            }
+                        }
+                    }
+
+                }
             }
 
             if ((ks.IsKeyDown(Keys.Right) || ks.IsKeyDown(Keys.D)) && !latch)
             {
                 bool a = false;
+                int mHold = 0;
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
@@ -301,6 +330,14 @@ namespace CaveScape
                             if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
                             {
                                 a = true;
+                                for (int i = speed - 1; i > 0; i--)
+                                {
+                                    if (!(layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + i, playerLocat.Y, playerLocat.Width, playerLocat.Height))))
+                                    {
+                                        mHold = i;
+                                        break;
+                                    }
+                                }
                             }
                             if (a)
                                 break;
@@ -322,15 +359,30 @@ namespace CaveScape
                         }
                     }
                 }
+                else
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                layout[r, c].pos.X -= mHold;
+                            }
+                        }
+                    }
+
+                }
             }
 
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && jumping == false && !latch)
+            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) /*&& jumping == false*/ /*&& jCounter <= 2*/ && !latch && okb.IsKeyUp(Keys.Up))
             {
                 //preps the jump
                 onGround = false;
                 jB = false;
                 jumping = true;
                 jTimer = 0;
+                jCounter++;
             }
             else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
             {
@@ -365,6 +417,7 @@ namespace CaveScape
                     }
                 }
             }
+            okb = ks;
         }
 
         public void addLife()

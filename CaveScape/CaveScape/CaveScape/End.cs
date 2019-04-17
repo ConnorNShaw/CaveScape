@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class End : Block
     {
-        public End(Rectangle p) : base(p, Color.Transparent, "end")
+        public End(Rectangle p) : base(p, Color.Gold, "end")
         {
 
         }
