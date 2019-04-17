@@ -81,6 +81,7 @@
     <Compile Include="Floor.cs" />
     <Compile Include="HealShroom.cs" />
     <Compile Include="Immune.cs" />
+    <Compile Include="Impassable.cs" />
     <Compile Include="Ladder.cs" />
     <Compile Include="Lava.cs" />
     <Compile Include="Level.cs" />

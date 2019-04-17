@@ -375,7 +375,7 @@ namespace CaveScape
                 }
             }
 
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) /*&& jumping == false*/ /*&& jCounter <= 2*/ && !latch && okb.IsKeyUp(Keys.Up))
+            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && !latch && okb.IsKeyUp(Keys.Up))
             {
                 //preps the jump
                 onGround = false;
@@ -386,6 +386,9 @@ namespace CaveScape
             }
             else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
             {
+
+                bool flag = false;
+
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
@@ -393,7 +396,24 @@ namespace CaveScape
                         if (layout[r, c] != null)
                         {
                             //moving up
-                            layout[r, c].pos.Y += speed;
+                            if ((layout[r, c].type == "impassable") && playerLocat.Intersects(layout[r, c].pos))
+                            {
+                                flag = true;
+                            }
+                        }
+                    }
+                }
+
+                if(!flag)
+                {
+                    for (int r = 0; r < layout.GetLength(0); r++)
+                    {
+                        for (int c = 0; c < layout.GetLength(1); c++)
+                        {
+                            if (layout[r, c] != null)
+                            {
+                                layout[r, c].pos.Y += speed;
+                            }
                         }
                     }
                 }
@@ -462,6 +482,5 @@ namespace CaveScape
                 batch.Draw(texture, rect, Color.Pink);
             }
         }
-
     }
 }
