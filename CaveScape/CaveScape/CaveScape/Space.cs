@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Space : Block
     {
-        public Space(Rectangle p) : base(p, Color.Transparent, "space")
+        public Space(Rectangle p) : base(p, Color.SandyBrown, "space")
         {
 
         }

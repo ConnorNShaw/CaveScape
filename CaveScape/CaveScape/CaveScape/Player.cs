@@ -87,6 +87,9 @@ namespace CaveScape
                         latch = true;
                         falling = false;
                         jumping = false;
+
+
+
                         jCounter = 0;
                         b2 = !b2;
                         onGround = false;
@@ -94,7 +97,10 @@ namespace CaveScape
                     else if (ks.IsKeyUp(Keys.Space))
                     {
                         //(playerLocat.Y + playerLocat.Height > layout[r, c].pos.Y && playerLocat.Y < layout[r, c].pos.Y)
-                        //(playerLocat.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.Transparent))
+                        //(playerLocat.Intersects(layout[r, c].pos) && lay
+                        
+                        
+                        //out[r, c].col.Equals(Color.Transparent))
                         latch = false;
                         falling = true;
                     }
@@ -127,6 +133,19 @@ namespace CaveScape
                     bool a = false;
                     for (int r = 0; r < layout.GetLength(0); r++)
                     {
+
+
+
+
+
+
+
+
+
+
+
+
+
                         for (int c = 0; c < layout.GetLength(1); c++)
                         {
                             if (layout[r, c] != null)
@@ -144,16 +163,52 @@ namespace CaveScape
                         if (a)
                             break;
                     }
+
+
+
+
+
+
+
                     if (!a) //rock falls 
                     {
                         layout[holdX[k], holdY[k]].pos.Y += gravity/2;
                         if (playerLocat.Intersects(layout[holdX[k], holdY[k]].pos) && !damaged && dropRock[k])
                         {
                             reduceLife();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         }
                     }
                 }
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             if (w2)
                 speed = 5;
@@ -164,6 +219,20 @@ namespace CaveScape
                 falling = true;
             else
                 falling = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             if (jumping && jCounter <= 2)
             {
@@ -189,6 +258,26 @@ namespace CaveScape
                 }
             }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             if (falling)
             {
                 for (int r = 0; r < layout.GetLength(0); r++)
@@ -209,11 +298,48 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y + gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
                     {
                         onGround = true;
                         b5 = true;
                         jumping = false;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         jCounter = 0;
                         falling = false;
                         break;
