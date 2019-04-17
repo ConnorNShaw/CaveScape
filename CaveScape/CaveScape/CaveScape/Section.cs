@@ -108,6 +108,9 @@ namespace CaveScape
                         case " ":
                             blocks[i, o] = new Space(hold);
                             break;
+                        case "=":
+                            blocks[i, o] = new Impassable(hold);
+                            break;
                     }
 
                     hold.X += 50;
