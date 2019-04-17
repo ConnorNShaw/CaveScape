@@ -26,7 +26,8 @@ namespace CaveScape
 
         public void moveToNextSection()
         {
-            tracker++;
+            if(tracker != levelSections.Count - 1)
+                tracker++;
         }
 
         public bool levelFinished()
