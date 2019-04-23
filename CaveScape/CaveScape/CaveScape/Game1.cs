@@ -145,6 +145,7 @@ namespace CaveScape
                             {
                                 Section section = new Section(tempArray, levelWidth, levelHeight, texture);
                                 levelSections.Add(section);
+                                Console.WriteLine("ADDED A SECTION");
                                 tempArray = new string[levelHeight, levelWidth];
                                 goto lab;
                             }
@@ -158,7 +159,7 @@ namespace CaveScape
                 Console.WriteLine(e.Message);
             }
             level = new Level(levelSections);
-            for(int i = 0; i < levelSections.Count; i++)
+            for (int i = 0; i < levelSections.Count; i++)
             {
                 levelSections[i].setParentLevel(level);
             }
