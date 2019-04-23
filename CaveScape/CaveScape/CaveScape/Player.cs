@@ -549,7 +549,7 @@ namespace CaveScape
         public void reduceLife()
         {
             lives--;
-            speed -= 5;
+            speed = lives * 5;
             previous = speed;
             holdX.Clear();
             holdY.Clear();
