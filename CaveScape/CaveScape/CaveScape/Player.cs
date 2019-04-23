@@ -459,13 +459,16 @@ namespace CaveScape
         {
             int x = 50;
             int y = 50;
-
-            for (int i = 0; i < lives; i++)
+            if (lives != 0)
             {
-                Rectangle rect = new Rectangle(x, y, 10, 10);
-                x += 50;
-                batch.Draw(texture, rect, Color.Pink);
+                for (int i = 0; i < lives; i++)
+                {
+                    Rectangle rect = new Rectangle(x, y, 10, 10);
+                    x += 50;
+                    batch.Draw(texture, rect, Color.Pink);
+                }
             }
+           
         }
 
     }
