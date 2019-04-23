@@ -35,7 +35,7 @@ namespace CaveScape
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 900;
-            graphics.PreferredBackBufferWidth = 1000;
+            graphics.PreferredBackBufferWidth = 1800;
             Content.RootDirectory = "Content";
         }
 

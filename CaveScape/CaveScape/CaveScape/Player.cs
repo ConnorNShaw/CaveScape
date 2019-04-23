@@ -70,6 +70,11 @@ namespace CaveScape
                         reduceLife();
                     }
 
+                    if (layout[r, c].type.Equals("bat") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        reduceLife();
+                    }
+
                     if (layout[r, c].type.Equals("boulder") && playerLocat.Intersects(new Rectangle(layout[r, c].pos.X, layout[r, c].pos.Y, layout[r, c].pos.Width, 10000000)))
                     {
                         dropRock.Add(true);

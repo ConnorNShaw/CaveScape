@@ -27,6 +27,8 @@ namespace CaveScape
 
         Level level;
 
+        
+
         public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture)
         {
             height = a.GetLength(0);
@@ -39,7 +41,7 @@ namespace CaveScape
             y = 0;
             //vGrid = 50;
             //hGrid = 50;
-            player = new Player(new Rectangle(500, 100, 50, 50));
+            player = new Player(new Rectangle(500, 800, 50, 50));
             this.texture = texture;
 
             this.a = a;
@@ -51,7 +53,7 @@ namespace CaveScape
         public void create(string[,] a, bool hasBeenReset)
         {
             //starts beyond the screen to make the bottom the focus
-            Rectangle hold = new Rectangle(0, -50 * height + 700, 50,50);
+            Rectangle hold = new Rectangle(400, -50 * height + 700, 50,50);
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < width; o++)
@@ -114,7 +116,7 @@ namespace CaveScape
                     //adjust the setting rectangle
                 }
                 hold.Y += 50;
-                hold.X = 0;
+                hold.X = 400;
             }
             startBlocks = (Block[,])blocks.Clone();
         }
