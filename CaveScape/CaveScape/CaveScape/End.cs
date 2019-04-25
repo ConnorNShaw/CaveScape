@@ -16,7 +16,6 @@ namespace CaveScape
     {
         public End(Rectangle p) : base(p, Color.Gold, "end")
         {
-
         }
     }
 }

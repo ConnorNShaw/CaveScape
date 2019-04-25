@@ -46,9 +46,6 @@ namespace CaveScape
             return type;
         }
 
-
-
-
         public Color getColor()
         {
             return col;

@@ -75,11 +75,13 @@
     <Compile Include="Bat.cs" />
     <Compile Include="Block.cs" />
     <Compile Include="Boulder.cs" />
+    <Compile Include="Stop.cs" />
     <Compile Include="End.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Floor.cs" />
     <Compile Include="HealShroom.cs" />
     <Compile Include="Immune.cs" />
+    <Compile Include="Impassable.cs" />
     <Compile Include="Ladder.cs" />
     <Compile Include="Lava.cs" />
     <Compile Include="Level.cs" />

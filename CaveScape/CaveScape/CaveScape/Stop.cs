@@ -10,12 +10,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+
 namespace CaveScape
 {
-    class Bat : Enemy
+    class Stop : Obstacle
     {
-        public Bat(Rectangle p) : base(p, Color.Black, "bat")
+        public Stop(Rectangle p) : base(p, Color.Transparent, "stop")
         {
+
         }
     }
 }
