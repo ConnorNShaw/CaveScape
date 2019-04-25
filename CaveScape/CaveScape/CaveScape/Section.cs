@@ -143,24 +143,32 @@ namespace CaveScape
                 create(a, hasBeenReset);
                 player.damaged = false;
             }
-            for (int i = 0; i < height; i++)
-            {
-                for (int o = 0; o < width; o++)
+            
+                for (int i = 0; i < height; i++)
                 {
-                    if (blocks[i, o] != null && blocks[i, o].type.Equals("space"))
-                        batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
-                    //draws each block with its properties
+                    for (int o = 0; o < width; o++)
+                    {
+                    if (blocks[i, o].checkScreen())
+                    {
+                        if (blocks[i, o] != null && blocks[i, o].type.Equals("space"))
+                            batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
+                        //draws each block with its properties
+                    }
+                    }
                 }
-            }
-            for (int i = 0; i < height; i++)
-            {
-                for (int o = 0; o < width; o++)
+                for (int i = 0; i < height; i++)
                 {
-                    if(blocks[i, o] != null && !blocks[i, o].type.Equals("space"))
-                         batch.Draw(texture, blocks[i,o].pos, blocks[i,o].getCol());
-                    //draws each block with its properties
+                    for (int o = 0; o < width; o++)
+                    {
+                    if (blocks[i, o].checkScreen())
+                    {
+                        if (blocks[i, o] != null && !blocks[i, o].type.Equals("space"))
+                            batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
+                        //draws each block with its properties
+                    }
+                    }
                 }
-            }
+            
            
 
 
