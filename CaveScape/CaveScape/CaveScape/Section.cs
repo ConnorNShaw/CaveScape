@@ -51,7 +51,7 @@ namespace CaveScape
         public void create(string[,] a, bool hasBeenReset)
         {
             //starts beyond the screen to make the bottom the focus
-            Rectangle hold = new Rectangle(0, -50 * height + 700, 50,50);
+            Rectangle hold = new Rectangle(400, -50 * height + 700, 50,50);
             for (int i = 0; i < height; i++)
             {
                 for (int o = 0; o < width; o++)
@@ -119,7 +119,7 @@ namespace CaveScape
                     //adjust the setting rectangle
                 }
                 hold.Y += 50;
-                hold.X = 0;
+                hold.X = 400;
             }
             
             startBlocks = (Block[,])blocks.Clone();
@@ -141,24 +141,31 @@ namespace CaveScape
                 create(a, hasBeenReset);
                 player.damaged = false;
             }
-            for (int i = 0; i < height; i++)
-            {
-                for (int o = 0; o < width; o++)
+            
+                for (int i = 0; i < height; i++)
                 {
-                    if (blocks[i, o] != null && blocks[i, o].type.Equals("space"))
-                        batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
-                    //draws each block with its properties
+                    for (int o = 0; o < width; o++)
+                    {
+                    if (blocks[i, o].checkScreen())
+                    {
+                        if (blocks[i, o] != null && blocks[i, o].type.Equals("space"))
+                            batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
+                        //draws each block with its properties
+                    }
+                    }
                 }
-            }
-            for (int i = 0; i < height; i++)
-            {
-                for (int o = 0; o < width; o++)
+                for (int i = 0; i < height; i++)
                 {
-                    if(blocks[i, o] != null && !blocks[i, o].type.Equals("space"))
-                         batch.Draw(texture, blocks[i,o].pos, blocks[i,o].getCol());
-                    //draws each block with its properties
+                    for (int o = 0; o < width; o++)
+                    {
+                        if (blocks[i, o].checkScreen())
+                        {
+                            if (blocks[i, o] != null && !blocks[i, o].type.Equals("space"))
+                                batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
+                            //draws each block with its properties
+                        }
+                    }
                 }
-            }
             player.setBats(numBats);
             player.playerControls(ks, blocks);
             batch.Draw(texture, player.playerLocat, Color.White);

@@ -35,7 +35,7 @@ namespace CaveScape
             graphics = new GraphicsDeviceManager(this);
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 900;
-            graphics.PreferredBackBufferWidth = 1000;
+            graphics.PreferredBackBufferWidth = 1800;
             Content.RootDirectory = "Content";
         }
 
@@ -146,6 +146,7 @@ namespace CaveScape
                             {
                                 Section section = new Section(tempArray, levelWidth, levelHeight, texture, numBats);
                                 levelSections.Add(section);
+                                Console.WriteLine("ADDED A SECTION");
                                 tempArray = new string[levelHeight, levelWidth];
                                 goto lab;
                             }
@@ -159,7 +160,7 @@ namespace CaveScape
                 Console.WriteLine(e.Message);
             }
             level = new Level(levelSections);
-            for(int i = 0; i < levelSections.Count; i++)
+            for (int i = 0; i < levelSections.Count; i++)
             {
                 levelSections[i].setParentLevel(level);
             }

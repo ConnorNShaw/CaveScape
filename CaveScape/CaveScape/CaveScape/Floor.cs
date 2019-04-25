@@ -16,8 +16,6 @@ namespace CaveScape
     {
         public Floor(Rectangle p) : base(p, Color.SaddleBrown, "floor")
         {
-
-
         }
     }
 }
