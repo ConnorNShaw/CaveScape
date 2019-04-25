@@ -14,9 +14,8 @@ namespace CaveScape
 {
     class Section
     {
-
         string[,] layout, a;
-        int width, height, x, y, vGrid, hGrid;
+        int width, height, x, y, vGrid, hGrid, numBats;
         bool created, hasBeenReset;
 
         string[,] text;
@@ -27,7 +26,7 @@ namespace CaveScape
 
         Level level;
 
-        public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture)
+        public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture, int bats)
         {
             height = a.GetLength(0);
             width = a.GetLength(1);
@@ -40,6 +39,7 @@ namespace CaveScape
             //vGrid = 50;
             //hGrid = 50;
             player = new Player(new Rectangle(500, 100, 50, 50));
+            numBats = bats;
             this.texture = texture;
 
             this.a = a;
@@ -115,13 +115,13 @@ namespace CaveScape
                             blocks[i, o] = new Impassable(hold);
                             break;
                     }
-
                     hold.X += 50;
                     //adjust the setting rectangle
                 }
                 hold.Y += 50;
                 hold.X = 0;
             }
+            
             startBlocks = (Block[,])blocks.Clone();
         }
 
@@ -159,10 +159,7 @@ namespace CaveScape
                     //draws each block with its properties
                 }
             }
-           
-
-
-
+            player.setBats(numBats);
             player.playerControls(ks, blocks);
             batch.Draw(texture, player.playerLocat, Color.White);
             player.drawLives(batch, texture);

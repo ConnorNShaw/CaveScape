@@ -105,7 +105,7 @@ namespace CaveScape
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkBlue);
+            GraphicsDevice.Clear(Color.SandyBrown);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -126,6 +126,7 @@ namespace CaveScape
                     {
                         int levelWidth = Int32.Parse(reader.ReadLine());
                         int levelHeight = Int32.Parse(reader.ReadLine());
+                        int numBats = Int32.Parse(reader.ReadLine());
 
                         string[,] tempArray = new string[levelHeight, levelWidth];
                         int r = 0;
@@ -143,7 +144,7 @@ namespace CaveScape
                             }
                             else
                             {
-                                Section section = new Section(tempArray, levelWidth, levelHeight, texture);
+                                Section section = new Section(tempArray, levelWidth, levelHeight, texture, numBats);
                                 levelSections.Add(section);
                                 tempArray = new string[levelHeight, levelWidth];
                                 goto lab;

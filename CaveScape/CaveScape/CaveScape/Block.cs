@@ -26,6 +26,16 @@ namespace CaveScape
             this.type = type;
         }
 
+        public void moveX(int m)
+        {
+            pos.X += m;
+        }
+
+        public void moveY(int m)
+        {
+            pos.Y += m;
+        }
+
         public Rectangle getPos()
         {
             return pos;
