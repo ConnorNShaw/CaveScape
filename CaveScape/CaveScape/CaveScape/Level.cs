@@ -22,7 +22,7 @@ namespace CaveScape
         public Level(List<Section> levelSections)
         {
             this.levelSections = levelSections;
-            shuffleSections();
+            //shuffleSections();
             Console.WriteLine(levelSections.ToString());
             tracker = 0;
             finished = false;
@@ -55,7 +55,7 @@ namespace CaveScape
         public void drawLevel(SpriteBatch batch, Player player)
         {
             if(!finished)
-                levelSections[tracker].drawSection(batch);//, player);
+                 levelSections[tracker].drawSection(batch);//, player);
         }
 
         private void shuffleSections()

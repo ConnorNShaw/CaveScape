@@ -15,8 +15,9 @@ namespace CaveScape
 {
     class Player
     {
-        public List<int> holdX, holdY, holdBatX, holdBatY;
-        public List<bool> dropRock, bats;
+        int numBat;
+        public List<int> holdX, holdY, holdBatX, holdBatY, holdVelocity;
+        public List<bool> dropRock;
         public int velocity;
         public int lives;
         public int speed, gravity, previous, distance, immuneCounter, timer, oldTimer;
@@ -36,11 +37,10 @@ namespace CaveScape
 
             holdX = new List<int>();
             holdY = new List<int>();
+            holdVelocity = new List<int>();
             holdBatX = new List<int>();
             holdBatY = new List<int>();
-            bats = new List<bool>();
             dropRock = new List<bool>();
-            distance = 500;
 
             velocity = 10;
             gravity = 10;
@@ -65,6 +65,11 @@ namespace CaveScape
             timer = 0;
             oldTimer = 0;
             okb = Keyboard.GetState();
+        }
+
+        public void setBats(int numBats)
+        {
+            numBat = numBats;
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
@@ -108,10 +113,12 @@ namespace CaveScape
 
                     if (layout[r, c].type.Equals("bat"))
                     {
-                        bats.Add(true);
-                        holdBatX.Add(r);
-                        holdBatY.Add(c);
-                    }
+                        if (layout[r, c].type.Equals("bat") && holdBatX.Count < numBat)
+                        {
+                            holdBatX.Add(r);
+                            holdBatY.Add(c);
+                            holdVelocity.Add(10);
+                        }
 
                     if (layout[r, c].type.Equals("bat") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
                     {
@@ -129,12 +136,12 @@ namespace CaveScape
                             reduceImmunity();
                     }
 
-                    if (layout[r, c].type.Equals("boulder") && playerLocat.Intersects(new Rectangle(layout[r, c].pos.X, layout[r, c].pos.Y, layout[r, c].pos.Width, 10000000)))
-                    {
-                        dropRock.Add(true);
-                        holdX.Add(r);
-                        holdY.Add(c);
-                    }
+                        if (layout[r, c].type.Equals("boulder") && playerLocat.Intersects(new Rectangle(layout[r, c].pos.X, layout[r, c].pos.Y, layout[r, c].pos.Width, 10000000)))
+                        {
+                            dropRock.Add(true);
+                            holdX.Add(r);
+                            holdY.Add(c);
+                        }
 
                     if (layout[r, c].type.Equals("spike") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
                     {
@@ -144,55 +151,59 @@ namespace CaveScape
                             reduceImmunity();
                     }
 
-                    if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
-                    {
-                        latch = true;
-                        falling = false;
-                        jumping = false;
-                        jCounter = 0;
-                        b2 = !b2;
-                        onGround = false;
-                    }
-                    else if (ks.IsKeyUp(Keys.Space))
-                    {
-                        //(playerLocat.Y + playerLocat.Height > layout[r, c].pos.Y && playerLocat.Y < layout[r, c].pos.Y)
-                        //(playerLocat.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.Transparent))
-                        latch = false;
-                        falling = true;
-                    }
+                        if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
+                        {
+                            latch = true;
+                            falling = false;
+                            jumping = false;
+                            jCounter = 0;
+                            b2 = !b2;
+                            onGround = false;
+                        }
+                        else if (ks.IsKeyUp(Keys.Space))
+                        {
+                            //(playerLocat.Y + playerLocat.Height > layout[r, c].pos.Y && playerLocat.Y < layout[r, c].pos.Y)
+                            //(playerLocat.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.Transparent))
+                            latch = false;
+                            falling = true;
+                        }
 
-                    if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
-                    {
-                        w2 = true;
-                        break;
-                    }
+                        if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
+                        {
+                            w2 = true;
+                            break;
+                        }
 
-                    if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
-                    {
-                        jB = true;
-                    }
+                        if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
+                        {
+                            jB = true;
+                        }
 
-                    if(layout[r, c].type.Equals("end") && playerLocat.Intersects(layout[r, c].pos))
-                    {
-                        finishedLevel = true;
-                    }
+                        if (layout[r, c].type.Equals("end") && playerLocat.Intersects(layout[r, c].pos))
+                        {
+                            finishedLevel = true;
+                        }
 
-                    if (w2)
-                        break;
+                        if (w2)
+                            break;
+                    }
                 }
             }
 
-            for (int k = 0; k < bats.Count; k++)
+            for (int k = 0; k < holdBatX.Count; k++)
             {
-                if (bats[k])
+                //bat moves
+                layout[holdBatX[k], holdBatY[k]].moveX(holdVelocity[k]);
+                for (int r = 0; r < layout.GetLength(0); r++)
                 {
-                    //bat moving through the air
-                    if (layout[holdBatX[k], holdBatY[k]].pos.X < holdBatX[k] || layout[holdBatX[k], holdBatY[k]].pos.X > holdBatX[k] + distance)
+                    for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        velocity *= -1;
+                        //bat changes direction
+                        if (layout[holdBatX[k], holdBatY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("stop"))
+                        {
+                            holdVelocity[k] *= -1;
+                        }
                     }
-                    layout[holdBatX[k], holdBatY[k]].pos.X += velocity;
-                    break;
                 }
             }
 
@@ -220,8 +231,6 @@ namespace CaveScape
                         if (a)
                             break;
                     }
-
-
                     if (!a) //rock falls 
                     {
                         layout[holdX[k], holdY[k]].pos.Y += gravity/2;
@@ -245,8 +254,7 @@ namespace CaveScape
                 falling = true;
             else
                 falling = false;
-
-
+            
             if (jumping && jCounter <= 2)
             {
                 falling = false;
@@ -271,7 +279,6 @@ namespace CaveScape
                 }
             }
 
-
             if (falling)
             {
                 for (int r = 0; r < layout.GetLength(0); r++)
@@ -292,19 +299,22 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
-                    if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y + gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
+                    if (layout[r, c].checkScreen())
                     {
-                        onGround = true;
-                        b5 = true;
-                        jumping = false;
-                        jCounter = 0;
-                        falling = false;
-                        break;
-                    }
-                    else
-                    {
-                        onGround = false;
-                        falling = true;
+                        if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y + gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
+                        {
+                            onGround = true;
+                            b5 = true;
+                            jumping = false;
+                            jCounter = 0;
+                            falling = false;
+                            break;
+                        }
+                        else
+                        {
+                            onGround = false;
+                            falling = true;
+                        }
                     }
                 }
                 if (b5)
@@ -319,7 +329,7 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c] != null)
+                        if (layout[r, c] != null && layout[r, c].checkScreen())
                         {
                             //checks if would hit wall
                             if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X - speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
@@ -378,7 +388,7 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c] != null)
+                        if (layout[r, c] != null && layout[r, c].checkScreen())
                         {
                             if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X + speed, playerLocat.Y, playerLocat.Width, playerLocat.Height)) && layout[r, c].col.Equals(Color.SaddleBrown))
                             {
@@ -446,7 +456,7 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c] != null)
+                        if (layout[r, c] != null && layout[r, c].checkScreen())
                         {
                             //moving up
                             if ((layout[r, c].type == "impassable") && playerLocat.Intersects(layout[r, c].pos))

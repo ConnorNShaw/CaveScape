@@ -24,6 +24,26 @@ namespace CaveScape
             pos = p;
             this.col = col;
             this.type = type;
+            
+        }
+
+
+        public bool checkScreen()
+        {
+            if (pos.X <= 0 - pos.Width || pos.X >= 1800 || pos.Y <= 0 - pos.Height || pos.Y >= 900)
+                return false;
+            else
+                return true;
+        }
+
+        public void moveX(int m)
+        {
+            pos.X += m;
+        }
+
+        public void moveY(int m)
+        {
+            pos.Y += m;
         }
 
         public Rectangle getPos()

@@ -14,9 +14,8 @@ namespace CaveScape
 {
     class Section
     {
-
         string[,] layout, a;
-        int width, height, x, y, vGrid, hGrid;
+        int width, height, x, y, vGrid, hGrid, numBats;
         bool created, hasBeenReset;
 
         string[,] text;
@@ -27,9 +26,7 @@ namespace CaveScape
 
         Level level;
 
-        
-
-        public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture)
+        public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture, int bats)
         {
             height = a.GetLength(0);
             width = a.GetLength(1);
@@ -41,7 +38,8 @@ namespace CaveScape
             y = 0;
             //vGrid = 50;
             //hGrid = 50;
-            player = new Player(new Rectangle(500, 800, 50, 50));
+            player = new Player(new Rectangle(500, 100, 50, 50));
+            numBats = bats;
             this.texture = texture;
 
             this.a = a;
@@ -117,13 +115,13 @@ namespace CaveScape
                             blocks[i, o] = new Impassable(hold);
                             break;
                     }
-
                     hold.X += 50;
                     //adjust the setting rectangle
                 }
                 hold.Y += 50;
                 hold.X = 400;
             }
+            
             startBlocks = (Block[,])blocks.Clone();
         }
 
@@ -143,28 +141,32 @@ namespace CaveScape
                 create(a, hasBeenReset);
                 player.damaged = false;
             }
-            for (int i = 0; i < height; i++)
-            {
-                for (int o = 0; o < width; o++)
+            
+                for (int i = 0; i < height; i++)
                 {
-                    if (blocks[i, o] != null && blocks[i, o].type.Equals("space"))
-                        batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
-                    //draws each block with its properties
+                    for (int o = 0; o < width; o++)
+                    {
+                    if (blocks[i, o].checkScreen())
+                    {
+                        if (blocks[i, o] != null && blocks[i, o].type.Equals("space"))
+                            batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
+                        //draws each block with its properties
+                    }
+                    }
                 }
-            }
-            for (int i = 0; i < height; i++)
-            {
-                for (int o = 0; o < width; o++)
+                for (int i = 0; i < height; i++)
                 {
-                    if(blocks[i, o] != null && !blocks[i, o].type.Equals("space"))
-                         batch.Draw(texture, blocks[i,o].pos, blocks[i,o].getCol());
-                    //draws each block with its properties
+                    for (int o = 0; o < width; o++)
+                    {
+                        if (blocks[i, o].checkScreen())
+                        {
+                            if (blocks[i, o] != null && !blocks[i, o].type.Equals("space"))
+                                batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
+                            //draws each block with its properties
+                        }
+                    }
                 }
-            }
-           
-
-
-
+            player.setBats(numBats);
             player.playerControls(ks, blocks);
             batch.Draw(texture, player.playerLocat, Color.White);
             player.drawLives(batch, texture);
