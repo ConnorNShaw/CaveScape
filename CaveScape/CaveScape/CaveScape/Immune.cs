@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class Immune : Pickup
     {
-        public Immune(Rectangle p) : base(p, Color.Yellow, "immune")
+        public Immune(Rectangle p) : base(p, Color.Red, "immune")
         {
 
         }

@@ -20,10 +20,10 @@ namespace CaveScape
         public List<bool> dropRock;
         public int velocity;
         public int lives;
-        public int speed, gravity, previous;
+        public int speed, gravity, previous, distance, immuneCounter, timer, oldTimer;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel;
+        public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel, immune, immuneDamaged;
         int jTimer, jCounter;
         KeyboardState okb;
 
@@ -57,8 +57,13 @@ namespace CaveScape
             
             latch = false;
             damaged = false;
+            immune = false;
+            immuneDamaged = false;
+            immuneCounter = 0;
             jTimer = 0;
             jCounter = 0;
+            timer = 0;
+            oldTimer = 0;
             okb = Keyboard.GetState();
         }
 
@@ -71,78 +76,117 @@ namespace CaveScape
         {
             List<Block> active = getActive(layout);
 
+            timer++;
+            //int seconds = timer / 60;
+            //if(timer == oldTimer)
+            //{
+            //    immuneCounter--;
+            //}
+            //oldTimer = timer;
+
+            if(timer % 60 == 0 && immune)
+            {
+                immuneCounter--;
+            }
+            
+
             w2 = false;
             for (int r = 0; r < layout.GetLength(0); r++)
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
-                    if (layout[r, c].checkScreen())
+
+                    if(layout[r,c].type.Equals("immune") && playerLocat.Intersects(layout[r, c].pos))
                     {
-                        if (layout[r, c].type.Equals("bat") && holdBatX.Count < numBat)
-                        {
-                            holdBatX.Add(r);
-                            holdBatY.Add(c);
-                            holdVelocity.Add(10);
-                        }
-
-                        if (layout[r, c].type.Equals("bat") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
-                        {
-                            reduceLife();
-                        }
-
-                        if (layout[r, c].type.Equals("lava") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
-                        {
-                            reduceLife();
-                        }
-
-                        if (layout[r, c].type.Equals("boulder") && playerLocat.Intersects(new Rectangle(layout[r, c].pos.X, layout[r, c].pos.Y, layout[r, c].pos.Width, 10000000)))
-                        {
-                            dropRock.Add(true);
-                            holdX.Add(r);
-                            holdY.Add(c);
-                        }
-
-                        if (layout[r, c].type.Equals("spike") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
-                        {
-                            reduceLife();
-                        }
-
-                        if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
-                        {
-                            latch = true;
-                            falling = false;
-                            jumping = false;
-                            jCounter = 0;
-                            b2 = !b2;
-                            onGround = false;
-                        }
-                        else if (ks.IsKeyUp(Keys.Space))
-                        {
-                            //(playerLocat.Y + playerLocat.Height > layout[r, c].pos.Y && playerLocat.Y < layout[r, c].pos.Y)
-                            //(playerLocat.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.Transparent))
-                            latch = false;
-                            falling = true;
-                        }
-
-                        if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
-                        {
-                            w2 = true;
-                            break;
-                        }
-
-                        if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
-                        {
-                            jB = true;
-                        }
-
-                        if (layout[r, c].type.Equals("end") && playerLocat.Intersects(layout[r, c].pos))
-                        {
-                            finishedLevel = true;
-                        }
-
-                        if (w2)
-                            break;
+                        Rectangle rect = layout[r, c].getPos();
+                        layout[r, c] = new Space(rect);
+                        immune = true;
+                        immuneCounter += 6;
                     }
+
+                    if (layout[r, c].type.Equals("heal") && playerLocat.Intersects(layout[r, c].pos))
+                    {
+                        Rectangle rect = layout[r, c].getPos();
+                        layout[r, c] = new Space(rect);
+                        lives++;
+                        speed = lives * 5;
+                    }
+
+
+                    if (layout[r, c].type.Equals("bat") && holdBatX.Count < numBat)
+                    {
+                        holdBatX.Add(r);
+                        holdBatY.Add(c);
+                        holdVelocity.Add(10);
+                    }
+                    
+
+                    if (layout[r, c].type.Equals("bat") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        if (!immune)
+                            reduceLife();
+                        else
+                            reduceImmunity();
+                    }
+
+                    if (layout[r, c].type.Equals("lava") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        if (!immune)
+                            reduceLife();
+                        else
+                            reduceImmunity();
+                    }
+
+                    if (layout[r, c].type.Equals("boulder") && playerLocat.Intersects(new Rectangle(layout[r, c].pos.X, layout[r, c].pos.Y, layout[r, c].pos.Width, 10000000)))
+                    {
+                        dropRock.Add(true);
+                        holdX.Add(r);
+                        holdY.Add(c);
+                    }
+
+                    if (layout[r, c].type.Equals("spike") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        if (!immune)
+                            reduceLife();
+                        else
+                            reduceImmunity();
+                    }
+
+                    if (layout[r, c].type.Equals("ladder") && playerLocat.Intersects(layout[r, c].pos) && ks.IsKeyDown(Keys.Space))
+                    {
+                        latch = true;
+                        falling = false;
+                        jumping = false;
+                        jCounter = 0;
+                        b2 = !b2;
+                        onGround = false;
+                    }
+                    else if (ks.IsKeyUp(Keys.Space))
+                    {
+                        //(playerLocat.Y + playerLocat.Height > layout[r, c].pos.Y && playerLocat.Y < layout[r, c].pos.Y)
+                        //(playerLocat.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.Transparent))
+                        latch = false;
+                        falling = true;
+                    }
+
+                    if (layout[r, c].type.Equals("water") && playerLocat.Intersects(layout[r, c].pos))
+                    {
+                        w2 = true;
+                        break;
+                    }
+
+                    if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
+                    {
+                        jB = true;
+                    }
+
+                    if (layout[r, c].type.Equals("end") && playerLocat.Intersects(layout[r, c].pos))
+                    {
+                        finishedLevel = true;
+                    }
+
+                    if (w2)
+                        break;
                 }
             }
 
@@ -190,9 +234,12 @@ namespace CaveScape
                     if (!a) //rock falls 
                     {
                         layout[holdX[k], holdY[k]].pos.Y += 1;
-                        if (playerLocat.Intersects(layout[holdX[k], holdY[k]].pos) && !damaged && dropRock[k])
+                        if (playerLocat.Intersects(layout[holdX[k], holdY[k]].pos) && !damaged &&!immuneDamaged && dropRock[k])
                         {
-                            reduceLife();
+                            if (!immune)
+                                reduceLife();
+                            else
+                                reduceImmunity();
                         }
                     }
                 }
@@ -465,16 +512,35 @@ namespace CaveScape
 
         public void reduceLife()
         {
-            lives--;
-            speed = lives * 5;
-            previous = speed;
-            holdX.Clear();
-            holdY.Clear();
-            dropRock.Clear();
-            holdBatX.Clear();
-            holdBatY.Clear();
-            holdVelocity.Clear();
-            damaged = true;
+            if(!immune)
+            {
+                lives--;
+                speed = lives * 5;
+                previous = speed;
+                holdX.Clear();
+                holdY.Clear();
+                dropRock.Clear();
+                holdBatX.Clear();
+                holdBatY.Clear();
+                damaged = true;
+            }
+        }
+        public void reduceImmunity()
+        {
+            if(immune)
+            {
+                previous = speed;
+                holdX.Clear();
+                holdY.Clear();
+                dropRock.Clear();
+                holdBatX.Clear();
+                holdBatY.Clear();
+                immuneDamaged = true;
+                if (immuneCounter <= 0)
+                {
+                    immune = false;
+                }
+            }
         }
 
         public Boolean isDead()
@@ -520,7 +586,17 @@ namespace CaveScape
                     batch.Draw(texture, rect, Color.Pink);
                 }
             }
-           
+
+            int xI = 50;
+            int xI2 = 30;
+            int yI = 100;
+
+            if (immuneCounter != 0)
+            {
+                Rectangle rect = new Rectangle(xI, yI, immuneCounter * xI2, 10);
+                batch.Draw(texture, rect, Color.Red);
+            }
+
         }
     }
 }
