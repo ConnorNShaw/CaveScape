@@ -143,33 +143,27 @@ namespace CaveScape
                 create(a, hasBeenReset);
                 player.damaged = false;
             }
-            
-                for (int i = 0; i < height; i++)
+
+            List<Block> active = player.getActive(blocks);
+            for (int i = 0; i < active.Count; i++)
+            {
+                if (active[i].type.Equals("space"))
                 {
-                    for (int o = 0; o < width; o++)
-                    {
-                    if (blocks[i, o].checkScreen())
-                    {
-                        if (blocks[i, o] != null && blocks[i, o].type.Equals("space"))
-                            batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
-                        //draws each block with its properties
-                    }
-                    }
+                    batch.Draw(texture, active[i].pos, active[i].col);
                 }
-                for (int i = 0; i < height; i++)
+                
+            }
+            for (int i = 0; i < active.Count; i++)
+            {
+                if (!active[i].type.Equals("space"))
                 {
-                    for (int o = 0; o < width; o++)
-                    {
-                    if (blocks[i, o].checkScreen())
-                    {
-                        if (blocks[i, o] != null && !blocks[i, o].type.Equals("space"))
-                            batch.Draw(texture, blocks[i, o].pos, blocks[i, o].getCol());
-                        //draws each block with its properties
-                    }
-                    }
+                    batch.Draw(texture, active[i].pos, active[i].col);
                 }
-            
-           
+
+            }
+
+
+
 
 
 
