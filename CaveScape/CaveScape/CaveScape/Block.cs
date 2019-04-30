@@ -18,7 +18,6 @@ namespace CaveScape
         public Color col;
         public String type;
         public Texture2D tex;
-        
 
         public Block(Rectangle p, Color col, String type)
         {
@@ -37,6 +36,15 @@ namespace CaveScape
                 return true;
         }
 
+        public void moveX(int m)
+        {
+            pos.X += m;
+        }
+
+        public void moveY(int m)
+        {
+            pos.Y += m;
+        }
 
         public Rectangle getPos()
         {

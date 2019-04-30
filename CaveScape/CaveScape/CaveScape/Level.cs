@@ -22,7 +22,7 @@ namespace CaveScape
         public Level(List<Section> levelSections)
         {
             this.levelSections = levelSections;
-            shuffleSections();
+            //shuffleSections();
             Console.WriteLine(levelSections.ToString());
             tracker = 0;
             finished = false;
