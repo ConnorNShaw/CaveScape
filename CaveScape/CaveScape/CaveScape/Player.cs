@@ -69,7 +69,7 @@ namespace CaveScape
 
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
-            //Block[,] active = getActive(layout);
+            List<Block> active = getActive(layout);
 
             w2 = false;
             for (int r = 0; r < layout.GetLength(0); r++)
@@ -189,7 +189,7 @@ namespace CaveScape
                     }
                     if (!a) //rock falls 
                     {
-                        layout[holdX[k], holdY[k]].pos.Y += 5;
+                        layout[holdX[k], holdY[k]].pos.Y += 1;
                         if (playerLocat.Intersects(layout[holdX[k], holdY[k]].pos) && !damaged && dropRock[k])
                         {
                             reduceLife();
@@ -485,6 +485,27 @@ namespace CaveScape
             }
             return false;
         }
+
+        public List<Block> getActive(Block[,] layout)
+        {
+            List<Block> act = new List<Block>();
+            for (int i = 0; i < layout.GetLength(0); i++)
+            {
+                for (int o = 0; o < layout.GetLength(1); o++)
+                {
+                    if (layout[i, o].checkScreen())
+                    {
+                        act.Add(layout[i, o]);
+                    }
+                    
+
+
+                }
+
+            }
+            return act;
+        }
+
 
         public void drawLives(SpriteBatch batch, Texture2D texture)
         {
