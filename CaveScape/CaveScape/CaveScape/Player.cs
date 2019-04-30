@@ -76,7 +76,6 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
-                    
                     if (layout[r, c].checkScreen())
                     {
                         if (layout[r, c].type.Equals("bat") && holdBatX.Count < numBat)
@@ -92,11 +91,6 @@ namespace CaveScape
                         }
 
                         if (layout[r, c].type.Equals("lava") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
-                        {
-                            reduceLife();
-                        }
-
-                        if (layout[r, c].type.Equals("bat") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
                         {
                             reduceLife();
                         }
@@ -195,7 +189,7 @@ namespace CaveScape
                     }
                     if (!a) //rock falls 
                     {
-                        layout[holdX[k], holdY[k]].pos.Y += gravity/2;
+                        layout[holdX[k], holdY[k]].pos.Y += 5;
                         if (playerLocat.Intersects(layout[holdX[k], holdY[k]].pos) && !damaged && dropRock[k])
                         {
                             reduceLife();
