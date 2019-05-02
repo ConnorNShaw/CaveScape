@@ -71,7 +71,7 @@ namespace CaveScape
         {
             numBat = numBats;
         }
-
+        //
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
             List<Block> active = getActive(layout);
