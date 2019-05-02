@@ -22,7 +22,7 @@ namespace CaveScape
         public Level(List<Section> levelSections)
         {
             this.levelSections = levelSections;
-            //shuffleSections();
+            shuffleSections();
             Console.WriteLine(levelSections.ToString());
             tracker = 0;
             finished = false;
@@ -66,11 +66,10 @@ namespace CaveScape
             int randomIndex = 0;
             while(levelSections.Count > 0)
             {
-                randomIndex = random.Next(0, levelSections.Count); //Choose a random object in the list
+                randomIndex = random.Next(0, levelSections.Count - 1); //Choose a random object in the list
                 randomList.Add(levelSections[randomIndex]); //add it to the new, random list
                 levelSections.RemoveAt(randomIndex); //remove to avoid duplicates
             }
-
             for(int i = 0; i < randomList.Count; i++)
             {
                 levelSections.Add(randomList[i]);
