@@ -125,7 +125,7 @@ namespace CaveScape
                     {
                         holdSpiderX.Add(r);
                         holdSpiderY.Add(c);
-                        holdSpiderVelocity.Add(10);
+                        holdSpiderVelocity.Add(5);
                     }
 
                     if (layout[r, c].type.Equals("spider") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
@@ -140,7 +140,7 @@ namespace CaveScape
                     {
                         holdBatX.Add(r);
                         holdBatY.Add(c);
-                        holdBatVelocity.Add(10);
+                        holdBatVelocity.Add(5);
                     }
 
                     if (layout[r, c].type.Equals("bat") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
@@ -618,7 +618,6 @@ namespace CaveScape
             }
             return act;
         }
-
 
         public void drawLives(SpriteBatch batch, Texture2D texture)
         {
