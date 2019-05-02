@@ -127,6 +127,7 @@ namespace CaveScape
                         int levelWidth = Int32.Parse(reader.ReadLine());
                         int levelHeight = Int32.Parse(reader.ReadLine());
                         int numBats = Int32.Parse(reader.ReadLine());
+                        int numSpiders = Int32.Parse(reader.ReadLine());
 
                         string[,] tempArray = new string[levelHeight, levelWidth];
                         int r = 0;
@@ -144,7 +145,7 @@ namespace CaveScape
                             }
                             else
                             {
-                                Section section = new Section(tempArray, levelWidth, levelHeight, texture, numBats);
+                                Section section = new Section(tempArray, levelWidth, levelHeight, texture, numBats, numSpiders);
                                 levelSections.Add(section);
                                 Console.WriteLine("ADDED A SECTION");
                                 tempArray = new string[levelHeight, levelWidth];

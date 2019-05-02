@@ -15,7 +15,7 @@ namespace CaveScape
     class Section
     {
         string[,] layout, a;
-        int width, height, x, y, vGrid, hGrid, numBats;
+        int width, height, x, y, vGrid, hGrid, numBats, numSpiders;
         bool created, hasBeenReset;
 
         string[,] text;
@@ -26,7 +26,7 @@ namespace CaveScape
 
         Level level;
 
-        public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture, int bats)
+        public Section(string[,] a, int sectionWidth, int sectionHeight, Texture2D texture, int bats, int spiders)
         {
             height = a.GetLength(0);
             width = a.GetLength(1);
@@ -40,6 +40,7 @@ namespace CaveScape
             //hGrid = 50;
             player = new Player(new Rectangle(500, 100, 50, 50));
             numBats = bats;
+            numSpiders = spiders;
             this.texture = texture;
 
             this.a = a;
@@ -160,11 +161,8 @@ namespace CaveScape
 
             }
 
-
-
-
-
             player.setBats(numBats);
+            player.setSpiders(numSpiders);
             player.playerControls(ks, blocks);
             batch.Draw(texture, player.playerLocat, Color.White);
             player.drawLives(batch, texture);
