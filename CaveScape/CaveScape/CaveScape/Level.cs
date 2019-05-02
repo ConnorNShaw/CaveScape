@@ -15,8 +15,8 @@ namespace CaveScape
 
     class Level
     {
-        List<Section> levelSections;
-        int tracker;
+        public List<Section> levelSections;
+        public int tracker;
         bool finished;
 
         public Level(List<Section> levelSections)
@@ -52,7 +52,7 @@ namespace CaveScape
                 levelSections[tracker].Draw(batch);
         }
 
-        public void drawLevel(SpriteBatch batch, Player player)
+        public void drawLevel(SpriteBatch batch)
         {
             if(!finished)
                  levelSections[tracker].drawSection(batch);//, player);

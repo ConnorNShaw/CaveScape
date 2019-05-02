@@ -44,6 +44,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SpriteFont1.spritefont">
+      <Name>SpriteFont1</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="tutorial levels.txt">
       <Name>tutorial levels</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
