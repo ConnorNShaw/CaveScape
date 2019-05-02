@@ -15,12 +15,12 @@ namespace CaveScape
 {
     class Player
     {
-        int numBat;
-        public List<int> holdX, holdY, holdBatX, holdBatY, holdVelocity;
+        int numBat, numSpi;
+        public List<int> holdX, holdY, holdBatX, holdBatY, holdBatVelocity, holdSpiderX, holdSpiderY, holdSpiderVelocity;
         public List<bool> dropRock;
         public int velocity;
         public int lives;
-        public int speed, gravity, previous, distance, immuneCounter, timer, oldTimer;
+        public int speed, gravity, previous, immuneCounter, timer, oldTimer;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
         public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel, immune, immuneDamaged;
@@ -37,10 +37,15 @@ namespace CaveScape
 
             holdX = new List<int>();
             holdY = new List<int>();
-            holdVelocity = new List<int>();
+            dropRock = new List<bool>();
+
+            holdBatVelocity = new List<int>();
             holdBatX = new List<int>();
             holdBatY = new List<int>();
-            dropRock = new List<bool>();
+
+            holdSpiderVelocity = new List<int>();
+            holdSpiderX = new List<int>();
+            holdSpiderY = new List<int>();
 
             velocity = 10;
             gravity = 10;
@@ -71,7 +76,12 @@ namespace CaveScape
         {
             numBat = numBats;
         }
-        //
+
+        public void setSpiders(int numSpiders)
+        {
+            numSpi = numSpiders;
+        }
+
         public void playerControls(KeyboardState ks, Block[,] layout)
         {
             List<Block> active = getActive(layout);
@@ -95,7 +105,6 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
-
                     if(layout[r,c].type.Equals("immune") && playerLocat.Intersects(layout[r, c].pos))
                     {
                         Rectangle rect = layout[r, c].getPos();
@@ -103,7 +112,7 @@ namespace CaveScape
                         immune = true;
                         immuneCounter += 6;
                     }
-
+                    
                     if (layout[r, c].type.Equals("heal") && playerLocat.Intersects(layout[r, c].pos))
                     {
                         Rectangle rect = layout[r, c].getPos();
@@ -112,14 +121,27 @@ namespace CaveScape
                         speed = lives * 5;
                     }
 
+                    if (layout[r, c].type.Equals("spider") && holdSpiderX.Count < numSpi)
+                    {
+                        holdSpiderX.Add(r);
+                        holdSpiderY.Add(c);
+                        holdSpiderVelocity.Add(10);
+                    }
+
+                    if (layout[r, c].type.Equals("spider") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
+                    {
+                        if (!immune)
+                            reduceLife();
+                        else
+                            reduceImmunity();
+                    }
 
                     if (layout[r, c].type.Equals("bat") && holdBatX.Count < numBat)
                     {
                         holdBatX.Add(r);
                         holdBatY.Add(c);
-                        holdVelocity.Add(10);
+                        holdBatVelocity.Add(10);
                     }
-                    
 
                     if (layout[r, c].type.Equals("bat") && playerLocat.Intersects(layout[r, c].pos) && !damaged)
                     {
@@ -193,7 +215,7 @@ namespace CaveScape
             for (int k = 0; k < holdBatX.Count; k++)
             {
                 //bat moves
-                layout[holdBatX[k], holdBatY[k]].moveX(holdVelocity[k]);
+                layout[holdBatX[k], holdBatY[k]].moveX(holdBatVelocity[k]);
                 for (int r = 0; r < layout.GetLength(0); r++)
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
@@ -201,7 +223,24 @@ namespace CaveScape
                         //bat changes direction
                         if (layout[holdBatX[k], holdBatY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("stop"))
                         {
-                            holdVelocity[k] *= -1;
+                            holdBatVelocity[k] *= -1;
+                        }
+                    }
+                }
+            }
+            
+            for (int k = 0; k < holdSpiderX.Count; k++)
+            {
+                //spider moves
+                layout[holdSpiderX[k], holdSpiderY[k]].moveX(holdSpiderVelocity[k]);
+                for (int r = 0; r < layout.GetLength(0); r++)
+                {
+                    for (int c = 0; c < layout.GetLength(1); c++)
+                    {
+                        //spider goes the other direction
+                        if (layout[holdSpiderX[k], holdSpiderY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("wall"))
+                        {
+                            holdSpiderVelocity[k] *= -1;
                         }
                     }
                 }
@@ -525,6 +564,10 @@ namespace CaveScape
                 dropRock.Clear();
                 holdBatX.Clear();
                 holdBatY.Clear();
+                holdBatVelocity.Clear();
+                holdSpiderX.Clear();
+                holdSpiderY.Clear();
+                holdSpiderVelocity.Clear();
                 damaged = true;
             }
         }
@@ -572,7 +615,6 @@ namespace CaveScape
 
 
                 }
-
             }
             return act;
         }
