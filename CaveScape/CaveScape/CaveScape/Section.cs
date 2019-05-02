@@ -21,7 +21,7 @@ namespace CaveScape
         string[,] text;
 
         Block[,] blocks, startBlocks;
-        Player player;
+        public Player player;
         Texture2D texture;
 
         Level level;

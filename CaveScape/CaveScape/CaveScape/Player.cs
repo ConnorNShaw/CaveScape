@@ -440,12 +440,15 @@ namespace CaveScape
 
             if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && !latch && okb.IsKeyUp(Keys.Up))
             {
-                //preps the jump
-                onGround = false;
-                jB = false;
-                jumping = true;
-                jTimer = 0;
-                jCounter++;
+                if (lives > 0)
+                {
+                    //preps the jump
+                    onGround = false;
+                    jB = false;
+                    jumping = true;
+                    jTimer = 0;
+                    jCounter++;
+                }
             }
             else if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && latch)
             {
@@ -559,11 +562,13 @@ namespace CaveScape
             {
                 for (int o = 0; o < layout.GetLength(1); o++)
                 {
-                    if (layout[i, o].checkScreen())
+                    if (layout[i, o] != null)
                     {
-                        act.Add(layout[i, o]);
+                        if (layout[i, o].checkScreen())
+                        {
+                            act.Add(layout[i, o]);
+                        }
                     }
-                    
 
 
                 }
