@@ -30,7 +30,7 @@ namespace CaveScape
         {
             height = a.GetLength(0);
             width = a.GetLength(1);
-
+            
             hasBeenReset = false;
             
             blocks = new Block[height, width];

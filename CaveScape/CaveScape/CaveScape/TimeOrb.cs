@@ -14,7 +14,7 @@ namespace CaveScape
 {
     class TimeOrb : Pickup
     {
-        public TimeOrb(Rectangle p) : base(p, Color.Purple, "time")
+        public TimeOrb(Rectangle p) : base(p, Color.Purple, "pause")
         {
 
         }

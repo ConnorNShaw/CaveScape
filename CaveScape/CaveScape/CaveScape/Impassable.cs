@@ -14,6 +14,10 @@ namespace CaveScape
 {
     class Impassable : Obstacle
     {
+        //public Impassable(Rectangle p) : base(p, Color.SaddleBrown, "impassable")
+        //{
+        //}
+
         public Impassable(Rectangle p) : base(p, Color.SaddleBrown, "impassable")
         {
         }
