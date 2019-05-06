@@ -87,7 +87,7 @@ namespace CaveScape
             {
                 for(int c = 0; c < layout.GetLength(1); c++)
                 {
-                    if(layout[r, c].getType().Equals("ladder"))
+                    if(layout[r, c] != null && layout[r, c].getType().Equals("ladder"))
                     {
                         passableBlocks.Add(layout[r, c + 1]);
                         passableBlocks.Add(layout[r, c - 1]);
@@ -648,7 +648,7 @@ namespace CaveScape
             {
                 for (int o = 0; o < layout.GetLength(1); o++)
                 {
-                    if (layout[i, o].checkScreen())
+                    if (layout[i, o] != null && layout[i, o].checkScreen())
                     {
                         act.Add(layout[i, o]);
                     }
