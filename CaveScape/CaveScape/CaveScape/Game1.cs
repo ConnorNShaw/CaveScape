@@ -154,6 +154,7 @@ namespace CaveScape
         {
             Initialize();
             LoadContent();
+            ReadFileAsString(@"Content/tutorial levels.txt");
         }
 
 
