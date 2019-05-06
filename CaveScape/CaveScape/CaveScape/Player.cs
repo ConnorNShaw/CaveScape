@@ -26,6 +26,7 @@ namespace CaveScape
         public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel, immune, immuneDamaged, paused;
         int jTimer, jCounter;
         KeyboardState okb;
+        List<Block> passableBlocks;
 
         public Player(Rectangle r)
         {
@@ -67,11 +68,27 @@ namespace CaveScape
             timer = 0;
             oldTimer = 0;
             okb = Keyboard.GetState();
+            passableBlocks = new List<Block>();
         }
 
         public void setBats(int numBats)
         {
             numBat = numBats;
+        }
+
+        public void setBlocks(Block[,] layout)
+        {
+            for(int r = 0; r < layout.GetLength(0); r++)
+            {
+                for(int c = 0; c < layout.GetLength(1); c++)
+                {
+                    if(layout[r, c].getType().Equals("ladder"))
+                    {
+                        passableBlocks.Add(layout[r, c + 1]);
+                        passableBlocks.Add(layout[r, c - 1]);
+                    }
+                }
+            }
         }
 
         public void playerControls(KeyboardState ks, Block[,] layout)
@@ -483,7 +500,7 @@ namespace CaveScape
                         if (layout[r, c] != null && layout[r, c].checkScreen())
                         {
                             //moving up
-                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - speed, playerLocat.Width, playerLocat.Height)) && layout[r, c].getType().Equals("impassable"))
+                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - speed, playerLocat.Width, playerLocat.Height)) && layout[r, c].getType().Equals("impassable") && !passableBlocks.Contains(layout[r, c]))
                             {
                                 flag = true;
                             }

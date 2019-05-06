@@ -135,6 +135,8 @@ namespace CaveScape
         {
             KeyboardState ks = Keyboard.GetState();
 
+            player.setBlocks(blocks);
+
             if(player.damaged && !player.isDead() && !player.immune)
             {
                 hasBeenReset = true;
