@@ -248,77 +248,82 @@ namespace CaveScape
                 }
             }
 
-            for (int k = 0; k < holdBatX.Count; k++)
+            if(!paused)
             {
-                //bat moves
-                layout[holdBatX[k], holdBatY[k]].moveX(holdBatVelocity[k]);
-                for (int r = 0; r < layout.GetLength(0); r++)
+                for (int k = 0; k < holdBatX.Count; k++)
                 {
-                    for (int c = 0; c < layout.GetLength(1); c++)
+                    //bat moves
+                    layout[holdBatX[k], holdBatY[k]].moveX(holdBatVelocity[k]);
+                    for (int r = 0; r < layout.GetLength(0); r++)
                     {
-                        //bat changes direction
-                        if (layout[holdBatX[k], holdBatY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("stop"))
+                        for (int c = 0; c < layout.GetLength(1); c++)
                         {
-                            holdBatVelocity[k] *= -1;
+                            //bat changes direction
+                            if (layout[holdBatX[k], holdBatY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("stop"))
+                            {
+                                holdBatVelocity[k] *= -1;
+                            }
                         }
                     }
                 }
-            }
-            
-            for (int k = 0; k < holdSpiderX.Count; k++)
-            {
-                //spider moves
-                layout[holdSpiderX[k], holdSpiderY[k]].moveX(holdSpiderVelocity[k]);
-                for (int r = 0; r < layout.GetLength(0); r++)
+
+                for (int k = 0; k < holdSpiderX.Count; k++)
                 {
-                    for (int c = 0; c < layout.GetLength(1); c++)
+                    //spider moves
+                    layout[holdSpiderX[k], holdSpiderY[k]].moveX(holdSpiderVelocity[k]);
+                    for (int r = 0; r < layout.GetLength(0); r++)
                     {
-                        //spider goes the other direction
-                        if (layout[holdSpiderX[k], holdSpiderY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("wall"))
+                        for (int c = 0; c < layout.GetLength(1); c++)
                         {
-                            holdSpiderVelocity[k] *= -1;
+                            //spider goes the other direction
+                            if (layout[holdSpiderX[k], holdSpiderY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("wall"))
+                            {
+                                holdSpiderVelocity[k] *= -1;
+                            }
+                        }
+                    }
+                }
+
+                for (int k = 0; k < dropRock.Count; k++)
+                {
+                    if (dropRock[k])
+                    {
+                        bool a = false;
+                        for (int r = 0; r < layout.GetLength(0); r++)
+                        {
+                            for (int c = 0; c < layout.GetLength(1); c++)
+                            {
+                                if (layout[r, c] != null)
+                                {
+                                    //checks if boulder reaches the floor and stops the rock from falling through the floor
+                                    if (layout[holdX[k], holdY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.SaddleBrown))
+                                    {
+                                        a = true;
+                                        dropRock[k] = false;
+                                    }
+                                }
+                                if (a)
+                                    break;
+                            }
+                            if (a)
+                                break;
+                        }
+                        if (!a) //rock falls 
+                        {
+                            layout[holdX[k], holdY[k]].pos.Y += 1;
+                            if (playerLocat.Intersects(layout[holdX[k], holdY[k]].pos) && !damaged && !immuneDamaged && dropRock[k])
+                            {
+                                if (!immune)
+                                    reduceLife();
+                                else
+                                    reduceImmunity();
+                            }
                         }
                     }
                 }
             }
 
-            for (int k = 0; k < dropRock.Count; k++)
-            {
-                if (dropRock[k])
-                {
-                    bool a = false;
-                    for (int r = 0; r < layout.GetLength(0); r++)
-                    {
-                        for (int c = 0; c < layout.GetLength(1); c++)
-                        {
-                            if (layout[r, c] != null)
-                            {
-                                //checks if boulder reaches the floor and stops the rock from falling through the floor
-                                if (layout[holdX[k], holdY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.SaddleBrown))
-                                {
-                                    a = true;
-                                    dropRock[k] = false;
-                                }
-                            }
-                            if (a)
-                                break;
-                        }
-                        if (a)
-                            break;
-                    }
-                    if (!a) //rock falls 
-                    {
-                        layout[holdX[k], holdY[k]].pos.Y += 1;
-                        if (playerLocat.Intersects(layout[holdX[k], holdY[k]].pos) && !damaged &&!immuneDamaged && dropRock[k])
-                        {
-                            if (!immune)
-                                reduceLife();
-                            else
-                                reduceImmunity();
-                        }
-                    }
-                }
-            }
+                
 
             if (w2)
                 speed = 5;
