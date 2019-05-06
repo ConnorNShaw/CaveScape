@@ -99,7 +99,15 @@ namespace CaveScape
             if (kb != old && kb.IsKeyDown(Keys.N))
             {
                 level.moveToNextSection();
+
             }
+
+            if (kb != old && kb.IsKeyDown(Keys.R) && levelSections[level.tracker].player.lives <= 0)
+            {
+                reset();
+            }
+
+
             if (kb != old && kb.IsKeyDown(Keys.LeftShift))
             {
                 pause = !pause;
@@ -134,12 +142,22 @@ namespace CaveScape
             }
             if (level.tracker == levelSections.Count - 1)
             {
-                spriteBatch.DrawString(font, "Congratulations!", new Vector2(600, 400), Color.Red);
-                spriteBatch.DrawString(font, "You Escaped!", new Vector2(650, 700), Color.Red);
+                spriteBatch.DrawString(font, "Congratulations!", new Vector2(600, 100), Color.Red);
+                spriteBatch.DrawString(font, "You Escaped!", new Vector2(650, 300), Color.Red);
             }
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
+
+        public void reset()
+        {
+            Initialize();
+            LoadContent();
+            ReadFileAsString(@"Content/tutorial levels.txt");
+        }
+
+
 
         //Reads a txt file to create game levels
         private void ReadFileAsString(string path)
