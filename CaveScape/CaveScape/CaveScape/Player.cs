@@ -523,7 +523,7 @@ namespace CaveScape
                 }
             }
 
-            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && !latch && okb.IsKeyUp(Keys.Up))
+            if ((ks.IsKeyDown(Keys.Up) || ks.IsKeyDown(Keys.W)) && !latch && (okb.IsKeyUp(Keys.Up) && okb.IsKeyUp(Keys.W)))
             {
                 if (lives > 0)
                 {
