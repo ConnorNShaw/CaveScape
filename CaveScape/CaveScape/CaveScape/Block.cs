@@ -24,9 +24,7 @@ namespace CaveScape
             pos = p;
             this.col = col;
             this.type = type;
-            
         }
-
 
         public bool checkScreen()
         {

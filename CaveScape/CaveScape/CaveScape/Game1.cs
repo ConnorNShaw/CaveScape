@@ -19,12 +19,15 @@ namespace CaveScape
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont font;
 
         Player player;
 
         Texture2D texture;
         KeyboardState old;
         Texture2D playerImage;
+
+        Boolean pause;
 
         //Holds level and level sections
         Level level;
@@ -51,6 +54,7 @@ namespace CaveScape
             //player = new Player(new Rectangle(100, 400, 50, 50));
             levelSections = new List<Section>();
             old = Keyboard.GetState();
+            pause = false;
             base.Initialize();
         }
 
@@ -64,6 +68,7 @@ namespace CaveScape
             spriteBatch = new SpriteBatch(GraphicsDevice);
             texture = this.Content.Load<Texture2D>("White Square");
             playerImage = this.Content.Load<Texture2D>("circle");
+            font = Content.Load<SpriteFont>("SpriteFont1");
             ReadFileAsString(@"Content/tutorial levels.txt");
 
             // TODO: use this.Content to load your game content here
@@ -95,6 +100,10 @@ namespace CaveScape
             {
                 level.moveToNextSection();
             }
+            if (kb != old && kb.IsKeyDown(Keys.LeftShift))
+            {
+                pause = !pause;
+            }
             old = kb;
             base.Update(gameTime);
         }
@@ -110,7 +119,24 @@ namespace CaveScape
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             //spriteBatch.Draw(playerImage, player.playerLocat, Color.White);
-            level.drawLevel(spriteBatch, player);
+            if (!pause)
+            {
+                level.drawLevel(spriteBatch);
+                if (levelSections[level.tracker].player.lives <= 0)
+                {
+                    spriteBatch.DrawString(font, "Game Over!", new Vector2(700, 400), Color.Red);
+                    spriteBatch.DrawString(font, "Press R to restart", new Vector2(500, 700), Color.Red);
+                }
+            }
+            else
+            {
+                spriteBatch.DrawString(font, "Pause", new Vector2(700, 400), Color.Red);
+            }
+            if (level.tracker == levelSections.Count - 1)
+            {
+                spriteBatch.DrawString(font, "Congratulations!", new Vector2(600, 400), Color.Red);
+                spriteBatch.DrawString(font, "You Escaped!", new Vector2(650, 700), Color.Red);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -127,6 +153,7 @@ namespace CaveScape
                         int levelWidth = Int32.Parse(reader.ReadLine());
                         int levelHeight = Int32.Parse(reader.ReadLine());
                         int numBats = Int32.Parse(reader.ReadLine());
+                        int numSpiders = Int32.Parse(reader.ReadLine());
 
                         string[,] tempArray = new string[levelHeight, levelWidth];
                         int r = 0;
@@ -144,7 +171,7 @@ namespace CaveScape
                             }
                             else
                             {
-                                Section section = new Section(tempArray, levelWidth, levelHeight, texture, numBats);
+                                Section section = new Section(tempArray, levelWidth, levelHeight, texture, numBats, numSpiders);
                                 levelSections.Add(section);
                                 Console.WriteLine("ADDED A SECTION");
                                 tempArray = new string[levelHeight, levelWidth];
