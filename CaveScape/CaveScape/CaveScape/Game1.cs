@@ -27,6 +27,8 @@ namespace CaveScape
         KeyboardState old;
         Texture2D playerImage;
 
+        Boolean pause;
+
         //Holds level and level sections
         Level level;
         List<Section> levelSections;
@@ -52,6 +54,7 @@ namespace CaveScape
             //player = new Player(new Rectangle(100, 400, 50, 50));
             levelSections = new List<Section>();
             old = Keyboard.GetState();
+            pause = false;
             base.Initialize();
         }
 
@@ -97,6 +100,10 @@ namespace CaveScape
             {
                 level.moveToNextSection();
             }
+            if (kb != old && kb.IsKeyDown(Keys.LeftShift))
+            {
+                pause = !pause;
+            }
             old = kb;
             base.Update(gameTime);
         }
@@ -112,11 +119,18 @@ namespace CaveScape
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             //spriteBatch.Draw(playerImage, player.playerLocat, Color.White);
-            level.drawLevel(spriteBatch);
-            if (levelSections[level.tracker].player.lives <= 0)
+            if (!pause)
             {
-                spriteBatch.DrawString(font, "Game Over!", new Vector2(700, 400), Color.Red);
-                spriteBatch.DrawString(font, "Press R to restart", new Vector2(500, 700), Color.Red);
+                level.drawLevel(spriteBatch);
+                if (levelSections[level.tracker].player.lives <= 0)
+                {
+                    spriteBatch.DrawString(font, "Game Over!", new Vector2(700, 400), Color.Red);
+                    spriteBatch.DrawString(font, "Press R to restart", new Vector2(500, 700), Color.Red);
+                }
+            }
+            else
+            {
+                spriteBatch.DrawString(font, "Pause", new Vector2(700, 400), Color.Red);
             }
             spriteBatch.End();
             base.Draw(gameTime);
