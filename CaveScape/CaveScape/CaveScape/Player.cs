@@ -615,6 +615,7 @@ namespace CaveScape
                 holdSpiderX.Clear();
                 holdSpiderY.Clear();
                 holdSpiderVelocity.Clear();
+                latch = false;
                 damaged = true;
             }
         }
