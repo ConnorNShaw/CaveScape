@@ -96,7 +96,7 @@ namespace CaveScape
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
                 this.Exit();
             // TODO: Add your update logic here
-            if (kb != old && kb.IsKeyDown(Keys.N))
+            if (kb != old && kb.IsKeyDown(Keys.N) && level.finished == false)
             {
                 level.moveToNextSection();
 

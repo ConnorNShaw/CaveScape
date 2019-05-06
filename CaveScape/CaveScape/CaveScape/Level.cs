@@ -17,7 +17,7 @@ namespace CaveScape
     {
         public List<Section> levelSections;
         public int tracker;
-        bool finished;
+        public bool finished;
 
         public Level(List<Section> levelSections)
         {

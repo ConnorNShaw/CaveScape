@@ -262,7 +262,6 @@ namespace CaveScape
                         for (int c = 0; c < layout.GetLength(1); c++)
                         {
                             //bat changes direction
-
                             if (layout[r, c] != null && layout[holdBatX[k], holdBatY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("stop"))
                             {
                                 holdBatVelocity[k] *= -1;
@@ -280,7 +279,7 @@ namespace CaveScape
                         for (int c = 0; c < layout.GetLength(1); c++)
                         {
                             //spider goes the other direction
-                            if (layout[holdSpiderX[k], holdSpiderY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("wall"))
+                            if (layout[r, c] != null && layout[holdSpiderX[k], holdSpiderY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.SaddleBrown))
                             {
                                 holdSpiderVelocity[k] *= -1;
                             }
@@ -300,7 +299,7 @@ namespace CaveScape
                                 if (layout[r, c] != null)
                                 {
                                     //checks if boulder reaches the floor and stops the rock from falling through the floor
-                                    if (layout[holdX[k], holdY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.SaddleBrown))
+                                    if (layout[r, c] != null && layout[holdX[k], holdY[k]].pos.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.SaddleBrown))
                                     {
                                         a = true;
                                         dropRock[k] = false;
@@ -383,7 +382,7 @@ namespace CaveScape
             {
                 for (int c = 0; c < layout.GetLength(1); c++)
                 {
-                    if (layout[r ,c] != null && layout[r, c].checkScreen())
+                    if (layout[r, c] != null && layout[r, c].checkScreen())
                     {
                         //if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y + gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("floor"))
                         if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y + gravity, playerLocat.Width, playerLocat.Height)) && layout[r, c].type.Equals("impassable"))
