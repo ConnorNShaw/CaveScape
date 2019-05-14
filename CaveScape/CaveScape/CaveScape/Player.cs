@@ -122,6 +122,7 @@ namespace CaveScape
                 paused = false;
             }
 
+            
 
             w2 = false;
             for (int r = 0; r < layout.GetLength(0); r++)
@@ -249,7 +250,11 @@ namespace CaveScape
                             break;
                     }
                 }
+
             }
+
+            if (layout[layout.GetLength(0) - 1, 0] != null && layout[layout.GetLength(0) - 1, 0].pos.Y < 0)
+                reduceLife();
 
             if(!paused)
             {
@@ -590,6 +595,9 @@ namespace CaveScape
             }
             okb = ks;
         }
+
+
+
 
         public void addLife()
         {
