@@ -107,7 +107,7 @@ namespace CaveScape
 
             }
 
-            if (kb != old && kb.IsKeyDown(Keys.R) && levelSections[level.tracker].player.lives <= 0)
+            if (kb != old && kb.IsKeyDown(Keys.R)) //&& levelSections[level.tracker].player.lives <= 0)
             {
                 reset();
             }
@@ -219,7 +219,7 @@ namespace CaveScape
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
             }
-            level = new Level(levelSections);
+            level = new Level(levelSections, font);
             for (int i = 0; i < levelSections.Count; i++)
             {
                 levelSections[i].setParentLevel(level);
