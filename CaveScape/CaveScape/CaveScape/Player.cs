@@ -23,10 +23,11 @@ namespace CaveScape
         public int speed, gravity, previous, distance, immuneCounter, pauseCounter, timer, oldTimer;
         public Rectangle playerLocat, startLocat;
         public Boolean onGround, startJump, jumping, doubleJump;
-        public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel, immune, immuneDamaged, paused;
+        public bool b, latch, b2, damaged, w2, jB, falling, finishedLevel, immune, immuneDamaged, paused, overLadder, oldOverLadder;
         int jTimer, jCounter;
         KeyboardState okb;
         List<Block> passableBlocks;
+        List<FallingFloor> fallingBlocks;
 
         public Player(Rectangle r)
         {
@@ -64,6 +65,8 @@ namespace CaveScape
             paused = false;
             
             latch = false;
+            overLadder = false;
+            oldOverLadder = false;
             damaged = false;
             immune = false;
             immuneDamaged = false;
@@ -74,6 +77,7 @@ namespace CaveScape
             oldTimer = 0;
             okb = Keyboard.GetState();
             passableBlocks = new List<Block>();
+            fallingBlocks = new List<FallingFloor>();
         }
 
         public void setBats(int numBats)
@@ -87,10 +91,16 @@ namespace CaveScape
             {
                 for(int c = 0; c < layout.GetLength(1); c++)
                 {
-                    if(layout[r, c] != null && layout[r, c].getType().Equals("ladder"))
+                    //Allows player to pass through blocks directly next to ladders
+                    if (layout[r, c] != null && layout[r, c].getType().Equals("ladder"))
                     {
                         passableBlocks.Add(layout[r, c + 1]);
                         passableBlocks.Add(layout[r, c - 1]);
+                    }
+                    
+                    if(layout[r, c] != null && layout[r, c].getType().Equals("fall"))
+                    {
+                        fallingBlocks.Add((FallingFloor)layout[r, c]);
                     }
                 }
             }
@@ -130,6 +140,22 @@ namespace CaveScape
                 {
                     if (layout[r, c] != null)
                     {
+
+                        
+
+                        
+
+
+
+                        if (layout[r, c].type.Equals("fall") && playerLocat.Intersects(layout[r, c].pos))
+                        {
+                            if(fallingBlocks.Contains(layout[r,c]))
+                            {
+                                Rectangle rect = layout[r, c].getPos();
+                                layout[r, c] = new Space(rect);
+                            }
+                        }
+
                         if (layout[r, c].type.Equals("immune") && playerLocat.Intersects(layout[r, c].pos))
                         {
                             Rectangle rect = layout[r, c].getPos();
@@ -250,6 +276,9 @@ namespace CaveScape
                     }
                 }
             }
+
+            //oldOverLadder = overLadder;
+            
 
             if(!paused)
             {
@@ -561,6 +590,9 @@ namespace CaveScape
                     {
                         for (int c = 0; c < layout.GetLength(1); c++)
                         {
+
+
+
                             if (layout[r, c] != null)
                             {
                                 layout[r, c].pos.Y += speed;
@@ -575,7 +607,7 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c] != null)
+                        if (layout[r, c] != null && overLadder)
                         {
                             //moving down
                             layout[r, c].pos.Y -= speed;

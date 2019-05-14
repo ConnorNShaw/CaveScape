@@ -59,6 +59,9 @@ namespace CaveScape
                 {
                     switch (a[i, o]) //polymorphically adds object to block array to retain individual properties, based on character given
                     {
+                        case "^":
+                            blocks[i, o] = new RopeStop(hold);
+                            break;
                         case "!":
                             blocks[i, o] = new Stop(hold);
                             break;
@@ -87,6 +90,9 @@ namespace CaveScape
                             break;
                         case "B":
                             blocks[i, o] = new Bat(hold);
+                            break;
+                        case "F":
+                            blocks[i, o] = new FallingFloor(hold);
                             break;
                         case "S":
                             blocks[i, o] = new Spider(hold);

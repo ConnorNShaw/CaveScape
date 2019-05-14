@@ -12,11 +12,23 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Ladder : Obstacle
+    class FallingFloor : Block
     {
-        public Ladder(Rectangle p) : base(p, Color.RosyBrown, "ladder")
-        {
+        Boolean falling;
 
+        public FallingFloor(Rectangle p) : base(p, Color.SaddleBrown, "fall")
+        {
+            falling = false;
+        }
+
+        public void setFalling(Boolean falling)
+        {
+            this.falling = falling;
+        }
+
+        public Boolean isFalling()
+        {
+            return falling;
         }
     }
 }
