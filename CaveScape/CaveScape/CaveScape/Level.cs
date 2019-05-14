@@ -66,9 +66,9 @@ namespace CaveScape
 
             Random random = new Random();
             int randomIndex = 0;
-            while(levelSections.Count > 0)
+            while(levelSections.Count > 1)
             {
-                randomIndex = random.Next(0, levelSections.Count - 1); //Choose a random object in the list
+                randomIndex = random.Next(1, levelSections.Count - 1); //Choose a random object in the list
                 randomList.Add(levelSections[randomIndex]); //add it to the new, random list
                 levelSections.RemoveAt(randomIndex); //remove to avoid duplicates
             }

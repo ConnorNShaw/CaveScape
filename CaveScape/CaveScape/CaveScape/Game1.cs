@@ -20,6 +20,7 @@ namespace CaveScape
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
+        SpriteFont font2;
 
         Player player;
 
@@ -32,6 +33,8 @@ namespace CaveScape
         //Holds level and level sections
         Level level;
         List<Section> levelSections;
+
+        int width;
 
         public Game1()
         {
@@ -55,6 +58,7 @@ namespace CaveScape
             levelSections = new List<Section>();
             old = Keyboard.GetState();
             pause = false;
+            width = GraphicsDevice.Viewport.Width;
             base.Initialize();
         }
 
@@ -69,6 +73,7 @@ namespace CaveScape
             texture = this.Content.Load<Texture2D>("White Square");
             playerImage = this.Content.Load<Texture2D>("circle");
             font = Content.Load<SpriteFont>("SpriteFont1");
+            font2 = Content.Load<SpriteFont>("SpriteFont2");
             ReadFileAsString(@"Content/tutorial levels.txt");
 
             // TODO: use this.Content to load your game content here
@@ -132,18 +137,28 @@ namespace CaveScape
                 level.drawLevel(spriteBatch);
                 if (levelSections[level.tracker].player.lives <= 0)
                 {
-                    spriteBatch.DrawString(font, "Game Over!", new Vector2(700, 400), Color.Red);
-                    spriteBatch.DrawString(font, "Press R to restart", new Vector2(500, 700), Color.Red);
+                    spriteBatch.DrawString(font, "Game Over!", new Vector2((width / 2) - (font.MeasureString("Game Over!").X / 2), 200), Color.Red);
+                    spriteBatch.DrawString(font, "Press R to restart", new Vector2((width / 2) - (font.MeasureString("Press R to restart").X / 2), 500), Color.Red);
                 }
             }
             else
             {
-                spriteBatch.DrawString(font, "Pause", new Vector2(700, 400), Color.Red);
+                spriteBatch.DrawString(font, "Pause", new Vector2((width / 2) - (font.MeasureString("Pause").X / 2), 500), Color.Red);
             }
             if (level.tracker == levelSections.Count - 1)
             {
-                spriteBatch.DrawString(font, "Congratulations!", new Vector2(600, 100), Color.Red);
-                spriteBatch.DrawString(font, "You Escaped!", new Vector2(650, 300), Color.Red);
+                spriteBatch.DrawString(font, "Congratulations!", new Vector2((width / 2) - (font.MeasureString("Congratulations!").X / 2), 100), Color.Red);
+                spriteBatch.DrawString(font, "You Escaped!", new Vector2((width / 2) - (font.MeasureString("You Escaped!").X / 2), 300), Color.Red);
+            }
+            if (level.tracker == 0)
+            {
+                spriteBatch.DrawString(font2, "Use the arrow keys to move.", new Vector2(10, 100), Color.White);
+                spriteBatch.DrawString(font2, "Press the space button to latch on to ladders.", new Vector2(10, 150), Color.White);
+                spriteBatch.DrawString(font2, "Go to the yellow to move to the next level.", new Vector2(10, 200), Color.White);
+                spriteBatch.DrawString(font2, "The purple is a Time Orb, it freezes enemies for a short amount of time.", new Vector2(10, 250), Color.White);
+                spriteBatch.DrawString(font2, "The pink on the ground is a Heal Shroom, gives extra lives.", new Vector2(10, 300), Color.White);
+                spriteBatch.DrawString(font2, "The red is an Immune, it grants you invincibility for a short amount of time.", new Vector2(10, 350), Color.White);
+                spriteBatch.DrawString(font2, "The 3 pinks on the top are your life.", new Vector2(10, 400), Color.White);
             }
             spriteBatch.End();
             base.Draw(gameTime);
