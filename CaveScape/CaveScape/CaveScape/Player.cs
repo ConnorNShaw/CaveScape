@@ -79,6 +79,7 @@ namespace CaveScape
             okb = Keyboard.GetState();
             passableBlocks = new List<Block>();
             fallingBlocks = new List<FallingFloor>();
+            ladderBlocks = new List<Block>();
         }
 
         public void setBats(int numBats)
@@ -97,6 +98,7 @@ namespace CaveScape
                     {
                         passableBlocks.Add(layout[r, c + 1]);
                         passableBlocks.Add(layout[r, c - 1]);
+                        ladderBlocks.Add(layout[r, c]);
                     }
                     
                     if(layout[r, c] != null && layout[r, c].getType().Equals("fall"))
@@ -570,10 +572,8 @@ namespace CaveScape
                     {
                         if (layout[r, c] != null)
                         {
-                            //moving up
-                            layout[r, c].pos.Y += speed;
-
-                            if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("ladder"))
+                            
+                            if (playerLocat.Intersects(layout[r, c].pos) && ladderBlocks.Contains(layout[r, c]))
                             {
                                 continue;
                             }
@@ -593,11 +593,9 @@ namespace CaveScape
                         for (int c = 0; c < layout.GetLength(1); c++)
                         {
 
-
-
                             if (layout[r, c] != null)
                             {
-                                layout[r, c].pos.Y += speed;
+                                layout[r, c].pos.Y += 10;
                             }
                         }
                     }
@@ -609,10 +607,10 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c] != null && overLadder)
+                        if (layout[r, c] != null)
                         {
                             //moving down
-                            layout[r, c].pos.Y -= speed;
+                            layout[r, c].pos.Y -= 5;
 
                             if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("ladder"))
                             {
