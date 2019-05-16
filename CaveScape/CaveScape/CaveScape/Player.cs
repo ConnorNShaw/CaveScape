@@ -549,12 +549,19 @@ namespace CaveScape
                 {
                     for (int c = 0; c < layout.GetLength(1); c++)
                     {
-                        if (layout[r, c] != null && layout[r, c].checkScreen())
+                        if (layout[r, c] != null)
                         {
                             //moving up
-                            if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - speed, playerLocat.Width, playerLocat.Height)) && layout[r, c].getType().Equals("impassable") && !passableBlocks.Contains(layout[r, c]))
+                            layout[r, c].pos.Y += speed;
+
+                            if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("ladder"))
                             {
-                                flag = true;
+                                continue;
+                            }
+                            else
+                            {
+                                latch = false;
+                                falling = true;
                             }
                         }
                     }
@@ -584,11 +591,16 @@ namespace CaveScape
                         {
                             //moving down
                             layout[r, c].pos.Y -= speed;
-                        }
-                        if ((playerLocat.Intersects(layout[r, c].pos) && layout[r, c].col.Equals(Color.Transparent)))
-                        {
-                            latch = false;
-                            falling = true;
+
+                            if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("ladder"))
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                latch = false;
+                                falling = true;
+                            }
                         }
                     }
                 }
