@@ -638,7 +638,6 @@ namespace CaveScape
         public void addLife()
         {
             lives++;
-            speed += 5;
             previous = speed;
         }
 
@@ -647,7 +646,10 @@ namespace CaveScape
             if(!immune)
             {
                 lives--;
-                speed = lives * 5;
+                if(lives <= 0)
+                {
+                    speed = 0;
+                }
                 previous = speed;
                 holdX.Clear();
                 holdY.Clear();
