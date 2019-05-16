@@ -572,8 +572,15 @@ namespace CaveScape
                     {
                         if (layout[r, c] != null)
                         {
-                            
-                            if (playerLocat.Intersects(layout[r, c].pos) && ladderBlocks.Contains(layout[r, c]))
+                            if (layout[r, c].checkScreen())
+                            {
+                                //moving up
+                                if (layout[r, c].pos.Intersects(new Rectangle(playerLocat.X, playerLocat.Y - speed, playerLocat.Width, playerLocat.Height)) && layout[r, c].getType().Equals("impassable") && !passableBlocks.Contains(layout[r, c]))
+                                {
+                                    flag = true;
+                                }
+                            }
+                            if (playerLocat.Intersects(layout[r, c].pos) && layout[r, c].type.Equals("ladder"))
                             {
                                 continue;
                             }
