@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class TimeOrb : Pickup
+    class TimeOrb : Block
     {
         public TimeOrb(Rectangle p) : base(p, Color.Purple, "pause")
         {

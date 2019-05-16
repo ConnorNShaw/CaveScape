@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Spider : Enemy
+    class Spider : Block
     {
         public Spider(Rectangle p) : base(p, Color.DarkBlue, "spider")
         {

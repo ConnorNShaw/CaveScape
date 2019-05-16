@@ -12,7 +12,7 @@ using System.IO;
 
 namespace CaveScape
 {
-    class Impassable : Obstacle
+    class Impassable : Block
     {
         //public Impassable(Rectangle p) : base(p, Color.SaddleBrown, "impassable")
         //{

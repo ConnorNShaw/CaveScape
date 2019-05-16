@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Ladder : Obstacle
+    class Ladder : Block
     {
 
         public Ladder(Rectangle p) : base(p, Color.RosyBrown, "ladder")

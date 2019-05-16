@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Bat : Enemy
+    class Bat : Block
     {
         public Bat(Rectangle p) : base(p, Color.Black, "bat")
         {
