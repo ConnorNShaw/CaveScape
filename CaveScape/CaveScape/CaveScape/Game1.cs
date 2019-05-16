@@ -152,13 +152,12 @@ namespace CaveScape
             }
             if (level.tracker == 0)
             {
-                spriteBatch.DrawString(font2, "Use the arrow keys to move.", new Vector2(10, 600), Color.White);
+                spriteBatch.DrawString(font2, "Use the arrow keys to move and if you press the up arrow twice, you can double jump.", new Vector2(10, 600), Color.White);
                 spriteBatch.DrawString(font2, "Press the space button to latch on to ladders.", new Vector2(10, 650), Color.White);
                 spriteBatch.DrawString(font2, "Go to the yellow to move to the next level.", new Vector2(10, 700), Color.White);
                 spriteBatch.DrawString(font2, "The purple is a Time Orb, it freezes enemies for a short amount of time.", new Vector2(10, 750), Color.White);
-                spriteBatch.DrawString(font2, "The pink on the ground is a Heal Shroom, gives extra lives.", new Vector2(10, 800), Color.White);
+                spriteBatch.DrawString(font2, "The pink on the ground is a Heal Shroom, gives extra lives. The 3 pinks on the top are your life.", new Vector2(10, 800), Color.White);
                 spriteBatch.DrawString(font2, "The red is an Immune, it grants you invincibility for a short amount of time.", new Vector2(10, 850), Color.White);
-                spriteBatch.DrawString(font2, "The 3 pinks on the top are your life.", new Vector2(10, 900), Color.White);
             }
             spriteBatch.End();
             base.Draw(gameTime);
