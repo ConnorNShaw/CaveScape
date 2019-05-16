@@ -28,6 +28,7 @@ namespace CaveScape
         KeyboardState okb;
         List<Block> passableBlocks;
         List<FallingFloor> fallingBlocks;
+        List<Block> ladderBlocks;
 
         public Player(Rectangle r)
         {
@@ -132,7 +133,6 @@ namespace CaveScape
                 paused = false;
             }
 
-            
 
             w2 = false;
             for (int r = 0; r < layout.GetLength(0); r++)
@@ -141,12 +141,6 @@ namespace CaveScape
                 {
                     if (layout[r, c] != null)
                     {
-
-                        
-
-                        
-
-
 
                         if (layout[r, c].type.Equals("fall") && playerLocat.Intersects(layout[r, c].pos))
                         {
@@ -276,11 +270,10 @@ namespace CaveScape
                             break;
                     }
                 }
-
             }
 
-            if (layout[layout.GetLength(0) - 1, 0] != null && layout[layout.GetLength(0) - 1, 0].pos.Y < 0)
-                reduceLife();
+            //oldOverLadder = overLadder;
+            
 
             if(!paused)
             {
@@ -624,9 +617,6 @@ namespace CaveScape
             }
             okb = ks;
         }
-
-
-
 
         public void addLife()
         {
