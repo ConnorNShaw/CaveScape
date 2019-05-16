@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Stop : Obstacle
+    class Stop : Block
     {
         public Stop(Rectangle p) : base(p, Color.Transparent, "stop")
         {

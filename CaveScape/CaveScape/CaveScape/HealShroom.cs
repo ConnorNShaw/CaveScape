@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class HealShroom : Pickup
+    class HealShroom : Block
     {
         public HealShroom(Rectangle p) : base(p, Color.Pink, "heal")
         {
