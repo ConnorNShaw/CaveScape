@@ -18,14 +18,16 @@ namespace CaveScape
         public List<Section> levelSections;
         public int tracker;
         public bool finished;
+        SpriteFont font;
 
-        public Level(List<Section> levelSections)
+        public Level(List<Section> levelSections, SpriteFont f)
         {
             this.levelSections = levelSections;
             //shuffleSections();
             Console.WriteLine(levelSections.ToString());
             tracker = 0;
             finished = false;
+            font = f;
         }
 
         public void moveToNextSection()
@@ -55,7 +57,7 @@ namespace CaveScape
         public void drawLevel(SpriteBatch batch)
         {
             if(!finished)
-                 levelSections[tracker].drawSection(batch);//, player);
+                 levelSections[tracker].drawSection(batch, font);//, player);
         }
 
         private void shuffleSections()
@@ -64,9 +66,9 @@ namespace CaveScape
 
             Random random = new Random();
             int randomIndex = 0;
-            while(levelSections.Count > 0)
+            while(levelSections.Count > 1)
             {
-                randomIndex = random.Next(0, levelSections.Count - 1); //Choose a random object in the list
+                randomIndex = random.Next(1, levelSections.Count - 1); //Choose a random object in the list
                 randomList.Add(levelSections[randomIndex]); //add it to the new, random list
                 levelSections.RemoveAt(randomIndex); //remove to avoid duplicates
             }

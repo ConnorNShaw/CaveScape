@@ -49,6 +49,11 @@
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
+    <Compile Include="SpriteFont2.spritefont">
+      <Name>SpriteFont2</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
     <None Include="tutorial levels.txt">
       <Name>tutorial levels</Name>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
