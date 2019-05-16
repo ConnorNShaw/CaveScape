@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Lava : Obstacle
+    class Lava : Block
     {
         public Lava(Rectangle p) : base(p, Color.OrangeRed, "lava")
         {

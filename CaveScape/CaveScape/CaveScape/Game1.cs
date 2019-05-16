@@ -121,6 +121,7 @@ namespace CaveScape
             base.Update(gameTime);
         }
 
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -167,6 +168,8 @@ namespace CaveScape
 
         public void reset()
         {
+            levelSections = null;
+            Console.WriteLine("Reset levelsections");
             Initialize();
             LoadContent();
             ReadFileAsString(@"Content/tutorial levels.txt");
@@ -178,6 +181,7 @@ namespace CaveScape
         //Reads a txt file to create game levels
         private void ReadFileAsString(string path)
         {
+            levelSections = new List<Section>();
             try
             {
                 using (StreamReader reader = new StreamReader(path))

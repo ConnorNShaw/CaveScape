@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace CaveScape
 {
-    class Boulder : Enemy
+    class Boulder : Block
     {
         public Boulder(Rectangle p) : base(p, Color.DarkGray, "boulder")
         {
