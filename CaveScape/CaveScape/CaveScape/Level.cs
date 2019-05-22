@@ -28,6 +28,7 @@ namespace CaveScape
             tracker = 0;
             finished = false;
             font = f;
+            shuffleSections();
         }
 
         public void moveToNextSection()

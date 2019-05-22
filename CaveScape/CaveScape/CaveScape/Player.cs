@@ -403,6 +403,13 @@ namespace CaveScape
                 }
             }
 
+
+            if (layout[layout.GetLength(0) - 1, 0].pos.Y < 0)
+                reduceLife();
+
+
+
+
             bool b5 = false;
             for (int r = 0; r < layout.GetLength(0); r++)
             {
